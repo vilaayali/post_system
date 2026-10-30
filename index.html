@@ -3471,6 +3471,41 @@
         display: flex;
         gap: 8px;
       }
+      .sent-fold {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: calc(100% - 32px);
+        margin: 10px 16px 2px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--surface-2);
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+        text-align: start;
+      }
+      .sent-fold span {
+        margin-inline-end: auto;
+      }
+      .sent-fold b {
+        color: var(--ink);
+        font-variant-numeric: tabular-nums;
+      }
+      .sent-fold:hover {
+        border-color: var(--line-strong);
+        color: var(--ink);
+      }
+      /* the big total lives in the dock; the slip keeps a quieter one */
+      .r-sums .sumrow.total {
+        font-size: 20px;
+      }
+      @media (min-width: 1400px) {
+        .order {
+          grid-template-columns: minmax(0, 1fr) 440px;
+        }
+      }
       .dock-alts .co-alt {
         flex: 1 1 0;
         min-width: 0;
@@ -5233,6 +5268,7 @@
         'Paid today': 'آج ادا شدہ',
         'Not sent': 'نہیں بھیجا',
         Sent: 'بھیج دیا',
+        'Sent to kitchen': 'کچن بھیج دیا',
         'Take payment & print token': 'ادائیگی لیں اور ٹوکن پرنٹ کریں',
         New: 'نیا',
         Preparing: 'بن رہا ہے',
@@ -9899,6 +9935,15 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
         ]
           .filter(Boolean)
           .join('');
+        // While new dishes are being added, the ones already sent fold into one row.
+        const done = o.lines.filter((l) => l.sent || l.voided),
+          doneLive = done.filter((l) => !l.voided),
+          canFold = o.state === 'open' && unsent.length && doneLive.length,
+          folded = canFold && U.showSent !== o.id,
+          shownLines = folded ? o.lines.filter((l) => !l.sent && !l.voided) : o.lines;
+        const sentFold = canFold
+          ? `<button class="sent-fold" data-act="sent-fold" aria-expanded="${!folded}">${ic('print', 16)}<span>${t('Sent to kitchen')}: ${sum(doneLive, (l) => l.qty)}</span>${folded ? `<b>${rs(sum(doneLive, (l) => l.unit * l.qty))}</b>` : ''}${ic(folded ? 'down' : 'up', 18)}</button>`
+          : '';
         // Bottom dock: total and pay-when on one row, one big button, the rest small.
         const pb = payButtons(o, unsent, dayIsOpen);
         let fb = fulfilButton(o);
@@ -9918,7 +9963,7 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
     <aside class="ticket" aria-label="${esc(o.no)}"><div class="ticket-scroll">
     <div class="slip"><div class="ticket-head">${o.token ? `<h3>${t('Token')} ${o.token}</h3>` : `<h3 class="new-ord">${t('New order')}</h3>`}<div class="head-tags"><span class="badge type-badge">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span>${ticketStatus(o)}</div></div>
     <div class="ticket-sub"><span>${esc(o.no)}, ${fmtTime(o.createdAt)}, ${esc(uname(o.by))}</span>${o.type === 'delivery' ? `<span class="cust-line">${ic('user', 14)} ${esc(o.cust.name)}, ${esc(showPhone(o.cust.phone))}, ${esc(o.cust.address)}</span>` : ''}</div>
-    <div class="lines${lockedItems ? ' ro' : ''}">${o.lines.length ? o.lines.map((l) => lineView(o, l, lockedItems)).join('') : `<div class="r-empty">${ic('plus', 28)}<b>${t('No items yet')}</b><span>${t('Tap a dish to add it.')}</span></div>`}</div>
+    <div class="lines${lockedItems ? ' ro' : ''}">${o.lines.length ? sentFold + shownLines.map((l) => lineView(o, l, lockedItems)).join('') :`<div class="r-empty">${ic('plus', 28)}<b>${t('No items yet')}</b><span>${t('Tap a dish to add it.')}</span></div>`}</div>
     ${o.lines.length ? `<div class="r-sums">${billRows(o)}<div class="sumrow total"><span>${t('Total')}</span><span>${rs(b.total)}</span></div>
 ${paidOf(o) ? `<div class="sumrow"><span class="muted">${t('Paid')}</span><span>${rs(paidOf(o))}</span></div><div class="sumrow due"><b>${t('Balance due')}</b><b>${rs(dueOf(o))}</b></div>` : ''}</div>` : ''}</div>
     <div class="ticket-tools">${tools}</div></div>
@@ -12634,6 +12679,10 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
         },
         'disc-open': () => {
           U.pay.discOpen = true;
+          render();
+        },
+        'sent-fold': () => {
+          U.showSent = U.showSent === U.orderId ? null : U.orderId;
           render();
         },
         pay: () => {
