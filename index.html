@@ -3348,6 +3348,138 @@
         font-size: 14px;
       }
 
+      /* ---- Order panel, less crowded: one row per dish, a short dock ---- */
+      .ticket-head h3 {
+        white-space: nowrap;
+      }
+      .head-tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 6px;
+      }
+      .slip .ticket-sub {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+      .cust-line {
+        display: flex;
+        gap: 6px;
+        color: var(--ink);
+        line-height: 1.35;
+      }
+      .cust-line svg {
+        flex: none;
+        margin-top: 2px;
+        color: var(--muted);
+      }
+      .slip .line {
+        grid-template-columns: minmax(0, 1fr) auto 34px;
+        align-items: center;
+        gap: 2px 8px;
+        padding: 9px 0;
+      }
+      .slip .lines.ro .line {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+      .slip .line .ldet,
+      .slip .line .ctl {
+        grid-column: 1 / -1;
+        margin: 0;
+      }
+      .slip .line .ldet {
+        font-size: 13px;
+      }
+      .ldel {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border: 0;
+        border-radius: 9px;
+        background: none;
+        color: var(--chili-ink);
+      }
+      .ldel:hover {
+        background: var(--chili-soft);
+      }
+      .slip .line .ctl {
+        padding-top: 2px;
+      }
+      .ticket-scroll .ticket-tools {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .ticket-scroll .tool {
+        flex: 1 1 auto;
+        flex-direction: row;
+        gap: 6px;
+        min-height: 40px;
+        padding: 6px 12px;
+        border-radius: 10px;
+      }
+      .tool-del {
+        color: var(--chili-ink);
+        border-color: color-mix(in srgb, var(--chili) 40%, transparent);
+      }
+      .tool-del:hover {
+        background: var(--chili-soft);
+        border-color: var(--chili);
+        color: var(--chili-ink);
+      }
+      .ticket-dock {
+        gap: 8px;
+        padding: 10px 14px 12px;
+      }
+      .dock-top {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .dock-top .dock-total {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        margin-inline-end: auto;
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.15;
+      }
+      .dock-top .dock-total b {
+        color: var(--ink);
+        font-size: 22px;
+        white-space: nowrap;
+      }
+      .ticket-dock .seg {
+        flex: 0 1 220px;
+        padding: 3px;
+        border-radius: 12px;
+      }
+      .ticket-dock .seg button {
+        min-height: 38px;
+        padding: 0 8px;
+        font-size: 14px;
+        border-radius: 9px;
+      }
+      .ticket-dock .co-main {
+        min-height: 54px;
+        font-size: 17px;
+      }
+      .dock-alts {
+        display: flex;
+        gap: 8px;
+      }
+      .dock-alts .co-alt {
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 44px;
+        padding-inline: 8px;
+        font-size: 15px;
+        border-width: 1px;
+      }
+
       /* ---- Payment: amount, then method tiles, then one button ---- */
       .balance b {
         font-family: var(--body);
@@ -5100,6 +5232,8 @@
         Ready: 'تیار',
         'Paid today': 'آج ادا شدہ',
         'Not sent': 'نہیں بھیجا',
+        Sent: 'بھیج دیا',
+        'Take payment & print token': 'ادائیگی لیں اور ٹوکن پرنٹ کریں',
         New: 'نیا',
         Preparing: 'بن رہا ہے',
         Served: 'پیش کر دیا',
@@ -9620,14 +9754,9 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
         );
       }
       function lineView(o, l, locked) {
-        const tk = l.ticketId && o.tickets.find((k) => k.id === l.ticketId);
-        const st = l.voided
-          ? `<span class="lstate void">${t('Deleted')}</span>`
-          : l.sent
-            ? `<span class="lstate sent">${ic('print', 14)} ${t('Token')} ${tk ? tk.no : o.token} ${t('printed')}</span>`
-            : '';
-        // Size, extras, spice and note read as one plain line.
+        // The colour of the qty square says sent or not; only deleted gets words.
         const det = [
+          l.voided && `<span class="lstate void">${t('Deleted')}</span>`,
           l.variant && esc(l.variant),
           ...l.addons.map((a) => `+ ${esc(a.name)}`),
           l.spice && `${t('Spice')}: ${t(l.spice)}`,
@@ -9635,13 +9764,22 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
         ]
           .filter(Boolean)
           .join(', ');
+        const open = !l.voided && !locked;
+        const delAct = !open
+          ? ''
+          : !l.sent
+            ? 'line-remove'
+            : can('void')
+              ? 'void-line'
+              : '';
+        const del = delAct
+          ? `<button class="ldel" data-act="${delAct}" data-id="${l.id}" aria-label="${t('Delete')}" title="${t('Delete')}">${ic('trash', 18)}</button>`
+          : '<span></span>';
         const ctl =
-          l.voided || locked
-            ? ''
-            : !l.sent
-              ? `<span class="stepper"><button data-act="qty" data-id="${l.id}" data-d="-1" aria-label="One less">−</button><span>${l.qty}</span><button data-act="qty" data-id="${l.id}" data-d="1" aria-label="One more">+</button></span><button class="btn btn-ghost btn-xs" data-act="line-note" data-id="${l.id}">${ic('note')} ${t('Note')}</button><button class="btn btn-ghost btn-xs lbtn-del" data-act="line-remove" data-id="${l.id}">${ic('trash')} ${t('Delete')}</button>`
-              : can('void') ? `<button class="btn btn-ghost btn-xs lbtn-del" data-act="void-line" data-id="${l.id}">${ic('trash')} ${t('Delete')}</button>` : '';
-        return `<div class="line ${l.voided ? 'void' : ''} ${l.sent && !l.voided ? 'sent' : ''} ${!l.sent && !l.voided ? 'unsent' : ''}"><span class="nm"><span class="qty" title="${l.sent ? '' : t('Not sent')}">${l.qty}</span>${esc(DB.prefs.lang === 'ur' ? l.ur : l.name)}</span><span class="amt">${rs(l.unit * l.qty)}</span>${det ? `<div class="ldet">${det}</div>` : ''}<div class="ctl">${st}<span class="spacer"></span>${ctl}</div></div>`;
+          open && !l.sent
+            ? `<div class="ctl"><span class="stepper"><button data-act="qty" data-id="${l.id}" data-d="-1" aria-label="One less">−</button><span>${l.qty}</span><button data-act="qty" data-id="${l.id}" data-d="1" aria-label="One more">+</button></span><button class="btn btn-ghost btn-xs" data-act="line-note" data-id="${l.id}">${ic('note')} ${t('Note')}</button></div>`
+            : '';
+        return `<div class="line ${l.voided ? 'void' : ''} ${l.sent && !l.voided ? 'sent' : ''} ${!l.sent && !l.voided ? 'unsent' : ''}"><span class="nm"><span class="qty" title="${l.sent ? t('Sent') : t('Not sent')}">${l.qty}</span>${esc(DB.prefs.lang === 'ur' ? l.ur : l.name)}</span><span class="amt">${rs(l.unit * l.qty)}</span>${locked ? '' : del}${det ? `<div class="ldet">${det}</div>` : ''}${ctl}</div>`;
       }
       function billRows(o) {
         const b = billOf(o),
@@ -9701,23 +9839,33 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
       // Send and pay buttons. Pay now: take the money first, then the unsent items
       // go to the kitchen and the token prints. Pay later: send now, pay after
       // the food is served or delivered.
+      // Returns the pay-when toggle, the one main button and the smaller ones.
       function payButtons(o, unsent, dayIsOpen) {
-        if (o.state !== 'open') return '';
+        const none = { when: '', main: '', alt: '' };
+        if (o.state !== 'open') return none;
         const canSend = unsent.length && can('order') && dayIsOpen,
           canPay = can('pay') && dueOf(o) > 0 && liveLines(o).length,
           payFirst = o.payWhen === 'now' && canPay && unsent.length,
           n = sum(unsent, (l) => l.qty);
         const opt = (v, label, on) =>
           `<button data-act="pay-when" data-v="${v}" aria-pressed="${on}" class="${on ? 'on' : ''}">${label}</button>`;
-        const when = canPay
-          ? `<div class="paywhen"><span>${t('When does the customer pay?')}</span><div class="seg" role="group">${opt('now', t('Pay now'), o.payWhen === 'now')}${opt('later', t(o.type === 'delivery' ? 'On delivery' : 'Pay later'), o.payWhen !== 'now')}</div></div>`
-          : '';
-        if (payFirst)
-          return `${when}<button class="btn btn-primary co-main btn-block" data-act="go-pay">${ic('cash', 22)} ${t('Take payment')} ${rs(dueOf(o))}</button>
-<p class="co-help">${t('After payment the {n} items go to the kitchen and the token prints.', { n })}</p>
-${canSend ? `<button class="btn btn-ghost co-alt btn-block" data-act="send">${ic('print', 20)} ${t('Send to kitchen, pay later')}</button>` : ''}`;
-        return `${when}${canSend ? `<button class="btn btn-primary co-main btn-block" data-act="send">${ic('print', 22)} ${t('Send to kitchen & print token')} (${n})</button>` : ''}
-${canPay ? `<button class="btn ${canSend ? 'btn-ghost co-alt' : 'btn-primary co-main'} btn-block" data-act="go-pay">${ic('cash', 20)} ${t('Take payment')} ${rs(dueOf(o))}</button>` : ''}`;
+        // The choice only matters while there is food still to send.
+        const when =
+          canPay && canSend
+            ? `<div class="seg" role="group" aria-label="${t('When does the customer pay?')}">${opt('now', t('Pay now'), o.payWhen === 'now')}${opt('later', t(o.type === 'delivery' ? 'On delivery' : 'Pay later'), o.payWhen !== 'now')}</div>`
+            : '';
+        const payBtn = (main) =>
+          `<button class="btn ${main ? 'btn-primary co-main' : 'btn-ghost co-alt'} btn-block" data-act="go-pay">${ic('cash', main ? 22 : 18)} ${t(payFirst ? 'Take payment & print token' : 'Take payment')}</button>`;
+        if (payFirst) return { when, main: payBtn(true), alt: '' };
+        return {
+          when,
+          main: canSend
+            ? `<button class="btn btn-primary co-main btn-block" data-act="send">${ic('print', 22)} ${t('Send to kitchen & print token')} (${n})</button>`
+            : canPay
+              ? payBtn(true)
+              : '',
+          alt: canSend && canPay ? payBtn(false) : '',
+        };
       }
       function orderView() {
         const o = orderById(U.orderId);
@@ -9743,13 +9891,22 @@ ${canPay ? `<button class="btn ${canSend ? 'btn-ghost co-alt' : 'btn-primary co-
           `<button class="tool" data-act="print" data-w="bill">${ic('print', 20)}<span>${t('Print bill')}</span></button>`,
           anySent &&
             `<button class="tool" data-act="reprint-token">${ic('ticket', 20)}<span>${t('Reprint token')}</span></button>`,
+          // Always there on an open order; paid orders are refunded on delete.
+          o.state === 'open' &&
+            can('void') &&
+            dayIsOpen &&
+            `<button class="tool tool-del" data-act="void-order">${ic('trash', 20)}<span>${t('Delete order')}</span></button>`,
         ]
           .filter(Boolean)
           .join('');
-        // Always visible on an open order; paid orders are refunded on void.
-        const voidBtn =
-          o.state === 'open' && can('void') && dayIsOpen
-            ? `<button class="btn btn-void btn-block" data-act="void-order">${ic('trash', 18)} ${t('Delete order')}</button>`
+        // Bottom dock: total and pay-when on one row, one big button, the rest small.
+        const pb = payButtons(o, unsent, dayIsOpen);
+        let fb = fulfilButton(o);
+        if (!pb.main) fb = fb.replace('btn-ghost co-alt', 'btn-primary co-main');
+        const alts = [pb.alt, pb.main && fb].filter(Boolean).join('');
+        const dockTotal =
+          liveLines(o).length && o.state === 'open'
+            ? `<div class="dock-total"><span>${t(!paidOf(o) ? 'Total' : dueOf(o) ? 'Balance due' : 'Paid')}</span><b>${rs(!paidOf(o) ? b.total : dueOf(o) || paidOf(o))}</b></div>`
             : '';
         const cats = D.cats.slice().sort((a, c) => a.sort - c.sort);
         return `<div class="order"><section class="order-left">
@@ -9759,17 +9916,13 @@ ${canPay ? `<button class="btn ${canSend ? 'btn-ghost co-alt' : 'btn-primary co-
     ${lockedItems && o.state === 'open' ? `<div class="notice warn" style="margin:0 18px 10px">${!dayIsOpen ? t('This business day is closed. Start the next business day first.') : o.payments.length ? t('Payment has started, so the bill is locked. Start a new order for extra items.') : t('You can view this order but not change it.')}</div>` : ''}
     <div class="items">${itemsGrid(st, lockedItems)}</div></section>
     <aside class="ticket" aria-label="${esc(o.no)}"><div class="ticket-scroll">
-    <div class="slip"><div class="ticket-head">${o.token ? `<h3>${t('Token')} ${o.token}</h3>` : `<h3 class="new-ord">${t('New order')}</h3>`}<span class="badge type-badge">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span></div>
-    <div class="ticket-status">${ticketStatus(o)}</div>
-    <div class="ticket-sub"><span>${esc(o.no)}, ${fmtTime(o.createdAt)}, ${esc(uname(o.by))}</span>${o.type === 'delivery' ? `<span>${esc(o.cust.name)}, ${esc(showPhone(o.cust.phone))}<br>${esc(o.cust.address)}</span>` : ''}</div>
-    <div class="lines">${o.lines.length ? o.lines.map((l) => lineView(o, l, lockedItems)).join('') : `<div class="r-empty">${ic('plus', 28)}<b>${t('No items yet')}</b><span>${t('Tap a dish to add it.')}</span></div>`}</div>
+    <div class="slip"><div class="ticket-head">${o.token ? `<h3>${t('Token')} ${o.token}</h3>` : `<h3 class="new-ord">${t('New order')}</h3>`}<div class="head-tags"><span class="badge type-badge">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span>${ticketStatus(o)}</div></div>
+    <div class="ticket-sub"><span>${esc(o.no)}, ${fmtTime(o.createdAt)}, ${esc(uname(o.by))}</span>${o.type === 'delivery' ? `<span class="cust-line">${ic('user', 14)} ${esc(o.cust.name)}, ${esc(showPhone(o.cust.phone))}, ${esc(o.cust.address)}</span>` : ''}</div>
+    <div class="lines${lockedItems ? ' ro' : ''}">${o.lines.length ? o.lines.map((l) => lineView(o, l, lockedItems)).join('') : `<div class="r-empty">${ic('plus', 28)}<b>${t('No items yet')}</b><span>${t('Tap a dish to add it.')}</span></div>`}</div>
     ${o.lines.length ? `<div class="r-sums">${billRows(o)}<div class="sumrow total"><span>${t('Total')}</span><span>${rs(b.total)}</span></div>
 ${paidOf(o) ? `<div class="sumrow"><span class="muted">${t('Paid')}</span><span>${rs(paidOf(o))}</span></div><div class="sumrow due"><b>${t('Balance due')}</b><b>${rs(dueOf(o))}</b></div>` : ''}</div>` : ''}</div>
     <div class="ticket-tools">${tools}</div></div>
-    <div class="ticket-dock">${liveLines(o).length && o.state === 'open' ? `<div class="dock-total"><span>${t(!paidOf(o) ? 'Total' : dueOf(o) ? 'Balance due' : 'Paid')}</span><b>${rs(!paidOf(o) ? b.total : dueOf(o) || paidOf(o))}</b></div>` : ''}${payButtons(o, unsent, dayIsOpen)}
-${fulfilButton(o)}
-${o.state === 'open' && !can('pay') ? `<p class="co-help">${t('A cashier takes the payment.')}</p>` : ''}
-${voidBtn}</div></aside></div>`;
+    <div class="ticket-dock">${dockTotal || pb.when ? `<div class="dock-top">${dockTotal}${pb.when}</div>` : ''}${pb.main || fb}${alts ? `<div class="dock-alts">${alts}</div>` : ''}${o.state === 'open' && !can('pay') ? `<p class="co-help">${t('A cashier takes the payment.')}</p>` : ''}</div></aside></div>`;
       }
 
       /* =============================================================
