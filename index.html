@@ -3017,6 +3017,9 @@
         font-size: 19px;
         font-weight: 700;
       }
+      .item {
+        min-height: 84px;
+      }
       .cat-divider small {
         display: none;
       }
@@ -3254,6 +3257,28 @@
       }
       .disc-box:empty {
         display: none;
+      }
+
+      /* ---- Less text: "coming soon" tags and the repeated English/Urdu
+         dish names are hidden (render() also hides help sentences). ---- */
+      .main .soon-list,
+      .main .soon,
+      html:not([lang='ur']) .item .ur,
+      html:not([lang='ur']) .board-item .urn {
+        display: none;
+      }
+      .main [hidden] {
+        display: none !important;
+      }
+      .sbtn {
+        width: 34px;
+        height: 34px;
+        border: 1px solid var(--line-strong);
+        border-radius: 9px;
+      }
+      .sbtn.in {
+        color: var(--green-ink);
+        border-color: var(--green);
       }
 
       @media (max-width: 1100px) and (min-width: 761px) {
@@ -3555,7 +3580,7 @@
         [
           'voids',
           'MVP',
-          'Voids and approvals',
+          'Deleting orders and items',
           'Mandatory reason. After the kitchen has the item, a manager PIN is required.',
         ],
         [
@@ -4913,9 +4938,11 @@
         Paid: 'ادا شدہ',
         Unpaid: 'غیر ادا شدہ',
         'Part paid': 'جزوی ادا',
-        Voided: 'منسوخ',
-        Void: 'منسوخ کریں',
-        'Void order': 'آرڈر منسوخ کریں',
+        Deleted: 'حذف شدہ',
+        'Delete order': 'آرڈر حذف کریں',
+        'Order deleted.': 'آرڈر حذف ہو گیا۔',
+        'Item deleted.': 'آئٹم حذف ہو گیا۔',
+        'Enter a manager PIN to delete this.': 'حذف کرنے کے لیے مینیجر پن درج کریں۔',
         'Send to kitchen': 'کچن کو بھیجیں',
         'Take payment': 'ادائیگی لیں',
         'Record payment': 'ادائیگی درج کریں',
@@ -5149,7 +5176,7 @@
         'Closed by': 'بند کیا',
         'Recent closes': 'حالیہ حساب',
         Discounts: 'رعایتیں',
-        Voids: 'منسوخیاں',
+        'Deleted orders': 'حذف شدہ آرڈرز',
         'not a sale': 'سیل نہیں',
         cash: 'نقد',
         'Paid by': 'ادائیگی بذریعہ',
@@ -5299,6 +5326,7 @@
         sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
         moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
         plus: '<path d="M12 5v14M5 12h14"/>',
+        minus: '<path d="M5 12h14"/>',
         x: '<path d="M18 6 6 18M6 6l12 12"/>',
         back: '<path d="m15 18-6-6 6-6"/>',
         down: '<path d="m6 9 6 6 6-6"/>',
@@ -5728,9 +5756,9 @@
         'order.status': 'Order status changed',
         'discount.applied': 'Discount applied',
         'discount.approved': 'Discount approved',
-        'order.voided': 'Order voided',
-        'item.voided': 'Item voided',
-        'void.approved': 'Void approved',
+        'order.voided': 'Order deleted',
+        'item.voided': 'Item deleted',
+        'void.approved': 'Delete approved',
         'payment.recorded': 'Payment recorded',
         'payment.refunded': 'Money given back',
         'credit.created': 'Customer credit created',
@@ -6078,7 +6106,7 @@
         setQty(o, l, q) {
           guard('order', o.store);
           R.lockCheck(o);
-          if (l.sent) fail('Sent items cannot be changed. Void them instead.');
+          if (l.sent) fail('Sent items cannot be changed. Delete them instead.');
           if (o.payments.length)
             fail('Payment has started, so the bill is locked.');
           if (q <= 0) o.lines = o.lines.filter((x) => x !== l);
@@ -6087,7 +6115,7 @@
         setNote(o, l, note) {
           guard('order', o.store);
           R.lockCheck(o);
-          if (l.sent) fail('Sent items cannot be changed. Void them instead.');
+          if (l.sent) fail('Sent items cannot be changed. Delete them instead.');
           l.note = (note || '').trim();
         },
         send(o) {
@@ -7203,7 +7231,7 @@
           const s = store(id),
             c = R.archiveChecks(id);
           if (c.open)
-            fail('Finish or void the {n} open orders first.', { n: c.open });
+            fail('Finish or delete the {n} open orders first.', { n: c.open });
           if (c.dayOpen) fail('Close the business day for this branch first.');
           if (liveStores().length <= 1) fail('You need at least one branch.');
           s.status = 'archived';
@@ -8857,7 +8885,7 @@
           : '';
       };
       const pageHead = (title, sub, actions = '', fid) =>
-        `<div class="page-head"><div><h2>${title}${fid ? mvpTag(fid) : ''}</h2>${sub ? `<p>${sub}</p>` : ''}</div>${actions ? `<div class="row">${actions}</div>` : ''}</div>`;
+        `<div class="page-head"><div><h2>${title}${fid ? mvpTag(fid) : ''}</h2>${sub && /\d/.test(sub) ?`<p>${sub}</p>` : ''}</div>${actions ? `<div class="row">${actions}</div>` : ''}</div>`;
       const searchInput = (id, val, ph, act) =>
         `<div class="search">${ic('search', 18)}<input class="input" id="${id}" type="search" value="${esc(val)}" placeholder="${esc(ph)}" aria-label="${esc(ph)}" data-in="${act}" autocomplete="off"></div>`;
       const langBtn = () =>
@@ -8890,7 +8918,7 @@
       };
       function statusBadges(o) {
         if (o.state === 'void')
-          return `<span class="badge b-chili">${t('Voided')}</span>`;
+          return `<span class="badge b-chili">${t('Deleted')}</span>`;
         const ks = kState(o),
           ps = payState(o),
           out = [];
@@ -8999,15 +9027,17 @@
           fid = ae && ae.id && $('#root').contains(ae) ? ae.id : null;
         let html;
         try {
-          html =
-            U.screen === 'login'
-              ? loginView()
-              : shellView();
+          html = U.screen === 'login' ? loginView() : shellView();
         } catch (e) {
           console.error(e);
           html = `<div class="page">${emptyBox('This screen could not be shown', esc(e.message), `<button class="btn btn-primary" data-act="go" data-s="${homeScreen()}">Go back</button> <button class="btn btn-ghost" data-act="repair-demo">Reset demo data</button>`)}</div>`;
         }
         $('#root').innerHTML = html;
+        // Keep screens short: help sentences are hidden, hints that hold a
+        // figure (a count, money, a date) stay.
+        $$('#main p.hint, #main .panel-head > .hint, #main .kpi .s').forEach((h) => {
+          if (!/\d/.test(h.textContent)) h.hidden = true;
+        });
         const nm = $('#main');
         if (nm) nm.scrollTop = keep;
         const ni = $('.items');
@@ -9421,7 +9451,7 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
       function lineView(o, l, locked) {
         const tk = l.ticketId && o.tickets.find((k) => k.id === l.ticketId);
         const st = l.voided
-          ? `<span class="lstate void">${t('Voided')}</span>`
+          ? `<span class="lstate void">${t('Deleted')}</span>`
           : l.sent
             ? `<span class="lstate sent">${ic('print', 14)} ${t('Token')} ${tk ? tk.no : o.token} ${t('printed')}</span>`
             : `<span class="lstate new">${t('Not sent')}</span>`;
@@ -9438,8 +9468,8 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
           l.voided || locked
             ? ''
             : !l.sent
-              ? `<span class="stepper"><button data-act="qty" data-id="${l.id}" data-d="-1" aria-label="One less">−</button><span>${l.qty}</span><button data-act="qty" data-id="${l.id}" data-d="1" aria-label="One more">+</button></span><button class="btn btn-ghost btn-xs" data-act="line-note" data-id="${l.id}">${ic('note')} ${t('Note')}</button><button class="btn btn-ghost btn-xs lbtn-del" data-act="line-remove" data-id="${l.id}">${ic('trash')} ${t('Remove')}</button>`
-              : `<button class="btn btn-ghost btn-xs" data-act="repeat" data-id="${l.id}">${ic('repeat')} ${t('Repeat')}</button>${can('void') ? `<button class="btn btn-ghost btn-xs lbtn-del" data-act="void-line" data-id="${l.id}">${ic('x')} ${t('Void')}</button>` : ''}`;
+              ? `<span class="stepper"><button data-act="qty" data-id="${l.id}" data-d="-1" aria-label="One less">−</button><span>${l.qty}</span><button data-act="qty" data-id="${l.id}" data-d="1" aria-label="One more">+</button></span><button class="btn btn-ghost btn-xs" data-act="line-note" data-id="${l.id}">${ic('note')} ${t('Note')}</button><button class="btn btn-ghost btn-xs lbtn-del" data-act="line-remove" data-id="${l.id}">${ic('trash')} ${t('Delete')}</button>`
+              : can('void') ? `<button class="btn btn-ghost btn-xs lbtn-del" data-act="void-line" data-id="${l.id}">${ic('trash')} ${t('Delete')}</button>` : '';
         return `<div class="line ${l.voided ? 'void' : ''} ${l.sent && !l.voided ? 'sent' : ''}"><span class="nm">${l.sent || locked ? `${l.qty} × ` : ''}${esc(DB.prefs.lang === 'ur' ? l.ur : l.name)}</span><span class="amt">${rs(l.unit * l.qty)}</span>${det ? `<div class="ldet">${det}</div>` : ''}<div class="ctl">${st}<span class="spacer"></span>${ctl}</div></div>`;
       }
       function billRows(o) {
@@ -9464,7 +9494,7 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
       // Only what the buttons below do not already say: late, served, paid.
       function ticketStatus(o) {
         if (o.state === 'void')
-          return `<span class="badge b-chili">${t('Voided')}</span>`;
+          return `<span class="badge b-chili">${t('Deleted')}</span>`;
         const ps = payState(o),
           out = [];
         if (o.fulfil)
@@ -9474,7 +9504,9 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
         else if (isLate(o))
           out.push(`<span class="badge b-chili">${t('Late')}</span>`);
         if (ps === 'paid')
-          out.push(`<span class="badge b-solid">${ic('check')} ${t('Paid')}</span>`);
+          out.push(
+            `<span class="badge b-solid">${ic('check')} ${t('Paid')}</span>`,
+          );
         else if (ps === 'part')
           out.push(`<span class="badge b-saffron">${t('Part paid')}</span>`);
         return out.join('');
@@ -9546,7 +9578,7 @@ ${canPay ? `<button class="btn ${canSend ? 'btn-ghost co-alt' : 'btn-primary co-
         // Always visible on an open order; paid orders are refunded on void.
         const voidBtn =
           o.state === 'open' && can('void') && dayIsOpen
-            ? `<button class="btn btn-void btn-block" data-act="void-order">${ic('trash', 18)} ${t('Void order')}</button>`
+            ? `<button class="btn btn-void btn-block" data-act="void-order">${ic('trash', 18)} ${t('Delete order')}</button>`
             : '';
         const cats = D.cats.slice().sort((a, c) => a.sort - c.sort);
         return `<div class="order"><section class="order-left">
@@ -9747,8 +9779,8 @@ ${disc}
               .join('<br>')
           : n0(P(0));
         return `<div class="board-item ${ok ? '' : 'off'}"><div><div class="nm">${esc(it.name)}</div><div class="urn" lang="ur">${esc(it.ur)}</div></div><div class="pr">${price}</div>
-    <div class="sub">${it.desc ? `<span>${esc(it.desc)}</span>` : ''}${it.addons.map((a) => `<span class="badge b-indigo">+ ${esc(a.name)} ${n0(a.price)}</span>`).join('')}${it.spice ? `<span class="badge b-chili">${t('Mild, medium or hot')}</span>` : ''}${st !== 'all' && priceDiffers(st, it) ? `<span class="badge b-saffron">${t('Price differs from master')}</span>` : ''}${ok ? '' : `<span class="badge b-chili">${t('Sold out')}</span>`}
-    ${mgr ? `<span class="row" style="margin-inline-start:auto;gap:6px;flex-wrap:nowrap"><span class="hint">${t('Available')}</span>${sw(ok, 'avail', `data-id="${it.id}"`, `${it.name}: ${t('Available')}`)}</span>` : ''}</div></div>`;
+    <div class="sub">${it.addons.map((a) => `<span class="badge b-indigo">+ ${esc(a.name)} ${n0(a.price)}</span>`).join('')}${st !== 'all' && priceDiffers(st, it) ? `<span class="badge b-saffron">${t('Price differs from master')}</span>` : ''}${ok ? '' : `<span class="badge b-chili">${t('Sold out')}</span>`}
+    ${mgr ? `<span class="row" style="margin-inline-start:auto;gap:6px;flex-wrap:nowrap">${sw(ok, 'avail', `data-id="${it.id}"`, `${it.name}: ${t('Available')}`)}</span>` : ''}</div></div>`;
       }
       function boardHTML(st, q, mgr) {
         return D.cats
@@ -9889,7 +9921,7 @@ ${disc}
                     sum(METHODS, ([x]) => byM[x]),
                   )) *
                   100,
-              )}% ${t('of money taken')}`
+              )}%`
             : '',
         ),
       )
@@ -10015,7 +10047,7 @@ ${kpi(t('Day close'), t(d.status === 'open' ? 'Open' : 'Closed'), d.status === '
                 i.cat === c.id &&
                 (!q || `${i.name} ${i.ur}`.toLowerCase().includes(q)),
             );
-            return `<div class="mgroup"><span>${esc(c.name)} <span class="hint">${esc(c.ur)}</span></span><span class="row" style="gap:2px"><button class="icon-btn" style="width:30px;height:30px" data-act="cat-edit" data-v="${c.id}" aria-label="Edit ${esc(c.name)}">${ic('note', 16)}</button><button class="icon-btn" style="width:30px;height:30px" data-act="cat-del" data-v="${c.id}" aria-label="Delete ${esc(c.name)}">${ic('trash', 16)}</button></span></div>${ms.map((m) => `<button class="mrow ${sel && m.id === sel.id ? 'on' : ''}" data-act="menu-sel" data-id="${m.id}"><span><b>${esc(m.name)}</b><small>${m.active === false ? t('Inactive') : `${t('Food cost')} ${foodCostPct(plateCost(m), basePrice(m, 0))}%`}</small></span><span class="num">${rs(basePrice(m, 0))}</span></button>`).join('')}`;
+            return `<div class="mgroup"><span>${esc(c.name)} <span class="hint">${esc(c.ur)}</span></span><span class="row" style="gap:2px"><button class="icon-btn" style="width:30px;height:30px" data-act="cat-edit" data-v="${c.id}" aria-label="Edit ${esc(c.name)}">${ic('note', 16)}</button><button class="icon-btn" style="width:30px;height:30px" data-act="cat-del" data-v="${c.id}" aria-label="Delete ${esc(c.name)}">${ic('trash', 16)}</button></span></div>${ms.map((m) => `<button class="mrow ${sel && m.id === sel.id ? 'on' : ''}" data-act="menu-sel" data-id="${m.id}"><span><b>${esc(m.name)}</b><small>${m.active === false ? t('Inactive') : `${t('Food cost')} ${Math.round(foodCostPct(plateCost(m), basePrice(m, 0)))}%`}</small></span><span class="num">${rs(basePrice(m, 0))}</span></button>`).join('')}`;
           })
           .join('');
         if (!sel)
@@ -10137,7 +10169,7 @@ ${sel.recipe.length ? `<div class="table-wrap panel"><table class="tbl"><thead><
         if (U.stockTab === 'overview') {
           const moves = D.moves
             .filter((m) => m.store === st)
-            .slice(-40)
+            .slice(-12)
             .reverse();
           body = `<div class="panel"><div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Ingredient')}</th><th class="r">${t('On hand')}</th><th style="width:16%"></th><th class="r">${t('Threshold')}</th><th>${t('Status')}</th><th class="r">${t('Value')}</th><th></th></tr></thead><tbody>
 ${D.ingredients
@@ -10145,7 +10177,7 @@ ${D.ingredients
     const q = stockQty(st, g.id),
       lo = lowAt(st, g.id),
       s = q <= 0 ? 'out' : q <= lo ? 'low' : '';
-    return `<tr><td><b>${esc(ingName(g.id))}</b><div class="hint">${rs(g.cost)}/${g.unit}</div></td><td class="r"><b>${fmtQty(q)}</b> ${g.unit}</td><td><div class="meter ${s}" aria-hidden="true"><i style="width:${Math.min(100, (q / Math.max(0.01, lo * 3)) * 100)}%"></i></div></td><td class="r">${fmtQty(lo)} ${g.unit}</td><td><span class="badge ${s === 'out' ? 'b-chili' : s === 'low' ? 'b-saffron' : 'b-green'}">${t(s === 'out' ? 'Out of stock' : s === 'low' ? 'Low stock' : 'In stock')}</span></td><td class="r">${rs(q * g.cost)}</td><td><div class="row" style="flex-wrap:nowrap;justify-content:flex-end">${can('stock') ? `<button class="btn btn-ghost btn-xs" data-act="stock-move" data-k="in" data-g="${g.id}">${t('Stock in')}</button><button class="btn btn-quiet btn-xs" data-act="stock-move" data-k="out" data-g="${g.id}">${t('Stock out')}</button><button class="btn btn-quiet btn-xs" data-act="stock-move" data-k="adjust" data-g="${g.id}">${t('Adjust')}</button>` : ''}</div></td></tr>`;
+    return `<tr><td><b>${esc(ingName(g.id))}</b><div class="hint">${rs(g.cost)}/${g.unit}</div></td><td class="r"><b>${fmtQty(q)}</b> ${g.unit}</td><td><div class="meter ${s}" aria-hidden="true"><i style="width:${Math.min(100, (q / Math.max(0.01, lo * 3)) * 100)}%"></i></div></td><td class="r">${fmtQty(lo)} ${g.unit}</td><td>${s === 'out' || s === 'low' ? `<span class="badge ${s === 'out' ? 'b-chili' : 'b-saffron'}">${t(s === 'out' ? 'Out of stock' : 'Low stock')}</span>` : ''}</td><td class="r">${rs(q * g.cost)}</td><td><div class="row" style="flex-wrap:nowrap;justify-content:flex-end">${can('stock') ? `<button class="icon-btn sbtn in" data-act="stock-move" data-k="in" data-g="${g.id}" title="${t('Stock in')}" aria-label="${t('Stock in')}">${ic('plus', 18)}</button><button class="icon-btn sbtn" data-act="stock-move" data-k="out" data-g="${g.id}" title="${t('Stock out')}" aria-label="${t('Stock out')}">${ic('minus', 18)}</button><button class="icon-btn sbtn" data-act="stock-move" data-k="adjust" data-g="${g.id}" title="${t('Adjust')}" aria-label="${t('Adjust')}">${ic('note', 18)}</button>` : ''}</div></td></tr>`;
   })
   .join('')}
 </tbody></table></div><p class="hint" style="padding:10px 18px">${t('Stock value')}: <b>${rs(sum(D.ingredients, (g) => stockQty(st, g.id) * g.cost))}</b></p></div>
@@ -10252,7 +10284,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
           r(t('Total sales'), rs(f.sales), true) +
           r(t('Orders'), f.orders) +
           r(t('Discounts'), rs(f.discounts)) +
-          r(t('Voids'), `${f.voids} (${rs(f.voidValue)})`)
+          r(t('Deleted orders'), `${f.voids} (${rs(f.voidValue)})`)
         );
       }
       function closeView() {
@@ -10397,14 +10429,6 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
       )
       .join('')}
     </tbody></table></div></div>
-    <div class="panel panel-pad" style="margin-top:16px"><h3 style="font-family:var(--display);font-size:21px;margin-bottom:8px">${t('What each role can do')}</h3><div class="table-wrap"><table class="tbl"><tbody>${Object.entries(
-      ROLES,
-    )
-      .map(
-        ([k, r]) =>
-          `<tr><td style="width:170px"><b>${t(r.label)}</b></td><td class="hint">${r.screens.map((s) => t({ orders: 'Orders', kitchen: 'Kitchen', fullmenu: 'Full menu', allstores: 'All stores', dashboard: 'Dashboard', menu: 'Menu & recipes', stock: 'Stock', customers: 'Customers', close: 'Day close', staff: 'Staff', settings: 'Settings', audit: 'Audit log', branches: 'Branches', billing: 'Billing', business: 'Business', roadmap: 'Roadmap' }[s])).join(', ')}${k === 'cashier' ? `. ${t('Discounts up to 10%.')}` : ''}</td></tr>`,
-      )
-      .join('')}</tbody></table></div></div>
     <div class="soon-list">${soon('shifts')}${soon('tips')}</div></div>`;
       }
       function settingsView() {
@@ -10476,7 +10500,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
       function roadmapView() {
         const group = (status, title, sub) => {
           const list = FEATURES.filter((f) => f.status === status);
-          return `<div class="panel" style="margin-bottom:16px"><div class="panel-head"><h3>${t(title)} <span class="hint">${list.length}</span></h3><span class="hint">${t(sub)}</span></div><div class="table-wrap"><table class="tbl"><tbody>${list.map((f) => `<tr><td style="width:34%"><b>${esc(t(f.name))}</b></td><td style="width:130px">${status === 'MVP' ? `<span class="badge b-green">MVP</span>` : status === 'PHASE 2' ? `<span class="badge b-saffron">${t('Coming soon')}</span>` : `<span class="badge b-grey">${t('Later')}</span>`}</td><td class="hint">${esc(t(f.desc))}</td></tr>`).join('')}</tbody></table></div></div>`;
+          return `<div class="panel" style="margin-bottom:16px"><div class="panel-head"><h3>${t(title)} <span class="hint">${list.length}</span></h3><span class="hint">${t(sub)}</span></div><div class="table-wrap"><table class="tbl"><tbody>${list.map((f) => `<tr><td><b>${esc(t(f.name))}</b></td><td style="width:130px">${status === 'MVP' ? `<span class="badge b-green">MVP</span>` : status === 'PHASE 2' ? `<span class="badge b-saffron">${t('Coming soon')}</span>` : `<span class="badge b-grey">${t('Later')}</span>`}</td></tr>`).join('')}</tbody></table></div></div>`;
         };
         return `<div class="page roadmap">${pageHead(t('Roadmap'), t('What works in this demo, what comes next and what comes later.'))}${group('MVP', 'MVP: built and working', 'Usable now in this demo.')}${group('PHASE 2', 'Phase 2: coming soon', 'Shown as small badges only. Not working yet.')}${group('LATER', 'Later', 'Listed here only.')}</div>`;
       }
@@ -10753,7 +10777,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
             const row = (ok, warn, title, text, btn) =>
               `<div class="toggle-row"><span class="tick ${ok ? 'on' : ''}" style="${!ok && !warn ? 'border-color:var(--chili);background:var(--chili)' : !ok ? 'border-color:var(--saffron);background:var(--saffron)' : ''}">${ok ? ic('check') : ic(warn ? 'box' : 'x')}</span><div style="flex:1"><b>${title}</b><small>${text}</small></div>${btn || ''}</div>`;
             return `${mHead(`${t('Archive')} ${esc(s.name)}`, t('Archived branches stop counting toward your plan and bill. Orders, closes and audit history are kept.'))}<div class="modal-body">
-        ${row(!c.open, false, t('Open orders'), c.open ? t('{n} orders are still open. Finish or void them first.', { n: c.open }) : t('No open orders.'), c.open ? `<button class="btn btn-ghost btn-xs" data-act="arch-go" data-v="orders">${t('Open orders')}</button>` : '')}
+        ${row(!c.open, false, t('Open orders'), c.open ? t('{n} orders are still open. Finish or delete them first.', { n: c.open }) : t('No open orders.'), c.open ? `<button class="btn btn-ghost btn-xs" data-act="arch-go" data-v="orders">${t('Open orders')}</button>` : '')}
         ${row(!c.dayOpen, false, t('Business day'), c.dayOpen ? t('Today is not closed yet. Close the day first.') : t('Day is closed.'), c.dayOpen ? `<button class="btn btn-ghost btn-xs" data-act="arch-go" data-v="close">${t('Day close')}</button>` : '')}
         ${row(!c.stock, true, t('Remaining stock'), c.stock ? t('{n} ingredients still have stock. Transfer them to another branch or they stay recorded here.', { n: c.stock }) : t('No stock left.'), c.stock && planHas('transfers') && liveStores().length > 1 ? `<button class="btn btn-ghost btn-xs" data-act="arch-transfer">${t('Transfer stock')}</button>` : '')}
         ${mErr()}</div>${mFoot(t('Archive branch'), 'arch-ok', 'btn-danger', c.blocked)}`;
@@ -10784,12 +10808,6 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
           const m = tn.limitOverrides.maxUsers ?? p.maxUsers;
           return m != null && actU > m;
         };
-        const allF = [
-          ['core', 'Orders, payments, menu, day close'],
-          ['kitchen', 'Kitchen tokens (thermal printer)'],
-          ['stock', 'Stock and recipes'],
-          ...PLAN_FEATURES,
-        ];
         const INV = {
           paid: ['b-green', 'Paid'],
           due: ['b-indigo', 'Due'],
@@ -10815,7 +10833,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
           <div class="price">${rs(p.pricePerMonth)}<span class="hint" style="font-family:var(--body);font-size:14px">/${t('month')}</span></div>
           <p class="hint">${includedText(p.includedBranches)}${p.pricePerExtraBranch ? `, ${t('then {a} per extra branch', { a: rs(p.pricePerExtraBranch) })}` : ''}</p>
           <p><b>${t('Branches')}:</b> ${limitText(p.maxBranches)} · <b>${t('Users')}:</b> ${limitText(p.maxUsers)}</p>
-          <ul style="list-style:none;padding:0">${allF.map(([k, l]) => `<li style="display:flex;gap:6px;align-items:center;${p.features.includes(k) ? '' : 'opacity:.45'}">${ic(p.features.includes(k) ? 'check' : 'x', 14)} ${t(l)}</li>`).join('')}</ul>
+          <ul style="list-style:none;padding:0">${PLAN_FEATURES.filter(([k]) => p.features.includes(k)).map(([k, l]) => `<li style="display:flex;gap:6px;align-items:center">${ic('check', 14)} ${t(l)}</li>`).join('')}</ul>
           <p class="hint">${t('Your bill on this plan: {a}', { a: rs(pb.total) })}</p>
           ${cur ? '' : owner ? `<button class="btn ${up ? 'btn-primary' : 'btn-ghost'} btn-sm" data-act="plan-change" data-v="${p.id}" ${blocked ? 'disabled' : ''}>${up ? `${ic('up', 16)} ${t('Upgrade')}` : t('Downgrade')}</button>${blocked ? `<p class="err">${overB(p) ? t('Too many active branches for this plan.') : t('Too many active users for this plan.')}</p>` : ''}` : ''}</div>`;
       })
@@ -11463,11 +11481,11 @@ ${mFoot(t('Add and use'), 'cp-create')}`;
           render() {
             const paid = l ? 0 : paidOf(o);
             const needPin = (sent || paid) && !isManagerOf(user(), o.store);
-            return `${mHead(l ? `${t('Void')} ${esc(l.qty + ' × ' + l.name)}?` : `${t('Void order')} ${esc(o.no)}?`, sent ? t('The kitchen already has this, so the ingredients are not returned to stock.') : t('Nothing was sent to the kitchen, so nothing is lost.'))}<div class="modal-body">
+            return `${mHead(l ? `${t('Delete')} ${esc(l.qty + ' × ' + l.name)}?` : `${t('Delete order')} ${esc(o.no)}?`, sent ? t('The kitchen already has this, so the ingredients are not returned to stock.') : t('Nothing was sent to the kitchen, so nothing is lost.'))}<div class="modal-body">
 ${paid ? `<div class="notice warn" style="margin-bottom:12px">${t('The money paid, {a}, is given back the same way it was paid.', { a: rs(paid) })}</div>` : ''}
 <span class="label">${t('Reason')} *</span><div class="chips" style="margin:8px 0 14px">${VOID_REASONS.map((r) => chip('void-r', r, t(r), this.reason === r)).join('')}</div>
 ${needPin ? `<div class="field"><label for="void-pin">${t('Manager PIN')} *</label><input class="input" id="void-pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off"><span class="hint">${t('Sample manager PINs: Bilal 3003 (Gulberg), Ayesha 2002, Ahmed 1001.')}</span></div>` : ''}${mErr()}</div>
-<div class="modal-foot"><button class="btn btn-ghost" data-act="close-modal">${t('Keep it')}</button><button class="btn btn-danger" data-act="void-ok">${l ? t('Void') : t('Void order')}</button></div>`;
+<div class="modal-foot"><button class="btn btn-ghost" data-act="close-modal">${t('Keep it')}</button><button class="btn btn-danger" data-act="void-ok">${l ? t('Delete') : t('Delete order')}</button></div>`;
           },
         });
       }
@@ -12181,14 +12199,14 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
           );
           if (!r.ok) return;
           if (r.v.needPin) {
-            M.err = t('Enter a manager PIN to approve this void.');
+            M.err = t('Enter a manager PIN to delete this.');
             return renderModal();
           }
           const whole = !M.l;
           closeModal();
           if (whole) U.screen = 'orders';
           render();
-          toast(t(whole ? 'Order voided.' : 'Item voided.'));
+          toast(t(whole ? 'Order deleted.' : 'Item deleted.'));
         },
         'order-customer': () => customerPickModal(curOrder()),
         'cp-pick': (el) => {
