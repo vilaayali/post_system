@@ -3115,14 +3115,6 @@
       .lbtn-del {
         color: var(--chili-ink);
       }
-      /* the whole ticket scrolls as one, so items never get squeezed */
-      .ticket {
-        overflow-y: auto;
-      }
-      .lines {
-        flex: 1 0 auto;
-        overflow: visible;
-      }
       .ticket-foot {
         gap: 10px;
         padding: 14px 16px 18px;
@@ -3188,6 +3180,172 @@
       }
       .btn-void:hover {
         background: var(--chili-soft);
+      }
+
+      /* ---- Order panel: a printed slip on top, buttons fixed below ---- */
+      .ticket {
+        background: var(--surface-2);
+        overflow: hidden;
+      }
+      .ticket-scroll {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 14px 14px 4px;
+      }
+      .slip {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 14px 14px 0 0;
+        padding-bottom: 22px;
+        /* torn thermal-paper edge, like the kitchen token */
+        -webkit-mask: radial-gradient(
+            6px at 50% calc(100% + 2px),
+            #0000 96%,
+            #000
+          )
+          50% / 15px 100%;
+        mask: radial-gradient(6px at 50% calc(100% + 2px), #0000 96%, #000)
+          50% / 15px 100%;
+      }
+      .slip .ticket-sub {
+        margin: 0 16px;
+        padding: 0 0 12px;
+        border-bottom: 2px dashed var(--line-strong);
+      }
+      .slip .lines {
+        flex: none;
+        padding: 0;
+      }
+      .slip .line {
+        margin: 0 16px;
+        padding: 12px 0;
+        border-bottom: 1px dashed var(--line);
+        background: none;
+      }
+      .slip .line:last-child {
+        border-bottom: 0;
+      }
+      .line .nm {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .qty {
+        flex: none;
+        display: inline-grid;
+        place-items: center;
+        min-width: 30px;
+        height: 30px;
+        padding: 0 6px;
+        border-radius: 8px;
+        background: var(--green-soft);
+        color: var(--green-ink);
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+      }
+      /* yellow square: not sent to the kitchen yet; grey: token printed */
+      .line.unsent .qty {
+        background: var(--saffron-soft);
+        color: var(--saffron-ink);
+      }
+      .line.sent .qty {
+        background: var(--surface-2);
+        color: var(--ink);
+      }
+      .line .ctl {
+        flex-wrap: nowrap;
+      }
+      .line .ctl .btn-xs {
+        padding-inline: 8px;
+      }
+      .line.void .qty {
+        opacity: 0.5;
+      }
+      .line .ldet,
+      .line .ctl {
+        padding-inline-start: 40px;
+      }
+      /* the number lives in the square, the stepper only adds or removes */
+      .line .stepper > span {
+        display: none;
+      }
+      .r-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 34px 16px 18px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .r-empty svg {
+        color: var(--green);
+        margin-bottom: 4px;
+      }
+      .r-empty b {
+        color: var(--ink);
+        font-size: 16px;
+      }
+      .r-sums {
+        display: grid;
+        gap: 6px;
+        margin: 4px 16px 0;
+        padding-top: 12px;
+        border-top: 2px dashed var(--line-strong);
+      }
+      .r-sums .sumrow.total {
+        padding-top: 4px;
+        font-size: 26px;
+      }
+      .r-sums .sumrow.due {
+        color: var(--chili-ink);
+      }
+      .ticket-scroll .ticket-tools {
+        padding: 12px 0 10px;
+      }
+      .ticket-dock {
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px 14px 14px;
+        background: var(--surface);
+        border-top: 1px solid var(--line);
+      }
+      .ticket-dock:empty {
+        display: none;
+      }
+      .ticket-dock .paywhen {
+        margin: 0;
+      }
+      .dock-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-weight: 600;
+      }
+      .dock-total b {
+        font-size: 24px;
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+      }
+      .ticket-dock .seg button {
+        min-height: 42px;
+      }
+      .ticket-dock .co-main {
+        min-height: 56px;
+      }
+      .ticket-dock .co-alt {
+        min-height: 46px;
+      }
+      .ticket-dock .btn-void {
+        min-height: 40px;
+        margin: 0;
+        border-width: 1px;
+        font-size: 14px;
       }
 
       /* ---- Payment: amount, then method tiles, then one button ---- */
@@ -3326,6 +3484,19 @@
         }
         .page-head h2 {
           font-size: 24px;
+        }
+        /* on a phone the page scrolls; the buttons stay at the bottom */
+        .ticket {
+          overflow: visible;
+        }
+        .ticket-scroll {
+          overflow: visible;
+        }
+        .ticket-dock {
+          position: sticky;
+          bottom: 0;
+          z-index: 2;
+          box-shadow: 0 -8px 20px rgba(27, 34, 48, 0.08);
         }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -9454,7 +9625,7 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
           ? `<span class="lstate void">${t('Deleted')}</span>`
           : l.sent
             ? `<span class="lstate sent">${ic('print', 14)} ${t('Token')} ${tk ? tk.no : o.token} ${t('printed')}</span>`
-            : `<span class="lstate new">${t('Not sent')}</span>`;
+            : '';
         // Size, extras, spice and note read as one plain line.
         const det = [
           l.variant && esc(l.variant),
@@ -9470,7 +9641,7 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
             : !l.sent
               ? `<span class="stepper"><button data-act="qty" data-id="${l.id}" data-d="-1" aria-label="One less">−</button><span>${l.qty}</span><button data-act="qty" data-id="${l.id}" data-d="1" aria-label="One more">+</button></span><button class="btn btn-ghost btn-xs" data-act="line-note" data-id="${l.id}">${ic('note')} ${t('Note')}</button><button class="btn btn-ghost btn-xs lbtn-del" data-act="line-remove" data-id="${l.id}">${ic('trash')} ${t('Delete')}</button>`
               : can('void') ? `<button class="btn btn-ghost btn-xs lbtn-del" data-act="void-line" data-id="${l.id}">${ic('trash')} ${t('Delete')}</button>` : '';
-        return `<div class="line ${l.voided ? 'void' : ''} ${l.sent && !l.voided ? 'sent' : ''}"><span class="nm">${l.sent || locked ? `${l.qty} × ` : ''}${esc(DB.prefs.lang === 'ur' ? l.ur : l.name)}</span><span class="amt">${rs(l.unit * l.qty)}</span>${det ? `<div class="ldet">${det}</div>` : ''}<div class="ctl">${st}<span class="spacer"></span>${ctl}</div></div>`;
+        return `<div class="line ${l.voided ? 'void' : ''} ${l.sent && !l.voided ? 'sent' : ''} ${!l.sent && !l.voided ? 'unsent' : ''}"><span class="nm"><span class="qty" title="${l.sent ? '' : t('Not sent')}">${l.qty}</span>${esc(DB.prefs.lang === 'ur' ? l.ur : l.name)}</span><span class="amt">${rs(l.unit * l.qty)}</span>${det ? `<div class="ldet">${det}</div>` : ''}<div class="ctl">${st}<span class="spacer"></span>${ctl}</div></div>`;
       }
       function billRows(o) {
         const b = billOf(o),
@@ -9587,14 +9758,15 @@ ${canPay ? `<button class="btn ${canSend ? 'btn-ghost co-alt' : 'btn-primary co-
     <div class="cats" role="group" aria-label="${t('Category')}">${chip('cat', 'all', t('All'), U.cat === 'all' && !U.itemQ)}${cats.map((c) => chip('cat', c.id, esc(DB.prefs.lang === 'ur' ? c.ur : c.name), U.cat === c.id && !U.itemQ)).join('')}</div>
     ${lockedItems && o.state === 'open' ? `<div class="notice warn" style="margin:0 18px 10px">${!dayIsOpen ? t('This business day is closed. Start the next business day first.') : o.payments.length ? t('Payment has started, so the bill is locked. Start a new order for extra items.') : t('You can view this order but not change it.')}</div>` : ''}
     <div class="items">${itemsGrid(st, lockedItems)}</div></section>
-    <aside class="ticket" aria-label="${esc(o.no)}"><div class="ticket-head">${o.token ? `<h3>${t('Token')} ${o.token}</h3>` : `<h3 class="new-ord">${t('New order')}</h3>`}<span class="badge type-badge">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span></div>
+    <aside class="ticket" aria-label="${esc(o.no)}"><div class="ticket-scroll">
+    <div class="slip"><div class="ticket-head">${o.token ? `<h3>${t('Token')} ${o.token}</h3>` : `<h3 class="new-ord">${t('New order')}</h3>`}<span class="badge type-badge">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span></div>
     <div class="ticket-status">${ticketStatus(o)}</div>
     <div class="ticket-sub"><span>${esc(o.no)}, ${fmtTime(o.createdAt)}, ${esc(uname(o.by))}</span>${o.type === 'delivery' ? `<span>${esc(o.cust.name)}, ${esc(showPhone(o.cust.phone))}<br>${esc(o.cust.address)}</span>` : ''}</div>
-    <div class="ticket-tools">${tools}</div>
-    <div class="lines">${o.lines.length ? o.lines.map((l) => lineView(o, l, lockedItems)).join('') : emptyBox(t('No items yet'), t('Tap a dish to add it.'))}</div>
-    <div class="ticket-foot">${billRows(o)}<div class="sumrow total"><span>${t('Total')}</span><span>${rs(b.total)}</span></div>
-${paidOf(o) ? `<div class="sumrow"><span class="muted">${t('Paid')}</span><span>${rs(paidOf(o))}</span></div><div class="sumrow"><b>${t('Balance due')}</b><b>${rs(dueOf(o))}</b></div>` : ''}
-${payButtons(o, unsent, dayIsOpen)}
+    <div class="lines">${o.lines.length ? o.lines.map((l) => lineView(o, l, lockedItems)).join('') : `<div class="r-empty">${ic('plus', 28)}<b>${t('No items yet')}</b><span>${t('Tap a dish to add it.')}</span></div>`}</div>
+    ${o.lines.length ? `<div class="r-sums">${billRows(o)}<div class="sumrow total"><span>${t('Total')}</span><span>${rs(b.total)}</span></div>
+${paidOf(o) ? `<div class="sumrow"><span class="muted">${t('Paid')}</span><span>${rs(paidOf(o))}</span></div><div class="sumrow due"><b>${t('Balance due')}</b><b>${rs(dueOf(o))}</b></div>` : ''}</div>` : ''}</div>
+    <div class="ticket-tools">${tools}</div></div>
+    <div class="ticket-dock">${liveLines(o).length && o.state === 'open' ? `<div class="dock-total"><span>${t(!paidOf(o) ? 'Total' : dueOf(o) ? 'Balance due' : 'Paid')}</span><b>${rs(!paidOf(o) ? b.total : dueOf(o) || paidOf(o))}</b></div>` : ''}${payButtons(o, unsent, dayIsOpen)}
 ${fulfilButton(o)}
 ${o.state === 'open' && !can('pay') ? `<p class="co-help">${t('A cashier takes the payment.')}</p>` : ''}
 ${voidBtn}</div></aside></div>`;
