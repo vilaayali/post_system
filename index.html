@@ -2169,44 +2169,6 @@
         color: var(--muted);
       }
 
-      /* ---------- Kiosk ---------- */
-      .kiosk {
-        min-height: 100vh;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 380px;
-        background: var(--bg);
-      }
-      .kiosk-start {
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        background: var(--green);
-        color: #fff;
-        text-align: center;
-        padding: 24px;
-      }
-      .kiosk-start h1 {
-        font-family: var(--display);
-        font-size: 64px;
-        font-weight: 700;
-        line-height: 1;
-      }
-      .kiosk-start .type-pick {
-        max-width: 560px;
-        margin: 26px auto 0;
-        grid-template-columns: 1fr 1fr;
-      }
-      .kiosk-start .type-pick button {
-        min-height: 150px;
-        font-size: 22px;
-        color: var(--ink);
-      }
-      .kiosk .item {
-        min-height: 130px;
-      }
-      .kiosk .item b {
-        font-size: 17px;
-      }
       .locked-screen {
         min-height: 100vh;
         display: grid;
@@ -2416,9 +2378,6 @@
         .mlist {
           max-height: 320px;
         }
-        .kiosk {
-          grid-template-columns: minmax(0, 1fr) 320px;
-        }
         .top .clock,
         .bizname small {
           display: none;
@@ -2502,8 +2461,7 @@
         .page {
           padding: 14px 12px 26px;
         }
-        .order,
-        .kiosk {
+        .order {
           grid-template-columns: minmax(0, 1fr);
           height: auto;
         }
@@ -3054,6 +3012,250 @@
         font-family: var(--body);
       }
 
+      /* ---- Order screen: pick dishes left, one clear checkout right ---- */
+      .order-bar h2 {
+        font-size: 19px;
+        font-weight: 700;
+      }
+      .cat-divider small {
+        display: none;
+      }
+      .ticket-head {
+        padding: 16px 16px 4px;
+      }
+      .type-badge {
+        background: var(--surface-2);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        font-size: 13px;
+      }
+      .ticket-head h3.new-ord {
+        font-family: var(--body);
+        font-size: 26px;
+        font-weight: 700;
+      }
+      .ticket-status {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 2px 16px 6px;
+      }
+      .ticket-status:empty {
+        display: none;
+      }
+      .ticket-sub {
+        padding-bottom: 12px;
+      }
+      .ticket-tools {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+        gap: 8px;
+        padding: 0 16px 14px;
+        background: none;
+        border-top: 0;
+      }
+      .tool {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        min-height: 60px;
+        padding: 8px 6px;
+        border: 1px solid var(--line-strong);
+        border-radius: 12px;
+        background: var(--surface);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ink);
+        min-width: 0;
+      }
+      .tool:hover {
+        border-color: var(--green);
+        color: var(--green-ink);
+      }
+      .tool span {
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .line {
+        padding: 12px 16px;
+        gap: 4px 10px;
+      }
+      .line .nm {
+        font-size: 15.5px;
+      }
+      .line .ldet {
+        grid-column: 1 / -1;
+        font-size: 13.5px;
+        color: var(--muted);
+      }
+      .line .ctl {
+        margin-top: 4px;
+      }
+      .lstate {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .lstate.new {
+        color: var(--saffron-ink);
+      }
+      .lstate.void {
+        color: var(--chili-ink);
+      }
+      .lbtn-del {
+        color: var(--chili-ink);
+      }
+      /* the whole ticket scrolls as one, so items never get squeezed */
+      .ticket {
+        overflow-y: auto;
+      }
+      .lines {
+        flex: 1 0 auto;
+        overflow: visible;
+      }
+      .ticket-foot {
+        gap: 10px;
+        padding: 14px 16px 18px;
+      }
+      .paywhen {
+        display: grid;
+        gap: 6px;
+        margin-top: 4px;
+      }
+      .paywhen > span {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .seg {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+        padding: 4px;
+        border-radius: 14px;
+        background: var(--surface-2);
+        border: 1px solid var(--line-strong);
+      }
+      .seg button {
+        min-height: 46px;
+        border: 0;
+        border-radius: 10px;
+        background: none;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .seg button.on {
+        background: var(--green);
+        color: #fff;
+      }
+      .co-main {
+        min-height: 60px;
+        font-size: 18px;
+        font-weight: 700;
+        border-radius: 14px;
+      }
+      .co-alt {
+        min-height: 52px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 14px;
+        border: 2px solid var(--line-strong);
+      }
+      .co-help {
+        text-align: center;
+        font-size: 13.5px;
+        color: var(--muted);
+      }
+      .btn-void {
+        min-height: 48px;
+        margin-top: 6px;
+        border-radius: 14px;
+        border: 2px solid color-mix(in srgb, var(--chili) 45%, transparent);
+        background: none;
+        color: var(--chili-ink);
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .btn-void:hover {
+        background: var(--chili-soft);
+      }
+
+      /* ---- Payment: amount, then method tiles, then one button ---- */
+      .balance b {
+        font-family: var(--body);
+        font-size: 32px;
+      }
+      .step-q {
+        display: block;
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .mtiles {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 8px;
+      }
+      .mtile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        min-height: 84px;
+        padding: 10px 8px;
+        border: 2px solid var(--line-strong);
+        border-radius: 14px;
+        background: var(--surface);
+        color: var(--ink);
+        text-align: center;
+      }
+      .mtile b {
+        font-size: 15px;
+      }
+      .mtile small {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.3;
+      }
+      .mtile svg {
+        color: var(--muted);
+      }
+      .mtile:hover {
+        border-color: var(--green);
+      }
+      .mtile.on {
+        border-color: var(--green);
+        background: var(--green-soft);
+        color: var(--green-ink);
+      }
+      .mtile.on svg {
+        color: var(--green-ink);
+      }
+      .mtile.off {
+        opacity: 0.6;
+      }
+      .pay .prow {
+        grid-template-columns: 34px minmax(0, 1fr) 150px 40px;
+      }
+      .pay .co-main {
+        width: 100%;
+      }
+      .disc-box {
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
+      }
+      .disc-box:empty {
+        display: none;
+      }
+
       @media (max-width: 1100px) and (min-width: 761px) {
         :root {
           --side: 184px;
@@ -3441,12 +3643,6 @@
           'Comfortable in a bright shop or a dim counter.',
         ],
         [
-          'kiosk',
-          'MVP',
-          'Kiosk mode',
-          'Customers browse the menu and place a dine-in or takeaway order, then pay at the counter.',
-        ],
-        [
           'loyalty',
           'PHASE 2',
           'Loyalty points and vouchers',
@@ -3633,7 +3829,6 @@
             'staff',
             'settings',
             'audit',
-            'kiosk',
           ],
         },
         area: {
@@ -3666,7 +3861,6 @@
             'close',
             'settings',
             'audit',
-            'kiosk',
           ],
         },
         branch: {
@@ -3699,7 +3893,6 @@
             'staffBranch',
             'settings',
             'audit',
-            'kiosk',
           ],
         },
         cashier: {
@@ -3713,7 +3906,6 @@
             'customers',
             'collect',
             'close',
-            'kiosk',
           ],
         },
         waiter: {
@@ -3781,7 +3973,6 @@
           'Add branch staff',
           'Add cashiers and waiters to their branch',
         ],
-        ['kiosk', 'Open kiosk mode', 'Self-order screen for customers'],
       ];
       const ROLE_ONLY_SCREENS = { allstores: ['owner', 'area'] };
       const sameSet = (a, b) =>
@@ -3821,7 +4012,6 @@
         ['customers', 'Customers'],
         ['udhaar', 'Udhaar (credit)'],
         ['audit', 'Audit log'],
-        ['kiosk', 'Kiosk mode'],
         ['regions', 'Regions'],
       ];
       const CORE_FEATURES = ['core', 'kitchen', 'stock'];
@@ -3860,7 +4050,6 @@
             'customers',
             'udhaar',
             'audit',
-            'kiosk',
           ],
         },
         {
@@ -3880,7 +4069,6 @@
             'customers',
             'udhaar',
             'audit',
-            'kiosk',
             'regions',
           ],
         },
@@ -4941,6 +5129,21 @@
         Everyone: 'سب لوگ',
         'All actions': 'تمام کارروائیاں',
         Business: 'کاروبار',
+        'When does the customer pay?': 'گاہک کب ادائیگی کرے گا؟',
+        'Tap a dish to add it': 'ڈش شامل کرنے کے لیے اسے دبائیں',
+        Dishes: 'ڈشیں',
+        'Add customer': 'گاہک شامل کریں',
+        'Print bill': 'بل پرنٹ کریں',
+        'Reprint token': 'ٹوکن دوبارہ پرنٹ کریں',
+        'Money given back': 'رقم واپس کی گئی',
+        'Amount to pay': 'ادا کرنے کی رقم',
+        'How is the customer paying?': 'گاہک کیسے ادائیگی کر رہا ہے؟',
+        'Tap one to put the full amount on it. Tap a second one to split the bill.':
+          'پوری رقم کے لیے ایک طریقہ دبائیں۔ بل تقسیم کرنے کے لیے دوسرا بھی دبائیں۔',
+        'Cash received': 'وصول شدہ نقد',
+        'Add discount': 'رعایت شامل کریں',
+        'The money paid, {a}, is given back the same way it was paid.':
+          'ادا کی گئی رقم، {a}، اسی طریقے سے واپس کی جائے گی۔',
         'Every day': 'روزانہ کا کام',
         'Set up': 'سیٹ اپ',
         'Closed by': 'بند کیا',
@@ -5529,6 +5732,7 @@
         'item.voided': 'Item voided',
         'void.approved': 'Void approved',
         'payment.recorded': 'Payment recorded',
+        'payment.refunded': 'Money given back',
         'credit.created': 'Customer credit created',
         'credit.payment': 'Customer payment received',
         'menu.price': 'Price override changed',
@@ -6110,16 +6314,52 @@
         voidOrder(o, reason, pin) {
           guard('void', o.store);
           R.lockCheck(o);
-          if (o.payments.length)
-            fail('This order has payments. Refunds come in Phase 2.');
           if (!reason) fail('Choose a reason.');
-          const sent = o.lines.some((l) => l.sent && !l.voided);
+          const sent = o.lines.some((l) => l.sent && !l.voided),
+            paid = paidOf(o);
           let ap = null;
-          if (sent) {
+          // Giving money back or wasting cooked food needs a manager.
+          if (sent || paid) {
             ap = R.approver(o.store, pin);
             if (!ap) return { needPin: true };
           }
           const amount = sum(liveLines(o), (l) => l.unit * l.qty);
+          // Refund: each payment is reversed in the same method, on today's
+          // business day, so cash in the drawer and udhaar balances stay right.
+          if (paid) {
+            const day = dayOf(o.store).date,
+              at = now();
+            o.payments.slice().forEach((p) => {
+              o.payments.push({
+                id: uid('p'),
+                method: p.method,
+                amount: -p.amount,
+                day,
+                at,
+                by: U.user,
+                refund: true,
+              });
+              if (p.method === 'udhaar')
+                D.credit.push({
+                  id: uid('cr'),
+                  customer: o.customerId,
+                  type: 'credit',
+                  amount: -p.amount,
+                  store: o.store,
+                  day,
+                  order: o.id,
+                  orderNo: o.no,
+                  at,
+                  by: U.user,
+                });
+            });
+            audit(
+              'payment.refunded',
+              o.store,
+              `${o.no}: ${rs(paid)} given back`,
+              o.no,
+            );
+          }
           o.state = 'void';
           o.voidAt = now();
           o.voidReason = reason;
@@ -8745,7 +8985,7 @@
         if (!U.store) U.store = canAll() ? 'all' : myStores()[0] || null;
         if (
           U.screen !== 'login' &&
-          !['order', 'pay', 'kiosk', 'branch-edit'].includes(U.screen) &&
+          !['order', 'pay', 'branch-edit'].includes(U.screen) &&
           !canScreen(U.screen)
         )
           U.screen = homeScreen();
@@ -8762,9 +9002,7 @@
           html =
             U.screen === 'login'
               ? loginView()
-              : U.screen === 'kiosk'
-                ? kioskView()
-                : shellView();
+              : shellView();
         } catch (e) {
           console.error(e);
           html = `<div class="page">${emptyBox('This screen could not be shown', esc(e.message), `<button class="btn btn-primary" data-act="go" data-s="${homeScreen()}">Go back</button> <button class="btn btn-ghost" data-act="repair-demo">Reset demo data</button>`)}</div>`;
@@ -9123,7 +9361,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
             s: t(store(st).name),
             x: rs(unpaid),
           }),
-          `${can('kiosk') ? (planHas('kiosk') ? `<button class="btn btn-ghost" data-act="kiosk-open" ${open ? '' : 'disabled'}>${ic('expand', 18)} ${t('Kiosk mode')}</button>` : `<button class="btn btn-ghost" data-act="upgrade" data-f="kiosk">${ic('lock', 18)} ${t('Kiosk mode')}</button>`) : ''}<button class="btn btn-primary" data-act="new-order" ${canNew ? '' : 'disabled'}>${ic('plus', 18)} ${t('New order')}</button>`,
+          `<button class="btn btn-primary" data-act="new-order" ${canNew ? '' : 'disabled'}>${ic('plus', 18)} ${t('New order')}</button>`,
           'orders',
         )}
     ${open ? '' : `<div class="notice bad" style="margin-bottom:14px">${t('This business day is closed. Start the next business day first.')} ${can('close') ? `<button class="btn btn-sm btn-ghost" style="margin-inline-start:8px" data-act="go" data-s="close">${t('Day close')}</button>` : ''}</div>`}
@@ -9183,32 +9421,26 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
       function lineView(o, l, locked) {
         const tk = l.ticketId && o.tickets.find((k) => k.id === l.ticketId);
         const st = l.voided
-          ? `<span class="badge b-chili">${t('Voided')}</span>`
+          ? `<span class="lstate void">${t('Voided')}</span>`
           : l.sent
-            ? `<span class="badge b-green">${ic('print')} ${t('Token')} ${tk ? tk.no : o.token} ${t('printed')}</span>`
-            : `<span class="badge b-saffron">${t('Not sent')}</span>`;
-        const tags = [
-          l.variant && `<span class="badge b-grey">${esc(l.variant)}</span>`,
-          ...l.addons.map(
-            (a) => `<span class="badge b-indigo">+ ${esc(a.name)}</span>`,
-          ),
-          l.spice &&
-            `<span class="badge b-chili">${t('Spice')}: ${t(l.spice)}</span>`,
-          l.note &&
-            `<span class="badge b-saffron">${ic('note')} ${esc(l.note)}</span>`,
-          payState(o) === 'paid' &&
-            !l.voided &&
-            `<span class="badge b-solid">${ic('check')} ${t('Paid')}</span>`,
+            ? `<span class="lstate sent">${ic('print', 14)} ${t('Token')} ${tk ? tk.no : o.token} ${t('printed')}</span>`
+            : `<span class="lstate new">${t('Not sent')}</span>`;
+        // Size, extras, spice and note read as one plain line.
+        const det = [
+          l.variant && esc(l.variant),
+          ...l.addons.map((a) => `+ ${esc(a.name)}`),
+          l.spice && `${t('Spice')}: ${t(l.spice)}`,
+          l.note && `${t('Note')}: ${esc(l.note)}`,
         ]
           .filter(Boolean)
-          .join('');
+          .join(', ');
         const ctl =
           l.voided || locked
             ? ''
             : !l.sent
-              ? `<span class="stepper"><button data-act="qty" data-id="${l.id}" data-d="-1" aria-label="One less">−</button><span>${l.qty}</span><button data-act="qty" data-id="${l.id}" data-d="1" aria-label="One more">+</button></span><button class="btn btn-quiet btn-xs" data-act="line-note" data-id="${l.id}">${ic('note')} ${t('Note')}</button><button class="icon-btn" data-act="line-remove" data-id="${l.id}" aria-label="${t('Remove')}">${ic('trash', 18)}</button>`
-              : `<button class="btn btn-quiet btn-xs" data-act="repeat" data-id="${l.id}">${ic('repeat')} ${t('Repeat')}</button>${can('void') ? `<button class="btn btn-quiet btn-xs" data-act="void-line" data-id="${l.id}">${ic('x')} ${t('Void')}</button>` : ''}`;
-        return `<div class="line ${l.voided ? 'void' : ''} ${l.sent && !l.voided ? 'sent' : ''}"><span class="nm">${l.sent || locked ? `${l.qty} × ` : ''}${esc(DB.prefs.lang === 'ur' ? l.ur : l.name)}</span><span class="amt">${rs(l.unit * l.qty)}</span>${tags ? `<div class="tags">${tags}</div>` : ''}<div class="ctl">${st}<span class="spacer"></span>${ctl}</div></div>`;
+              ? `<span class="stepper"><button data-act="qty" data-id="${l.id}" data-d="-1" aria-label="One less">−</button><span>${l.qty}</span><button data-act="qty" data-id="${l.id}" data-d="1" aria-label="One more">+</button></span><button class="btn btn-ghost btn-xs" data-act="line-note" data-id="${l.id}">${ic('note')} ${t('Note')}</button><button class="btn btn-ghost btn-xs lbtn-del" data-act="line-remove" data-id="${l.id}">${ic('trash')} ${t('Remove')}</button>`
+              : `<button class="btn btn-ghost btn-xs" data-act="repeat" data-id="${l.id}">${ic('repeat')} ${t('Repeat')}</button>${can('void') ? `<button class="btn btn-ghost btn-xs lbtn-del" data-act="void-line" data-id="${l.id}">${ic('x')} ${t('Void')}</button>` : ''}`;
+        return `<div class="line ${l.voided ? 'void' : ''} ${l.sent && !l.voided ? 'sent' : ''}"><span class="nm">${l.sent || locked ? `${l.qty} × ` : ''}${esc(DB.prefs.lang === 'ur' ? l.ur : l.name)}</span><span class="amt">${rs(l.unit * l.qty)}</span>${det ? `<div class="ldet">${det}</div>` : ''}<div class="ctl">${st}<span class="spacer"></span>${ctl}</div></div>`;
       }
       function billRows(o) {
         const b = billOf(o),
@@ -9229,19 +9461,39 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
           (b.deliveryFee ? r(t('Delivery fee'), rs(b.deliveryFee)) : '')
         );
       }
+      // Only what the buttons below do not already say: late, served, paid.
+      function ticketStatus(o) {
+        if (o.state === 'void')
+          return `<span class="badge b-chili">${t('Voided')}</span>`;
+        const ps = payState(o),
+          out = [];
+        if (o.fulfil)
+          out.push(
+            `<span class="badge b-grey">${ic('check')} ${t(FULFIL_NAME[o.fulfil])}</span>`,
+          );
+        else if (isLate(o))
+          out.push(`<span class="badge b-chili">${t('Late')}</span>`);
+        if (ps === 'paid')
+          out.push(`<span class="badge b-solid">${ic('check')} ${t('Paid')}</span>`);
+        else if (ps === 'part')
+          out.push(`<span class="badge b-saffron">${t('Part paid')}</span>`);
+        return out.join('');
+      }
       function fulfilButton(o) {
         if (o.state !== 'open' || !can('order')) return '';
         const ks = kState(o),
           ready = ks === 'ready' && !unsentLines(o).length;
         if (o.type === 'delivery') {
           if (!o.fulfil)
-            return `<button class="btn btn-ghost btn-block" data-act="fulfil" data-v="out" ${ready ? '' : 'disabled'}>${ic('bike', 18)} ${t('Send out for delivery')}</button>`;
+            return ready
+              ? `<button class="btn btn-ghost co-alt btn-block" data-act="fulfil" data-v="out">${ic('bike', 18)} ${t('Send out for delivery')}</button>`
+              : '';
           if (o.fulfil === 'out')
-            return `<button class="btn btn-ghost btn-block" data-act="fulfil" data-v="delivered">${ic('check', 18)} ${t('Mark delivered')}</button>`;
+            return `<button class="btn btn-ghost co-alt btn-block" data-act="fulfil" data-v="delivered">${ic('check', 18)} ${t('Mark delivered')}</button>`;
           return '';
         }
-        if (o.fulfil) return '';
-        return `<button class="btn btn-ghost btn-block" data-act="fulfil" data-v="${o.type === 'dine' ? 'served' : 'collected'}" ${ready ? '' : 'disabled'}>${ic('check', 18)} ${t(o.type === 'dine' ? 'Mark served' : 'Mark collected')}</button>`;
+        if (o.fulfil || !ready) return '';
+        return `<button class="btn btn-ghost co-alt btn-block" data-act="fulfil" data-v="${o.type === 'dine' ? 'served' : 'collected'}">${ic('check', 18)} ${t(o.type === 'dine' ? 'Mark served' : 'Mark collected')}</button>`;
       }
       // Send and pay buttons. Pay now: take the money first, then the unsent items
       // go to the kitchen and the token prints. Pay later: send now, pay after
@@ -9252,15 +9504,17 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
           canPay = can('pay') && dueOf(o) > 0 && liveLines(o).length,
           payFirst = o.payWhen === 'now' && canPay && unsent.length,
           n = sum(unsent, (l) => l.qty);
+        const opt = (v, label, on) =>
+          `<button data-act="pay-when" data-v="${v}" aria-pressed="${on}" class="${on ? 'on' : ''}">${label}</button>`;
         const when = canPay
-          ? `<div class="row" style="justify-content:space-between;margin:2px 0"><span class="hint">${t('Customer pays')}</span><span class="chips">${chip('pay-when', 'now', t('Pay now'), o.payWhen === 'now', null, 'style="min-height:32px;padding:4px 12px;font-size:13px"')}${chip('pay-when', 'later', t(o.type === 'delivery' ? 'On delivery' : 'Pay later'), o.payWhen !== 'now', null, 'style="min-height:32px;padding:4px 12px;font-size:13px"')}</span></div>`
+          ? `<div class="paywhen"><span>${t('When does the customer pay?')}</span><div class="seg" role="group">${opt('now', t('Pay now'), o.payWhen === 'now')}${opt('later', t(o.type === 'delivery' ? 'On delivery' : 'Pay later'), o.payWhen !== 'now')}</div></div>`
           : '';
         if (payFirst)
-          return `${when}<button class="btn btn-primary btn-lg btn-block" data-act="go-pay">${ic('cash', 20)} ${t('Pay now')} ${rs(dueOf(o))}</button>
-<p class="hint" style="text-align:center">${t('After payment the {n} items go to the kitchen and the token prints.', { n })}</p>
-${canSend ? `<button class="btn btn-ghost btn-block" data-act="send">${ic('print', 18)} ${t('Send to kitchen, pay later')}</button>` : ''}`;
-        return `${when}${canSend ? `<button class="btn btn-primary btn-lg btn-block" data-act="send">${ic('print', 20)} ${t('Send to kitchen & print token')} (${n})</button>` : ''}
-${canPay ? `<button class="btn ${canSend ? 'btn-ghost' : 'btn-primary btn-lg'} btn-block" data-act="go-pay">${ic('cash', 18)} ${t('Pay now')} ${rs(dueOf(o))}</button>` : ''}`;
+          return `${when}<button class="btn btn-primary co-main btn-block" data-act="go-pay">${ic('cash', 22)} ${t('Take payment')} ${rs(dueOf(o))}</button>
+<p class="co-help">${t('After payment the {n} items go to the kitchen and the token prints.', { n })}</p>
+${canSend ? `<button class="btn btn-ghost co-alt btn-block" data-act="send">${ic('print', 20)} ${t('Send to kitchen, pay later')}</button>` : ''}`;
+        return `${when}${canSend ? `<button class="btn btn-primary co-main btn-block" data-act="send">${ic('print', 22)} ${t('Send to kitchen & print token')} (${n})</button>` : ''}
+${canPay ? `<button class="btn ${canSend ? 'btn-ghost co-alt' : 'btn-primary co-main'} btn-block" data-act="go-pay">${ic('cash', 20)} ${t('Take payment')} ${rs(dueOf(o))}</button>` : ''}`;
       }
       function orderView() {
         const o = orderById(U.orderId);
@@ -9282,35 +9536,36 @@ ${canPay ? `<button class="btn ${canSend ? 'btn-ghost' : 'btn-primary btn-lg'} b
           o.state === 'open' &&
             can('order') &&
             dayIsOpen &&
-            `<button class="btn btn-ghost btn-xs" data-act="order-customer">${ic('user')} ${custLabel(o) ? esc(custLabel(o)) : t('Customer')}</button>`,
+            `<button class="tool" data-act="order-customer">${ic('user', 20)}<span>${custLabel(o) ? esc(custLabel(o)) : t('Add customer')}</span></button>`,
+          `<button class="tool" data-act="print" data-w="bill">${ic('print', 20)}<span>${t('Print bill')}</span></button>`,
           anySent &&
-            `<button class="btn btn-ghost btn-xs" data-act="reprint-token">${ic('ticket')} ${t('Reprint kitchen token')}</button>`,
-          `<button class="btn btn-ghost btn-xs" data-act="print" data-w="bill">${ic('print')} ${t('Customer bill')}</button>`,
-          o.state === 'open' &&
-            can('void') &&
-            !o.payments.length &&
-            dayIsOpen &&
-            `<button class="btn btn-quiet btn-xs" data-act="void-order">${ic('trash')} ${t('Void order')}</button>`,
+            `<button class="tool" data-act="reprint-token">${ic('ticket', 20)}<span>${t('Reprint token')}</span></button>`,
         ]
           .filter(Boolean)
           .join('');
+        // Always visible on an open order; paid orders are refunded on void.
+        const voidBtn =
+          o.state === 'open' && can('void') && dayIsOpen
+            ? `<button class="btn btn-void btn-block" data-act="void-order">${ic('trash', 18)} ${t('Void order')}</button>`
+            : '';
         const cats = D.cats.slice().sort((a, c) => a.sort - c.sort);
         return `<div class="order"><section class="order-left">
-    <div class="order-bar"><button class="btn btn-ghost btn-sm" data-act="go" data-s="orders">${ic('back', 18)} ${t('Orders')}</button><h2>${esc(o.no)}</h2><span class="badge ${o.type === 'delivery' ? 'b-indigo' : o.type === 'take' ? 'b-saffron' : 'b-grey'}">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span>${statusBadges(o)}</div>
-    <div class="order-tools">${searchInput('item-q', U.itemQ, t('Search dishes'), 'item-q')}<span class="hint">${t('Press / to search')}</span></div>
+    <div class="order-bar"><button class="btn btn-ghost btn-sm" data-act="go" data-s="orders">${ic('back', 18)} ${t('Orders')}</button><h2>${lockedItems ? t('Dishes') : t('Tap a dish to add it')}</h2></div>
+    <div class="order-tools">${searchInput('item-q', U.itemQ, t('Search dishes'), 'item-q')}</div>
     <div class="cats" role="group" aria-label="${t('Category')}">${chip('cat', 'all', t('All'), U.cat === 'all' && !U.itemQ)}${cats.map((c) => chip('cat', c.id, esc(DB.prefs.lang === 'ur' ? c.ur : c.name), U.cat === c.id && !U.itemQ)).join('')}</div>
     ${lockedItems && o.state === 'open' ? `<div class="notice warn" style="margin:0 18px 10px">${!dayIsOpen ? t('This business day is closed. Start the next business day first.') : o.payments.length ? t('Payment has started, so the bill is locked. Start a new order for extra items.') : t('You can view this order but not change it.')}</div>` : ''}
     <div class="items">${itemsGrid(st, lockedItems)}</div></section>
-    <aside class="ticket" aria-label="${esc(o.no)}"><div class="ticket-head"><h3>${o.token ? `${t('Token')} ${o.token}` : t('Not sent yet')}</h3><span class="hint">${esc(o.no)}</span></div>
-    <div class="ticket-sub"><span>${fmtTime(o.createdAt)}, ${esc(uname(o.by))}</span>${o.type === 'delivery' ? `<span>${esc(o.cust.name)}, ${esc(showPhone(o.cust.phone))}<br>${esc(o.cust.address)}</span>` : ''}</div>
+    <aside class="ticket" aria-label="${esc(o.no)}"><div class="ticket-head">${o.token ? `<h3>${t('Token')} ${o.token}</h3>` : `<h3 class="new-ord">${t('New order')}</h3>`}<span class="badge type-badge">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span></div>
+    <div class="ticket-status">${ticketStatus(o)}</div>
+    <div class="ticket-sub"><span>${esc(o.no)}, ${fmtTime(o.createdAt)}, ${esc(uname(o.by))}</span>${o.type === 'delivery' ? `<span>${esc(o.cust.name)}, ${esc(showPhone(o.cust.phone))}<br>${esc(o.cust.address)}</span>` : ''}</div>
     <div class="ticket-tools">${tools}</div>
     <div class="lines">${o.lines.length ? o.lines.map((l) => lineView(o, l, lockedItems)).join('') : emptyBox(t('No items yet'), t('Tap a dish to add it.'))}</div>
     <div class="ticket-foot">${billRows(o)}<div class="sumrow total"><span>${t('Total')}</span><span>${rs(b.total)}</span></div>
 ${paidOf(o) ? `<div class="sumrow"><span class="muted">${t('Paid')}</span><span>${rs(paidOf(o))}</span></div><div class="sumrow"><b>${t('Balance due')}</b><b>${rs(dueOf(o))}</b></div>` : ''}
 ${payButtons(o, unsent, dayIsOpen)}
 ${fulfilButton(o)}
-${o.state === 'open' && !can('pay') ? `<p class="hint">${t('A cashier takes the payment.')}</p>` : ''}
-<div class="soon-list" style="margin-top:2px">${soon('splitbill')}${soon('merge')}</div></div></aside></div>`;
+${o.state === 'open' && !can('pay') ? `<p class="co-help">${t('A cashier takes the payment.')}</p>` : ''}
+${voidBtn}</div></aside></div>`;
       }
 
       /* =============================================================
@@ -9344,20 +9599,42 @@ ${o.state === 'open' && !can('pay') ? `<p class="hint">${t('A cashier takes the 
 <div class="two"><button class="btn btn-ghost" data-act="print" data-w="bill">${ic('print', 18)} ${t('Customer bill')}</button><button class="btn btn-ghost" data-act="print" data-w="token">${ic('ticket', 18)} ${t('Kitchen token')}</button></div>
 ${payList}${fulfilButton(o)}<button class="btn btn-ghost btn-lg" data-act="go" data-s="orders">${t('Back to orders')}</button>`;
         } else {
-          right = `<div><span class="label">${t('Discount')}</span>
+          const amts = U.pay.amounts,
+            picked = METHODS.filter(([k]) => amts[k] != null);
+          // Discount sits below the main job, opened only when needed.
+          const discOpen = !!o.discount || U.pay.discOpen;
+          const disc = `<div class="disc-box">${
+            discOpen
+              ? `<span class="label">${t('Discount')}</span>
   ${o.discount ? `<div class="notice ok" style="margin-top:6px">${o.discount.type === 'pct' ? o.discount.value + '%' : rs(o.discount.value)} = ${rs(o.discount.amount)}, ${t('by')} ${esc(uname(o.discount.by))}${o.discount.approvedBy ? `, ${t('approved by')} ${esc(uname(o.discount.approvedBy))}` : ''}</div>` : ''}
   ${
     locked || !can('discount')
       ? `<p class="hint" style="margin-top:6px">${locked ? t('Payment has started, so the bill is locked.') : t('Ask a cashier or manager to add a discount.')}</p>`
       : `<div class="chips" style="margin-top:6px">${chip('disc', 'none', t('None'), !o.discount)}${[5, 10, 15, 20].map((v) => chip('disc', v, v + '%', o.discount && o.discount.type === 'pct' && o.discount.value === v)).join('')}</div>
   <div class="row" style="margin-top:8px;flex-wrap:nowrap"><select class="select" id="disc-type" style="width:120px" aria-label="${t('Discount')}"><option value="pct">%</option><option value="amt">Rs.</option></select><input class="input" id="disc-val" inputmode="numeric" placeholder="0" style="width:110px" aria-label="${t('Discount')}"><button class="btn btn-ghost btn-sm" data-act="disc-custom">${t('Apply')}</button></div>${limitNote ? `<p class="hint" style="margin-top:6px">${limitNote}</p>` : ''}`
-  }</div>
-<div class="balance"><span class="label">${t('Balance due')}</span><b>${rs(due)}</b></div>
-<div><span class="label">${t('Split the payment across methods')}</span>
-  ${METHODS.map(([k, l]) => (k === 'udhaar' && !planHas('udhaar') ? `<div class="prow"><span class="pic">${ic('lock', 18)}</span><span><b>${t(l)}</b><span class="hint" style="display:block">${t('Not in your plan')}</span></span>${planBadge('udhaar')}</div>` : `<div class="prow ${U.pay.amounts[k] ? 'on' : ''}"><span class="pic">${ic(METHOD_IC[k], 18)}</span><span><b>${t(l)}</b>${k === 'udhaar' ? `<span class="hint" style="display:block">${c ? `${esc(c.name)}, ${t('owes')} ${rs(custBalance(c.id))}` : t('Needs a customer')}</span>` : ''}</span><input class="input" id="pay-${k}" inputmode="numeric" placeholder="0" value="${esc(U.pay.amounts[k] || '')}" data-in="pay-amt" data-m="${k}" aria-label="${t(l)}"><button class="btn btn-quiet btn-xs fill" data-act="pay-fill" data-v="${k}">${t('Fill remaining')}</button></div>`)).join('')}
-  ${!c && planHas('udhaar') ? `<button class="btn btn-ghost btn-sm" style="margin-top:8px" data-act="order-customer">${ic('user', 16)} ${t('Add customer for udhaar')}</button>` : ''}</div>
-<div class="panel panel-pad" style="padding:12px 14px" id="pay-summary">${paySummary(o)}</div>
-<button class="btn btn-primary btn-lg" data-act="pay" ${can('pay') && liveLines(o).length && dayOpen(o.store) ? '' : 'disabled'}>${ic('check', 20)} ${t('Record payment')}</button>
+  }`
+              : !locked && can('discount')
+                ? `<button class="btn btn-ghost btn-sm" data-act="disc-open">${ic('plus', 16)} ${t('Add discount')}</button>`
+                : ''
+          }</div>`;
+          const tiles = METHODS.map(([k, l]) =>
+            k === 'udhaar' && !planHas('udhaar')
+              ? `<button class="mtile off" data-act="upgrade" data-f="udhaar">${ic('lock', 24)}<b>${t(l)}</b><small>${t('Not in your plan')}</small></button>`
+              : `<button class="mtile ${amts[k] != null ? 'on' : ''}" data-act="pay-fill" data-v="${k}" aria-pressed="${amts[k] != null}">${ic(METHOD_IC[k], 24)}<b>${t(l)}</b>${k === 'udhaar' ? `<small>${c ? `${esc(c.name)}, ${t('owes')} ${rs(custBalance(c.id))}` : t('Needs a customer')}</small>` : ''}</button>`,
+          ).join('');
+          const rows = picked
+            .map(
+              ([k, l]) =>
+                `<div class="prow on"><span class="pic">${ic(METHOD_IC[k], 18)}</span><span><b>${t(k === 'cash' ? 'Cash received' : l)}</b></span><input class="input" id="pay-${k}" inputmode="numeric" placeholder="0" value="${esc(amts[k] || '')}" data-in="pay-amt" data-m="${k}" aria-label="${t(l)}"><button class="icon-btn" data-act="pay-clear" data-v="${k}" aria-label="${t('Remove')}">${ic('x', 18)}</button></div>`,
+            )
+            .join('');
+          right = `<div class="balance"><span class="label">${t('Amount to pay')}</span><b>${rs(due)}</b></div>
+<div><span class="step-q">${t('How is the customer paying?')}</span><div class="mtiles">${tiles}</div>
+  <p class="hint" style="margin-top:8px">${t('Tap one to put the full amount on it. Tap a second one to split the bill.')}</p>
+  ${!c && planHas('udhaar') && amts.udhaar != null ? `<button class="btn btn-ghost btn-sm" style="margin-top:8px" data-act="order-customer">${ic('user', 16)} ${t('Add customer for udhaar')}</button>` : ''}</div>
+${rows ? `<div>${rows}</div><div class="panel panel-pad" style="padding:12px 14px" id="pay-summary">${paySummary(o)}</div>` : ''}
+<button class="btn btn-primary co-main" data-act="pay" ${picked.length && can('pay') && liveLines(o).length && dayOpen(o.store) ? '' : 'disabled'}>${ic('check', 22)} ${t('Record payment')}</button>
+${disc}
 <p class="hint">${t('Card machine, wallets and Raast are recorded by hand here. No money moves through this demo.')}</p>${payList}`;
         }
         return `<div class="page">${pageHead(
@@ -9366,7 +9643,7 @@ ${payList}${fulfilButton(o)}<button class="btn btn-ghost btn-lg" data-act="go" d
           `<button class="btn btn-ghost" data-act="back-order">${ic('back', 18)} ${t('Order')}</button><button class="btn btn-ghost" data-act="print" data-w="bill">${ic('print', 18)} ${t('Customer bill')}</button>`,
           'splitpay',
         )}
-    <div class="pay"><div>${customerBillHTML(o)}</div><div class="panel panel-pad" style="display:flex;flex-direction:column;gap:16px">${right}<div class="soon-list">${soon('splitbill')}${soon('whatsapp')}${soon('refunds')}${soon('loyalty')}</div></div></div></div>`;
+    <div class="pay"><div>${customerBillHTML(o)}</div><div class="panel panel-pad" style="display:flex;flex-direction:column;gap:16px">${right}</div></div></div>`;
       }
       function paySummary(o) {
         const due = dueOf(o),
@@ -9514,69 +9791,6 @@ ${payList}${fulfilButton(o)}<button class="btn btn-ghost btn-lg" data-act="go" d
     <div class="soon-list">${soon('combos')}</div></div>`;
       }
 
-      /* =============================================================
-   Kiosk (customer self-order, pay at the counter)
-   ============================================================= */
-      function kioskTotal(k) {
-        return sum(k.cart, (c) => {
-          const it = item(c.itemId);
-          return (
-            (priceAt(k.store, it, c.vi) +
-              sum(c.addons, (i) => it.addons[i].price)) *
-            c.qty
-          );
-        });
-      }
-      function kioskView() {
-        const k = U.kiosk;
-        if (!k) {
-          U.screen = 'orders';
-          return shellView();
-        }
-        const st = k.store,
-          exit = `<button class="btn btn-quiet btn-sm" style="position:fixed;top:12px;inset-inline-end:12px;z-index:5;background:rgba(255,255,255,.85);color:#1B2230" data-act="kiosk-exit">${ic('lock', 16)} ${t('Staff exit')}</button>`;
-        if (k.done)
-          return `<div class="kiosk-start">${exit}<div><p style="font-size:20px;opacity:.9">${t('Thank you')}${k.done.name ? `, ${esc(k.done.name)}` : ''}!</p><h1 style="font-size:120px;margin:10px 0">${k.done.token}</h1><p style="font-size:22px">${t('Your token number. Please pay at the counter.')}</p><p style="font-size:18px;margin-top:6px;opacity:.85">${t('Total')}: ${rs(k.done.total)}</p><button class="btn btn-lg" style="margin-top:28px;background:#fff;color:#0A5C4C" data-act="kiosk-new">${t('Start a new order')}</button></div></div>`;
-        if (!k.type)
-          return `<div class="kiosk-start">${exit}<div><p style="font-size:18px;opacity:.9">${esc(storeFull(st))}</p><h1>${t('Order here, pay at the counter')}</h1><div class="type-pick">${['dine', 'take'].map((ty) => `<button data-act="kiosk-type" data-v="${ty}">${ic(TYPE_IC[ty], 40)}${t(TYPE_NAME[ty])}</button>`).join('')}</div></div></div>`;
-        const q = U.itemQ.trim().toLowerCase();
-        const cats = D.cats.slice().sort((a, b) => a.sort - b.sort);
-        const grid = cats
-          .filter((c) => k.cat === 'all' || c.id === k.cat)
-          .map((c) => {
-            const ms = D.items.filter(
-              (i) =>
-                i.cat === c.id &&
-                i.active !== false &&
-                (!q || `${i.name} ${i.ur}`.toLowerCase().includes(q)),
-            );
-            return ms.length
-              ? `<div class="cat-divider">${esc(DB.prefs.lang === 'ur' ? c.ur : c.name)}</div>${ms.map((i) => itemCard(st, i, false).replace('data-act="add-item"', 'data-act="kiosk-add"')).join('')}`
-              : '';
-          })
-          .join('');
-        return `<div class="kiosk">${exit}<section class="order-left" style="height:100vh"><div class="order-bar"><button class="btn btn-ghost btn-sm" data-act="kiosk-type" data-v="">${ic('back', 18)} ${t('Back')}</button><h2>${t('Choose your food')}</h2><span class="badge b-green">${ic(TYPE_IC[k.type])} ${t(TYPE_NAME[k.type])}</span></div>
-    <div class="cats">${chip('kiosk-cat', 'all', t('All'), k.cat === 'all')}${cats.map((c) => chip('kiosk-cat', c.id, esc(DB.prefs.lang === 'ur' ? c.ur : c.name), k.cat === c.id)).join('')}</div>
-    <div class="items">${grid}</div></section>
-    <aside class="ticket" style="height:100vh"><div class="ticket-head"><h3>${t('Your order')}</h3>${langBtn()}</div>
-    <div class="lines">${
-      k.cart.length
-        ? k.cart
-            .map((c, i) => {
-              const it = item(c.itemId);
-              const unit =
-                priceAt(st, it, c.vi) +
-                sum(c.addons, (a) => it.addons[a].price);
-              return `<div class="line"><span class="nm">${esc(itemName(it))}</span><span class="amt">${rs(unit * c.qty)}</span><div class="tags">${it.variants.length ? `<span class="badge b-grey">${esc(it.variants[c.vi].name)}</span>` : ''}${c.addons.map((a) => `<span class="badge b-indigo">+ ${esc(it.addons[a].name)}</span>`).join('')}${c.spice ? `<span class="badge b-chili">${t(c.spice)}</span>` : ''}</div><div class="ctl"><span class="stepper"><button data-act="kiosk-qty" data-i="${i}" data-d="-1" aria-label="One less">−</button><span>${c.qty}</span><button data-act="kiosk-qty" data-i="${i}" data-d="1" aria-label="One more">+</button></span></div></div>`;
-            })
-            .join('')
-        : emptyBox(t('Your order is empty'), t('Tap a dish to add it.'))
-    }</div>
-    <div class="ticket-foot"><div class="sumrow total"><span>${t('Total')}</span><span>${rs(kioskTotal(k))}</span></div><p class="hint">${t('Service charge and tax are added at the counter if they apply.')}</p>
-${field('k-name', t('Your name'), k.name, { optional: true, attrs: 'data-in="kiosk-field" data-k="name" maxlength="40"' })}
-${field('k-phone', t('Phone number'), k.phone, { optional: true, attrs: 'data-in="kiosk-field" data-k="phone" inputmode="tel" placeholder="0300-1234567"' })}
-<button class="btn btn-primary btn-lg btn-block" data-act="kiosk-place" ${k.cart.length ? '' : 'disabled'}>${t('Place order')}</button></div></aside></div>`;
-      }
       /* =============================================================
    All stores dashboard (owner, area manager)
    ============================================================= */
@@ -11179,11 +11393,10 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
           },
         });
       }
-      function itemModal(it, kiosk) {
-        const st = kiosk ? U.kiosk.store : U.store;
+      function itemModal(it) {
+        const st = U.store;
         openModal({
           it,
-          kiosk,
           v: 0,
           add: new Set(),
           spice: it.spice ? 'Medium' : '',
@@ -11201,7 +11414,7 @@ ${it.variants.length ? `<div class="opt-group"><span class="label">${t('Size')}<
 ${it.addons.length ? `<div class="opt-group"><span class="label">${t('Extras')}</span><div class="chips">${it.addons.map((a, i) => chip('cfg-a', i, `${esc(a.name)} <span class="n">+${rs(a.price)}</span>`, this.add.has(i))).join('')}</div></div>` : ''}
 ${it.spice ? `<div class="opt-group"><span class="label">${t('Spice')}</span><div class="chips">${['Mild', 'Medium', 'Hot'].map((s) => chip('cfg-s', s, t(s), this.spice === s)).join('')}</div></div>` : ''}
 <div class="opt-group"><span class="label">${t('Quantity')}</span><span class="stepper"><button data-act="cfg-q" data-d="-1" aria-label="One less">−</button><span>${this.qty}</span><button data-act="cfg-q" data-d="1" aria-label="One more">+</button></span></div>
-${kiosk ? '' : `<div class="field"><label for="cfg-note">${t('Kitchen note')}</label><input class="input" id="cfg-note" placeholder="${t('For example: no onions, extra raita')}" value="${esc(this.note)}" data-in="cfg-note"><div class="chips" style="margin-top:4px">${QUICK_NOTES.map((n) => chip('cfg-quick', n, t(n), false)).join('')}</div></div>`}${mErr()}</div>
+${`<div class="field"><label for="cfg-note">${t('Kitchen note')}</label><input class="input" id="cfg-note" placeholder="${t('For example: no onions, extra raita')}" value="${esc(this.note)}" data-in="cfg-note"><div class="chips" style="margin-top:4px">${QUICK_NOTES.map((n) => chip('cfg-quick', n, t(n), false)).join('')}</div></div>`}${mErr()}</div>
 ${mFoot(`${t('Add to order')}, ${rs(unit * this.qty)}`, 'cfg-add')}`;
           },
         });
@@ -11248,8 +11461,10 @@ ${mFoot(t('Add and use'), 'cp-create')}`;
           reason: '',
           err: '',
           render() {
-            const needPin = sent && !isManagerOf(user(), o.store);
+            const paid = l ? 0 : paidOf(o);
+            const needPin = (sent || paid) && !isManagerOf(user(), o.store);
             return `${mHead(l ? `${t('Void')} ${esc(l.qty + ' × ' + l.name)}?` : `${t('Void order')} ${esc(o.no)}?`, sent ? t('The kitchen already has this, so the ingredients are not returned to stock.') : t('Nothing was sent to the kitchen, so nothing is lost.'))}<div class="modal-body">
+${paid ? `<div class="notice warn" style="margin-bottom:12px">${t('The money paid, {a}, is given back the same way it was paid.', { a: rs(paid) })}</div>` : ''}
 <span class="label">${t('Reason')} *</span><div class="chips" style="margin:8px 0 14px">${VOID_REASONS.map((r) => chip('void-r', r, t(r), this.reason === r)).join('')}</div>
 ${needPin ? `<div class="field"><label for="void-pin">${t('Manager PIN')} *</label><input class="input" id="void-pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off"><span class="hint">${t('Sample manager PINs: Bilal 3003 (Gulberg), Ayesha 2002, Ahmed 1001.')}</span></div>` : ''}${mErr()}</div>
 <div class="modal-foot"><button class="btn btn-ghost" data-act="close-modal">${t('Keep it')}</button><button class="btn btn-danger" data-act="void-ok">${l ? t('Void') : t('Void order')}</button></div>`;
@@ -11856,18 +12071,6 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
         'cfg-add': () => {
           const it = M.it,
             adds = [...M.add].sort();
-          if (M.kiosk) {
-            U.kiosk.cart.push({
-              itemId: it.id,
-              vi: M.v,
-              addons: adds,
-              spice: M.spice,
-              qty: M.qty,
-            });
-            closeModal();
-            render();
-            return;
-          }
           const r = run(() =>
             R.addLine(curOrder(), it, M.v, adds, M.spice, M.note, M.qty),
           );
@@ -12078,14 +12281,17 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
             ([m]) => toInt(U.pay.amounts[m]) || 0,
           );
           U.pay.amounts[k] = String(Math.max(0, due - others));
+          render();
           const inp = $(`#pay-${k}`);
-          if (inp) inp.value = U.pay.amounts[k];
-          $$('.prow').forEach((r) => {
-            const i = r.querySelector('input');
-            r.classList.toggle('on', !!(i && toInt(i.value) > 0));
-          });
-          const s = $('#pay-summary');
-          if (s) s.innerHTML = paySummary(o);
+          if (inp) inp.focus();
+        },
+        'pay-clear': (el) => {
+          delete U.pay.amounts[el.dataset.v];
+          render();
+        },
+        'disc-open': () => {
+          U.pay.discOpen = true;
+          render();
         },
         pay: () => {
           if (U.pay.busy) return;
@@ -12665,141 +12871,6 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
             );
           }
         },
-        'kiosk-open': () => {
-          if (!can('kiosk'))
-            return toast(t('You do not have access to this.'), 'bad');
-          if (!dayOpen(U.store))
-            return toast(
-              t(
-                'This business day is closed. Start the next business day first.',
-              ),
-              'bad',
-            );
-          U.kiosk = {
-            store: U.store,
-            type: null,
-            cart: [],
-            name: '',
-            phone: '',
-            cat: 'all',
-            done: null,
-          };
-          U.itemQ = '';
-          U.screen = 'kiosk';
-          render();
-        },
-        'kiosk-type': (el) => {
-          U.kiosk.type = el.dataset.v || null;
-          if (!U.kiosk.type) U.kiosk.cart = [];
-          render();
-        },
-        'kiosk-cat': (el) => {
-          U.kiosk.cat = el.dataset.v;
-          render();
-        },
-        'kiosk-add': (el) => {
-          const it = item(el.dataset.id);
-          if (it.variants.length || it.addons.length || it.spice)
-            return itemModal(it, true);
-          const c = U.kiosk.cart.find(
-            (x) => x.itemId === it.id && !x.addons.length,
-          );
-          if (c) c.qty++;
-          else
-            U.kiosk.cart.push({
-              itemId: it.id,
-              vi: 0,
-              addons: [],
-              spice: '',
-              qty: 1,
-            });
-          render();
-        },
-        'kiosk-qty': (el) => {
-          const c = U.kiosk.cart[+el.dataset.i];
-          c.qty += +el.dataset.d;
-          if (c.qty <= 0) U.kiosk.cart.splice(+el.dataset.i, 1);
-          render();
-        },
-        'kiosk-place': () => {
-          const k = U.kiosk;
-          const r = run(() => {
-            ACTOR = 'kiosk';
-            try {
-              const o = R.createOrder(k.store, k.type, {
-                name: k.name,
-                phone: k.phone,
-                kiosk: true,
-              });
-              k.cart.forEach((c) =>
-                R.addLine(
-                  o,
-                  item(c.itemId),
-                  c.vi,
-                  c.addons,
-                  c.spice,
-                  '',
-                  c.qty,
-                ),
-              );
-              const sent = R.send(o);
-              o._tk = sent.tk;
-              return o;
-            } finally {
-              ACTOR = null;
-            }
-          });
-          if (r.ok) {
-            const tk = r.v._tk;
-            delete r.v._tk;
-            save();
-            printKitchenToken(r.v, tk);
-            k.done = {
-              token: r.v.token,
-              name: k.name,
-              total: billOf(r.v).total,
-            };
-            k.cart = [];
-            render();
-          }
-        },
-        'kiosk-new': () => {
-          Object.assign(U.kiosk, {
-            type: null,
-            cart: [],
-            name: '',
-            phone: '',
-            done: null,
-            cat: 'all',
-          });
-          render();
-        },
-        'kiosk-exit': () =>
-          openModal({
-            err: '',
-            keepInputs: false,
-            render() {
-              return `${mHead(t('Staff exit'), t('Enter a staff PIN for this store to leave kiosk mode.'))}<div class="modal-body">${field('ke-pin', 'PIN', '', { attrs: 'type="password" inputmode="numeric" maxlength="4" autofocus' })}${mErr()}</div>${mFoot(t('Exit kiosk'), 'kiosk-exit-ok')}`;
-            },
-          }),
-        'kiosk-exit-ok': () => {
-          const p = val('ke-pin'),
-            u = D.users.find(
-              (x) =>
-                x.pin === p &&
-                x.active !== false &&
-                userStores(x).includes(U.kiosk.store) &&
-                userPerms(x).includes('kiosk'),
-            );
-          if (!u) {
-            M.err = t('That PIN cannot unlock this kiosk.');
-            return renderModal();
-          }
-          closeModal();
-          U.kiosk = null;
-          U.screen = 'orders';
-          render();
-        },
       };
       A['sm-ok'] = () => {
         const kind = M.kind,
@@ -12986,9 +13057,6 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
                   : diff > 0
                     ? t('More cash than expected (overage).')
                     : t('Cash is short. Recount before closing.');
-        },
-        'kiosk-field': (el) => {
-          U.kiosk[el.dataset.k] = el.value;
         },
       };
 
