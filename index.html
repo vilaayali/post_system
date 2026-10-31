@@ -4009,56 +4009,101 @@
       .logo {
         color: #fff;
       }
-      /* ---- Dashboard: a hero sales card with a live curve, three small
-         cards beside it, a payment ring, and one entrance animation ---- */
-      .dash-top {
+      /* ---- Dashboard: a wide live sales hero with drifting light behind
+         it, three toned stat tiles, then plain lists. One chart only. ---- */
+      .dash-hero {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
         display: grid;
-        grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
-        grid-template-rows: repeat(3, auto);
-        gap: 14px;
-        margin-bottom: 16px;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+        align-items: end;
+        gap: 28px;
+        padding: 24px 26px 18px;
+        margin-bottom: 14px;
+        border-radius: 22px;
       }
-      .dash-top .hero {
-        grid-row: 1 / span 3;
+      .hero-aura {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+      }
+      .hero-aura i {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(38px);
+        opacity: 0.55;
+      }
+      .hero-aura i:nth-child(1) {
+        width: 46%;
+        aspect-ratio: 1;
+        left: -8%;
+        top: -40%;
+        background: #3ee0c8;
+      }
+      .hero-aura i:nth-child(2) {
+        width: 38%;
+        aspect-ratio: 1;
+        right: 4%;
+        bottom: -55%;
+        background: #f2a33a;
+        opacity: 0.42;
+      }
+      .hero-aura i:nth-child(3) {
+        width: 30%;
+        aspect-ratio: 1;
+        left: 42%;
+        top: -30%;
+        background: #4f8fe6;
+        opacity: 0.4;
+      }
+      .hero-txt {
         display: flex;
         flex-direction: column;
-        padding: 22px 22px 14px;
-        overflow: hidden;
-        position: relative;
+        gap: 4px;
+        min-width: 0;
       }
-      .dash-top .hero .v {
-        font-size: 44px;
-        letter-spacing: -0.01em;
+      .dash-hero .v {
+        font-size: 48px;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
+        margin: 2px 0 4px;
       }
-      .dash-top .kpi:not(.hero) {
-        padding: 14px 16px;
-      }
-      .dash-top .kpi:not(.hero) .v {
-        font-size: 28px;
-      }
-      .kpi-top {
-        display: flex;
+      .live-pill {
+        align-self: flex-start;
+        display: inline-flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 8px;
+        gap: 7px;
+        margin-bottom: 12px;
+        padding: 4px 11px 4px 9px;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.16);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+        color: #fff;
+        font-size: 12.5px;
+        font-weight: 700;
       }
-      .kpi-ic {
-        display: grid;
-        place-items: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 10px;
-        background: var(--green-soft);
-        color: var(--green-ink);
-      }
-      .curve {
+      .live-pill i {
         position: relative;
-        margin-top: auto;
-        padding-top: 14px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #7dffb0;
+        box-shadow: 0 0 8px #7dffb0;
+      }
+      .live-pill.off i {
+        background: rgba(255, 255, 255, 0.55);
+        box-shadow: none;
+      }
+      .dash-hero .curve {
+        margin: 0;
+        padding: 0;
       }
       .cv-plot {
         position: relative;
-        height: 110px;
+        height: 150px;
       }
       .curve svg {
         display: block;
@@ -4072,8 +4117,16 @@
         height: 12px;
         border-radius: 50%;
         background: #fff;
-        box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.22);
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
         transform: translate(-50%, -50%);
+      }
+      .cv-dot::after {
+        content: '';
+        position: absolute;
+        inset: -7px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        opacity: 0;
       }
       .cv-axis {
         display: flex;
@@ -4082,137 +4135,349 @@
         font-size: 12px;
         color: rgba(255, 255, 255, 0.8);
       }
-      .donut {
-        display: flex;
-        align-items: center;
-        gap: 22px;
-        padding: 6px 4px 4px;
+      .dash-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 16px;
       }
-      .dn-ring {
+      .stat {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 16px 18px;
+      }
+      .stat::before {
+        content: '';
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 4px;
+        background: var(--tone);
+      }
+      .st-ic {
         position: relative;
         flex: none;
-        width: 150px;
-        height: 150px;
-      }
-      .dn-ring svg {
-        width: 100%;
-        height: 100%;
-      }
-      .dn-seg {
-        stroke-linecap: butt;
-      }
-      .dn-mid {
-        position: absolute;
-        inset: 0;
         display: grid;
-        place-content: center;
-        text-align: center;
-        line-height: 1.2;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        background: var(--tone-soft);
+        color: var(--tone-ink);
       }
-      .dn-mid small {
+      .st-ping {
+        position: absolute;
+        top: -3px;
+        right: -3px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: var(--tone);
+        border: 2px solid var(--surface);
+      }
+      .st-body {
+        min-width: 0;
+      }
+      .st-body small {
         color: var(--muted);
-        font-size: 12px;
+        font-size: 13px;
+        font-weight: 600;
       }
-      .dn-mid b {
-        font-size: 17px;
+      .stat .v {
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1.15;
         font-variant-numeric: tabular-nums;
       }
-      .dn-legend {
-        flex: 1;
-        min-width: 0;
+      .stat .s {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .dl-list {
         margin: 0;
         padding: 0;
         list-style: none;
         display: grid;
-        gap: 9px;
       }
-      .dn-legend li {
+      .dl-list li {
         display: grid;
-        grid-template-columns: 10px minmax(0, 1fr) auto 38px;
+        grid-template-columns: 34px minmax(0, 1fr) auto auto;
         align-items: center;
-        gap: 10px;
-        font-size: 14px;
+        gap: 12px;
+        padding: 10px 2px;
+        border-top: 1px solid var(--line);
+        font-size: 14.5px;
       }
-      .dn-legend i {
-        width: 10px;
-        height: 10px;
-        border-radius: 3px;
+      .dl-list li:first-child {
+        border-top: 0;
       }
-      .dn-legend b {
+      .dl-list.ranked li {
+        grid-template-columns: 30px minmax(0, 1fr) auto;
+      }
+      .dl-ic,
+      .dl-rk {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 11px;
+        background: var(--surface-2);
+        box-shadow: inset 0 0 0 1px var(--line);
+        color: var(--green-ink);
+      }
+      .dl-rk {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        font-weight: 800;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .ranked li:first-child .dl-rk {
+        background: var(--grad);
+        box-shadow: var(--glow);
+        color: #fff;
+      }
+      .dl-nm {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 600;
+      }
+      .dl-list b {
         font-variant-numeric: tabular-nums;
       }
-      .dn-legend em {
+      .dl-list em {
+        min-width: 42px;
+        padding: 2px 8px;
+        border-radius: 99px;
+        background: var(--green-soft);
+        color: var(--green-ink);
         font-style: normal;
-        color: var(--muted);
-        text-align: end;
-        font-size: 13px;
+        font-size: 12.5px;
+        font-weight: 700;
+        text-align: center;
       }
       .bar-row .tr i {
         background: var(--grad);
       }
       @media (max-width: 760px) {
-        .dash-top {
+        .dash-hero {
           grid-template-columns: minmax(0, 1fr);
+          gap: 14px;
+          padding: 20px 18px 14px;
         }
-        .dash-top .hero {
-          grid-row: auto;
+        .dash-hero .v {
+          font-size: 40px;
         }
-        .donut {
-          flex-direction: column;
-          align-items: stretch;
+        .cv-plot {
+          height: 110px;
         }
-        .dn-ring {
-          align-self: center;
+        .dash-stats {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 10px;
         }
       }
       @media (prefers-reduced-motion: no-preference) {
-        .dash.enter .cv-plot {
-          animation: cv-draw 1.2s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+        /* always on, slow: the light behind the hero drifts, the live dot
+           and the curve's tip breathe, busy tiles ping */
+        .hero-aura i:nth-child(1) {
+          animation: aura-a 14s ease-in-out infinite alternate;
         }
-        .dash.enter .cv-dot {
-          animation: fade-in 0.4s 1s both;
+        .hero-aura i:nth-child(2) {
+          animation: aura-b 18s ease-in-out infinite alternate;
         }
-        .dash.enter .dn-seg {
-          animation: dn-fill 1s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+        .hero-aura i:nth-child(3) {
+          animation: aura-c 11s ease-in-out infinite alternate;
         }
-        .dash.enter .bar-row .tr i {
-          animation: bar-grow 0.9s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+        .dash-hero::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          background: linear-gradient(
+            105deg,
+            transparent 35%,
+            rgba(255, 255, 255, 0.13) 50%,
+            transparent 65%
+          );
+          transform: translateX(-100%);
+          animation: sheen 7s ease-in-out 1.6s infinite;
+          pointer-events: none;
         }
-        .dash.enter .bar-row:nth-child(2) .tr i {
-          animation-delay: 0.06s;
+        .live-pill:not(.off) i::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          background: #7dffb0;
+          animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
         }
-        .dash.enter .bar-row:nth-child(3) .tr i {
+        .cv-dot::after {
+          animation: ring 2.4s ease-out infinite;
+        }
+        .st-ping {
+          animation: ping-soft 2s ease-in-out infinite;
+        }
+        .stat,
+        .dl-list li {
+          transition:
+            transform 0.2s,
+            box-shadow 0.2s,
+            background-color 0.2s;
+        }
+        .stat:hover {
+          transform: translateY(-3px);
+          box-shadow:
+            var(--lift),
+            0 14px 30px -18px var(--tone);
+        }
+        .stat:hover .st-ic {
+          animation: wobble 0.5s ease;
+        }
+        .dl-list li:hover {
+          transform: translateX(4px);
+        }
+        /* once, when the dashboard opens */
+        .dash.enter .dash-hero,
+        .dash.enter .stat,
+        .dash.enter .grid > .panel {
+          animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+        }
+        .dash.enter .stat:nth-child(1) {
           animation-delay: 0.12s;
         }
-        .dash.enter .bar-row:nth-child(4) .tr i {
-          animation-delay: 0.18s;
+        .dash.enter .stat:nth-child(2) {
+          animation-delay: 0.19s;
         }
-        .dash.enter .bar-row:nth-child(5) .tr i {
-          animation-delay: 0.24s;
+        .dash.enter .stat:nth-child(3) {
+          animation-delay: 0.26s;
         }
-        @keyframes cv-draw {
-          from {
-            clip-path: inset(-10px 100% -10px 0);
-          }
+        .dash.enter .grid > .panel:nth-child(1) {
+          animation-delay: 0.32s;
+        }
+        .dash.enter .grid > .panel:nth-child(2) {
+          animation-delay: 0.38s;
+        }
+        .dash.enter .grid > .panel:nth-child(3) {
+          animation-delay: 0.44s;
+        }
+        .dash.enter .grid > .panel:nth-child(4) {
+          animation-delay: 0.5s;
+        }
+        .dash.enter .cv-plot {
+          animation: cv-draw 1.3s 0.25s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+        }
+        .dash.enter .cv-dot {
+          animation: pop 0.45s 1.35s cubic-bezier(0.3, 1.6, 0.5, 1) backwards;
+        }
+        .dash.enter .dl-list li {
+          animation: slide-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+          animation-delay: calc(0.4s + var(--i, 0) * 0.05s);
+        }
+        .dash.enter .dl-list li:nth-child(2) {
+          --i: 1;
+        }
+        .dash.enter .dl-list li:nth-child(3) {
+          --i: 2;
+        }
+        .dash.enter .dl-list li:nth-child(4) {
+          --i: 3;
+        }
+        .dash.enter .dl-list li:nth-child(5) {
+          --i: 4;
+        }
+        .dash.enter .dl-list li:nth-child(n + 6) {
+          --i: 5;
+        }
+        @keyframes aura-a {
           to {
-            clip-path: inset(-10px -10px -10px 0);
+            transform: translate(55%, 35%) scale(1.25);
           }
         }
-        @keyframes fade-in {
-          from {
+        @keyframes aura-b {
+          to {
+            transform: translate(-70%, -45%) scale(0.85);
+          }
+        }
+        @keyframes aura-c {
+          to {
+            transform: translate(-40%, 70%) scale(1.3);
+          }
+        }
+        @keyframes sheen {
+          0% {
+            transform: translateX(-100%);
+          }
+          35%,
+          100% {
+            transform: translateX(100%);
+          }
+        }
+        @keyframes ping {
+          75%,
+          100% {
+            transform: scale(2.6);
             opacity: 0;
           }
         }
-        @keyframes dn-fill {
-          from {
-            stroke-dasharray: 0 100;
+        @keyframes ring {
+          0% {
+            transform: scale(0.5);
+            opacity: 0.9;
+          }
+          100% {
+            transform: scale(1.8);
+            opacity: 0;
           }
         }
-        @keyframes bar-grow {
-          from {
-            width: 0;
+        @keyframes ping-soft {
+          50% {
+            transform: scale(1.25);
+            box-shadow: 0 0 0 5px transparent;
+          }
+          0%,
+          100% {
+            box-shadow: 0 0 0 0 var(--tone);
           }
         }
+        @keyframes wobble {
+          30% {
+            transform: rotate(-9deg) scale(1.08);
+          }
+          65% {
+            transform: rotate(6deg) scale(1.04);
+          }
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(16px) scale(0.985);
+          }
+        }
+        @keyframes slide-in {
+          from {
+            opacity: 0;
+            transform: translateX(-10px);
+          }
+        }
+        @keyframes pop {
+          from {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+          }
+        }
+        @keyframes cv-draw {
+          from {
+            clip-path: inset(-20px 100% -20px 0);
+          }
+          to {
+            clip-path: inset(-20px -20px -20px 0);
+          }
+        }
+      }
       }
       @media (prefers-reduced-motion: no-preference) {
         .btn-primary {
@@ -5818,6 +6083,8 @@
         'Sent to kitchen': 'کچن بھیج دیا',
         'Extras, spice or note': 'اضافی، مرچ یا نوٹ',
         Now: 'ابھی',
+        Live: 'لائیو',
+        'Sold today': 'آج بکے',
         'Take payment & print token': 'ادائیگی لیں اور ٹوکن پرنٹ کریں',
         New: 'نیا',
         Preparing: 'بن رہا ہے',
@@ -9925,7 +10192,7 @@
         $('#root').innerHTML = html;
         // Keep screens short: help sentences are hidden, hints that hold a
         // figure (a count, money, a date) stay.
-        $$('#main p.hint, #main .panel-head > .hint, #main .kpi .s').forEach((h) => {
+        $$('#main p.hint, #main .panel-head > .hint, #main .kpi .s, #main .stat .s').forEach((h) => {
           if (!/\d/.test(h.textContent)) h.hidden = true;
         });
         const nm = $('#main');
@@ -10941,29 +11208,21 @@ ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex
           `${((h + 11) % 12) + 1}${h < 12 ? 'am' : 'pm'}`;
         return `<div class="curve"><div class="cv-plot"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="cv-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path class="cv-area" d="${d} L${W},${H} L0,${H} Z" fill="url(#cv-fill)"/><path class="cv-line" d="${d}" fill="none" stroke="#fff" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linecap="round"/></svg><span class="cv-dot" style="left:${(last[0] / W) * 100}%;top:${(last[1] / H) * 100}%"></span></div><div class="cv-axis"><span>${lbl(from)}</span><span>${t('Now')}</span></div></div>`;
       }
-      // Payment methods as a ring, total in the middle, legend beside it.
-      const PAY_COLORS = ['#13a196', '#3a76cc', '#f2a33a', '#df4349', '#8b6fd6', '#6b8a92'];
-      function payDonut(byM) {
-        const rows = METHODS.filter(([k]) => byM[k]).map(([k, l], i) => ({
-            l: t(l),
-            v: byM[k],
-            c: PAY_COLORS[i % PAY_COLORS.length],
-          })),
+      // Payment methods as a plain list, biggest first, with its share.
+      function payList(byM) {
+        const rows = METHODS.filter(([k]) => byM[k])
+            .map(([k, l]) => ({ k, l: t(l), v: byM[k] }))
+            .sort((a, b) => b.v - a.v),
           tot = sum(rows, (r) => r.v);
-        let at = 0;
-        const segs = rows
-          .map((r) => {
-            const p = (r.v / tot) * 100,
-              s = `<circle class="dn-seg" r="15.9155" cx="21" cy="21" fill="none" stroke="${r.c}" stroke-width="5" stroke-dasharray="${Math.max(0, p - 0.6)} ${100 - Math.max(0, p - 0.6)}" stroke-dashoffset="${25 - at}"/>`;
-            at += p;
-            return s;
-          })
-          .join('');
-        return `<div class="donut"><div class="dn-ring"><svg viewBox="0 0 42 42" aria-hidden="true"><circle r="15.9155" cx="21" cy="21" fill="none" stroke="var(--line)" stroke-width="5"/>${segs}</svg><div class="dn-mid"><small>${t('Total')}</small><b data-count="${tot}" data-rs="1">${rs(tot)}</b></div></div><ul class="dn-legend">${rows.map((r) => `<li><i style="background:${r.c}"></i><span>${r.l}</span><b>${rs(r.v)}</b><em>${Math.round((r.v / tot) * 100)}%</em></li>`).join('')}</ul></div>`;
+        return `<ul class="dl-list">${rows.map((r) => `<li><span class="dl-ic">${ic(METHOD_IC[r.k] || 'cash', 18)}</span><span class="dl-nm">${r.l}</span><b data-count="${r.v}" data-rs="1">${rs(r.v)}</b><em>${Math.round((r.v / tot) * 100)}%</em></li>`).join('')}</ul>`;
       }
-      // The dashboard's one entrance: numbers count up, the curve draws,
-      // the ring and bars fill. Only when the screen is opened, never on
-      // the live refreshes after that.
+      // Best sellers, ranked. The leader gets the brand colour.
+      function rankList(rows) {
+        return `<ol class="dl-list ranked">${rows.map(([n, q], i) => `<li><span class="dl-rk">${i + 1}</span><span class="dl-nm">${n}</span><b>×${q}</b></li>`).join('')}</ol>`;
+      }
+      // The dashboard's one entrance: cards rise in, numbers count up, the
+      // curve draws. Only when the screen is opened, never on the live
+      // refreshes after that.
       function playIntro() {
         const pg = $('#main .dash');
         if (!pg || matchMedia('(prefers-reduced-motion: reduce)').matches)
@@ -10998,27 +11257,30 @@ ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex
         );
         const low = lowList(st);
         // Numbers count up when the dashboard opens (see playIntro).
-        const kpi = (label, v, sub, icon, count) =>
-          `<div class="panel kpi"><div class="kpi-top"><small>${label}</small>${icon ? `<span class="kpi-ic">${ic(icon, 18)}</span>` : ''}</div><div class="v"${count != null ? ` data-count="${count}"` : ''}>${v}</div><div class="s">${sub}</div></div>`;
+        const kitchen = open.filter((o) => o.tickets.length && !o.fulfil).length,
+          live = d.status === 'open';
+        // tone picks the tile's accent colour; busy makes its dot breathe
+        const stat = (tone, label, v, sub, icon, count, busy) =>
+          `<div class="panel stat" style="--tone:var(--${tone});--tone-soft:var(--${tone}-soft);--tone-ink:var(--${tone}-ink)"><span class="st-ic">${ic(icon, 20)}${busy ? '<i class="st-ping"></i>' : ''}</span><div class="st-body"><small>${label}</small><div class="v"${count != null ? ` data-count="${count}"` : ''}>${v}</div><div class="s">${sub}</div></div></div>`;
         return `<div class="page dash">${pageHead(`${t('Dashboard')}: ${esc(t(store(st).name))}`, `${dayLabel(d.date)}. ${t('Updates as orders, payments and stock change.')}`, can('settings') ? `<button class="btn btn-ghost" data-act="go" data-s="settings">${ic('gear', 18)} ${t('Settings')}</button>` : '', 'dashboard')}
-    ${checklistCard()}${store(st).status === 'paused' ? `<div class="notice warn" style="margin-bottom:16px">${t('This branch is paused. New orders are stopped.')}</div>` : ''}<div class="dash-top">
-<div class="panel kpi lead hero"><small>${t('Today’s sales')}</small><div class="v" data-count="${s.sales}" data-rs="1">${rs(s.sales)}</div><div class="s">${t('{n} bills, average {x}', { n: s.orders, x: rs(s.avg) })}</div>${salesCurve(s.settled)}</div>
-${kpi(t('In the kitchen'), open.filter((o) => o.tickets.length && !o.fulfil).length, t('Tokens printed, not served or sent out yet'), 'ticket', open.filter((o) => o.tickets.length && !o.fulfil).length)}
-${kpi(t('Deliveries pending'), deliveries.length, t('{a} out for delivery', { a: deliveries.filter((o) => o.fulfil === 'out').length }), 'bike', deliveries.length)}
-${kpi(t('Day close'), t(d.status === 'open' ? 'Open' : 'Closed'), d.status === 'open' ? `${t('Opening cash')} ${rs(d.opening)}` : t('Closed at {x}', { x: fmtTime(d.closedAt) }), 'cash')}
-    </div>
+    ${checklistCard()}${store(st).status === 'paused' ? `<div class="notice warn" style="margin-bottom:16px">${t('This branch is paused. New orders are stopped.')}</div>` : ''}
+<div class="panel kpi lead dash-hero"><div class="hero-aura" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="hero-txt"><span class="live-pill${live ? '' : ' off'}"><i></i>${t(live ? 'Live' : 'Closed')}</span><small>${t('Today’s sales')}</small><div class="v" data-count="${s.sales}" data-rs="1">${rs(s.sales)}</div><div class="s">${t('{n} bills, average {x}', { n: s.orders, x: rs(s.avg) })}</div></div>
+  ${salesCurve(s.settled)}</div>
+<div class="dash-stats">
+${stat('green', t('In the kitchen'), kitchen, t('Tokens printed, not served or sent out yet'), 'ticket', kitchen, kitchen > 0)}
+${stat('indigo', t('Deliveries pending'), deliveries.length, t('{a} out for delivery', { a: deliveries.filter((o) => o.fulfil === 'out').length }), 'bike', deliveries.length, deliveries.length > 0)}
+${stat('saffron', t('Day close'), t(live ? 'Open' : 'Closed'), live ? `${t('Opening cash')} ${rs(d.opening)}` : t('Closed at {x}', { x: fmtTime(d.closedAt) }), 'cash')}
+</div>
     <div class="grid g2">
 <div class="panel"><div class="panel-head"><h3>${t('Payment methods')}</h3><span class="hint">${t('Money recorded today. Udhaar collections: {x}', { x: rs(s.collections) })}</span></div>${
           Object.values(s.byM).some((v) => v)
-            ? payDonut(s.byM)
+            ? payList(s.byM)
             : emptyBox(t('No payments yet today'), '')
         }</div>
-<div class="panel"><div class="panel-head"><h3>${t('Top items')}</h3><span class="hint">${t('Settled orders today')}</span></div>${
+<div class="panel"><div class="panel-head"><h3>${t('Top items')}</h3><span class="hint">${t('Sold today')}</span></div>${
           s.settled.length
-            ? barRows(
-                topItems(s.settled).map(([n, q]) => [esc(n), q]),
-                (v) => `${v}`,
-              )
+            ? rankList(topItems(s.settled).map(([n, q]) => [esc(n), q]))
             : emptyBox(t('No sales yet today'), '')
         }</div>
 <div class="panel"><div class="panel-head"><h3>${t('Low stock')}</h3>${can('stock') ? `<button class="btn btn-ghost btn-sm" data-act="go" data-s="stock">${t('Stock')}</button>` : ''}</div>
