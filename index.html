@@ -3497,6 +3497,96 @@
         border-color: var(--line-strong);
         color: var(--ink);
       }
+      button.cust-line {
+        border: 0;
+        background: none;
+        padding: 2px 0;
+        font: inherit;
+        text-align: start;
+        cursor: pointer;
+      }
+      button.cust-line:hover span {
+        text-decoration: underline;
+      }
+      .cust-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 2px;
+        padding: 4px 10px;
+        border: 1px dashed var(--line-strong);
+        border-radius: 8px;
+        background: none;
+        color: var(--green-ink);
+        font: inherit;
+        font-weight: 600;
+      }
+      /* Dish popup: size tiles, a big quantity, everything else folded */
+      .cfg {
+        display: grid;
+        gap: 14px;
+      }
+      .sizes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 8px;
+      }
+      .size {
+        display: grid;
+        gap: 2px;
+        padding: 14px 10px;
+        border: 2px solid var(--line-strong);
+        border-radius: 12px;
+        background: var(--surface);
+        color: var(--ink);
+        text-align: center;
+      }
+      .size b {
+        font-size: 17px;
+      }
+      .size span {
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .size.on {
+        border-color: var(--green);
+        background: var(--green-soft);
+      }
+      .size.on span {
+        color: var(--green-ink);
+      }
+      .cfg-qty {
+        display: flex;
+        justify-content: center;
+      }
+      .stepper.big button {
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+      }
+      .stepper.big > span {
+        min-width: 56px;
+        font-size: 24px;
+        font-weight: 800;
+        text-align: center;
+      }
+      .cfg-more {
+        justify-self: start;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border: 1px dashed var(--line-strong);
+        border-radius: 10px;
+        background: none;
+        color: var(--muted);
+        font: inherit;
+        font-weight: 600;
+      }
+      .cfg-more:hover {
+        color: var(--ink);
+        border-color: var(--ink);
+      }
       /* the big total lives in the dock; the slip keeps a quieter one */
       .r-sums .sumrow.total {
         font-size: 20px;
@@ -5269,6 +5359,7 @@
         'Not sent': 'نہیں بھیجا',
         Sent: 'بھیج دیا',
         'Sent to kitchen': 'کچن بھیج دیا',
+        'Extras, spice or note': 'اضافی، مرچ یا نوٹ',
         'Take payment & print token': 'ادائیگی لیں اور ٹوکن پرنٹ کریں',
         New: 'نیا',
         Preparing: 'بن رہا ہے',
@@ -9919,11 +10010,23 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
           !dayIsOpen ||
           !can('order');
         const anySent = o.tickets.length > 0;
+        // The customer shows once, under the token; tap it to change.
+        const custEdit = o.state === 'open' && can('order') && dayIsOpen;
+        const custText = [
+          o.cust && o.cust.name && esc(o.cust.name),
+          o.cust && o.cust.phone && esc(showPhone(o.cust.phone)),
+          o.type === 'delivery' && o.cust && o.cust.address && esc(o.cust.address),
+        ]
+          .filter(Boolean)
+          .join(', ');
+        const custRow = custText
+          ? custEdit
+            ? `<button class="cust-line" data-act="order-customer">${ic('user', 14)} <span>${custText}</span></button>`
+            : `<span class="cust-line">${ic('user', 14)} <span>${custText}</span></span>`
+          : custEdit
+            ? `<button class="cust-add" data-act="order-customer">${ic('plus', 14)} ${t('Add customer')}</button>`
+            : '';
         const tools = [
-          o.state === 'open' &&
-            can('order') &&
-            dayIsOpen &&
-            `<button class="tool" data-act="order-customer">${ic('user', 20)}<span>${custLabel(o) ? esc(custLabel(o)) : t('Add customer')}</span></button>`,
           `<button class="tool" data-act="print" data-w="bill">${ic('print', 20)}<span>${t('Print bill')}</span></button>`,
           anySent &&
             `<button class="tool" data-act="reprint-token">${ic('ticket', 20)}<span>${t('Reprint token')}</span></button>`,
@@ -9953,6 +10056,9 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
           liveLines(o).length && o.state === 'open'
             ? `<div class="dock-total"><span>${t(!paidOf(o) ? 'Total' : dueOf(o) ? 'Balance due' : 'Paid')}</span><b>${rs(!paidOf(o) ? b.total : dueOf(o) || paidOf(o))}</b></div>`
             : '';
+        // Subtotal is only worth showing when something is added to or taken off it.
+        const sumsExtra =
+          b.discount || b.service || b.tax || b.deliveryFee;
         const cats = D.cats.slice().sort((a, c) => a.sort - c.sort);
         return `<div class="order"><section class="order-left">
     <div class="order-bar"><button class="btn btn-ghost btn-sm" data-act="go" data-s="orders">${ic('back', 18)} ${t('Orders')}</button><h2>${lockedItems ? t('Dishes') : t('Tap a dish to add it')}</h2></div>
@@ -9962,10 +10068,9 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
     <div class="items">${itemsGrid(st, lockedItems)}</div></section>
     <aside class="ticket" aria-label="${esc(o.no)}"><div class="ticket-scroll">
     <div class="slip"><div class="ticket-head">${o.token ? `<h3>${t('Token')} ${o.token}</h3>` : `<h3 class="new-ord">${t('New order')}</h3>`}<div class="head-tags"><span class="badge type-badge">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span>${ticketStatus(o)}</div></div>
-    <div class="ticket-sub"><span>${esc(o.no)}, ${fmtTime(o.createdAt)}, ${esc(uname(o.by))}</span>${o.type === 'delivery' ? `<span class="cust-line">${ic('user', 14)} ${esc(o.cust.name)}, ${esc(showPhone(o.cust.phone))}, ${esc(o.cust.address)}</span>` : ''}</div>
+    <div class="ticket-sub"><span>${esc(o.no)}, ${fmtTime(o.createdAt)}, ${esc(uname(o.by))}</span>${custRow}</div>
     <div class="lines${lockedItems ? ' ro' : ''}">${o.lines.length ? sentFold + shownLines.map((l) => lineView(o, l, lockedItems)).join('') :`<div class="r-empty">${ic('plus', 28)}<b>${t('No items yet')}</b><span>${t('Tap a dish to add it.')}</span></div>`}</div>
-    ${o.lines.length ? `<div class="r-sums">${billRows(o)}<div class="sumrow total"><span>${t('Total')}</span><span>${rs(b.total)}</span></div>
-${paidOf(o) ? `<div class="sumrow"><span class="muted">${t('Paid')}</span><span>${rs(paidOf(o))}</span></div><div class="sumrow due"><b>${t('Balance due')}</b><b>${rs(dueOf(o))}</b></div>` : ''}</div>` : ''}</div>
+    ${o.lines.length && (sumsExtra || !dockTotal) ? `<div class="r-sums">${sumsExtra ? billRows(o) : ''}${dockTotal ? '' : `<div class="sumrow total"><span>${t('Total')}</span><span>${rs(b.total)}</span></div>`}</div>` : ''}</div>
     <div class="ticket-tools">${tools}</div></div>
     <div class="ticket-dock">${dockTotal || pb.when ? `<div class="dock-top">${dockTotal}${pb.when}</div>` : ''}${pb.main || fb}${alts ? `<div class="dock-alts">${alts}</div>` : ''}${o.state === 'open' && !can('pay') ? `<p class="co-help">${t('A cashier takes the payment.')}</p>` : ''}</div></aside></div>`;
       }
@@ -10084,13 +10189,9 @@ ${disc}
       function customerBillHTML(o) {
         const s = D.settings[o.store],
           b = billOf(o),
-          ps = payState(o),
           row = (a, v, cls = '') =>
             `<div class="rr ${cls}"><span>${a}</span><span>${v}</span></div>`;
-        const bal =
-          o.customerId && o.payments.some((p) => p.method === 'udhaar')
-            ? custBalance(o.customerId)
-            : 0;
+        // The bill ends at the total: no paid, due or udhaar lines.
         return `<div class="receipt"><div class="rh">${D.business.logo ? `<img src="${esc(D.business.logo)}" alt="">` : ''}<b>${esc(s.receiptHeader)}</b>${esc(s.address)}<br>${esc(s.phone)}</div>
     ${o.token && o.type !== 'dine' ? `<div class="rtoken"><small>Your token number</small><b>${o.token}</b></div>` : ''}
     <div class="meta2"><span>Order ${esc(o.no)}</span><span>${TYPE_NAME[o.type]}${o.label ? `: ${esc(o.label)}` : ''}</span></div>
@@ -10105,8 +10206,7 @@ ${disc}
       )
       .join('')}
     <div class="rt">${row('Subtotal', n0(b.subtotal))}${b.discount ? row(`Discount${o.discount && o.discount.type === 'pct' ? ` ${o.discount.value}%` : ''}`, '−' + n0(b.discount)) : ''}${b.service ? row(`Service charge ${b.servicePct}%`, n0(b.service)) : ''}${b.tax ? row(`Tax ${b.taxPct}%`, n0(b.tax)) : ''}${b.deliveryFee ? row('Delivery fee', n0(b.deliveryFee)) : ''}
-    ${row('Total', rs(b.total), 'rg')}${o.payments.map((p) => row(`Paid, ${methodName(p.method)}`, n0(p.amount))).join('')}${o.payments.length ? row('Amount paid', rs(paidOf(o))) : ''}${o.change ? row('Cash change returned', n0(o.change)) : ''}${ps !== 'paid' ? row('Balance due', rs(dueOf(o)), 'rg') : ''}${bal ? row('Udhaar balance now', rs(bal)) : ''}</div>
-    <div class="stamp-wrap">${ps === 'paid' ? '<span class="stamp">PAID</span>' : `<span class="stamp due">Due ${rs(dueOf(o))}</span>`}</div>
+    ${row('Total', rs(b.total), 'rg')}</div>
     <div class="rf">${esc(s.receiptFooter)}<br>Demo receipt, fictional data.</div></div>`;
       }
       // 80mm kitchen ticket: token number, order type, items and notes, no prices.
@@ -11767,17 +11867,13 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
                 optional: true,
                 attrs:
                   'maxlength="30" placeholder="5, Garden, VIP Corner" autofocus',
-                hint: t('Free text. No table needed.'),
               });
             if (ty === 'take')
               form = `<div class="grid g2" style="gap:0 12px">${field('no-name', t('Customer name'), '', { optional: true, attrs: 'maxlength="40" autofocus' })}${field('no-phone', t('Phone number'), '', { optional: true, attrs: 'inputmode="tel" placeholder="0300-1234567"' })}</div>`;
             if (ty === 'delivery')
               form = `<div class="grid g2" style="gap:0 12px">${field('no-name', `${t('Customer name')} *`, '', { attrs: 'maxlength="40" autofocus' })}${field('no-phone', `${t('Phone number')} *`, '', { attrs: 'inputmode="tel" placeholder="0300-1234567"' })}</div>${field('no-address', `${t('Delivery address')} *`, '', { attrs: 'maxlength="90" placeholder="House 14, Street 3, Model Town"' })}${field('no-fee', `${t('Delivery fee')} (Rs.) *`, s.deliveryFee, { attrs: 'inputmode="numeric"' })}`;
-            // When the customer pays: now (before the food) or later (after it is served or delivered)
-            const when = ty
-              ? `<span class="label">${t('When will the customer pay?')}</span><div class="chips" style="margin:6px 0 4px">${chip('no-pay', 'now', `${ic('cash', 16)} ${t('Pay now')}`, this.payWhen === 'now')}${chip('no-pay', 'later', `${ic('check', 16)} ${t(ty === 'delivery' ? 'Pay on delivery' : 'Pay later')}`, this.payWhen === 'later')}</div><p class="hint">${this.payWhen === 'now' ? t('Payment is taken first, then the order goes to the kitchen and the token prints.') : ty === 'delivery' ? t('The rider collects the money when the food is delivered.') : t('The order goes to the kitchen now. The customer pays after the food is served.')}</p>`
-              : '';
-            return `${mHead(t('New order'), `${t(store(st).name)}, ${dayLabel(dayOf(st).date)}`)}<div class="modal-body">${pick}${form}${can('pay') ? when : ''}${mErr()}</div>${mFoot(t('Start order'), 'no-create', 'btn-primary', !ty)}`;
+            // Pay now or later is picked once, on the order screen next to the send button.
+            return `${mHead(t('New order'))}<div class="modal-body">${pick}${form}${mErr()}</div>${mFoot(t('Start order'), 'no-create', 'btn-primary', !ty)}`;
           },
         });
       }
@@ -11797,12 +11893,15 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
                 [...this.add].map((i) => it.addons[i]),
                 (a) => a.price,
               );
-            return `${mHead(esc(itemName(it)), esc(it.desc || it.ur))}<div class="modal-body">
-${it.variants.length ? `<div class="opt-group"><span class="label">${t('Size')}</span><div class="chips">${it.variants.map((x, i) => chip('cfg-v', i, `${esc(x.name)} <span class="n">${rs(priceAt(st, it, i))}</span>`, this.v === i)).join('')}</div></div>` : ''}
-${it.addons.length ? `<div class="opt-group"><span class="label">${t('Extras')}</span><div class="chips">${it.addons.map((a, i) => chip('cfg-a', i, `${esc(a.name)} <span class="n">+${rs(a.price)}</span>`, this.add.has(i))).join('')}</div></div>` : ''}
+            // Size and how many up front; extras, spice and note only when asked for.
+            const extras = `${it.addons.length ? `<div class="opt-group"><span class="label">${t('Extras')}</span><div class="chips">${it.addons.map((a, i) => chip('cfg-a', i, `${esc(a.name)} <span class="n">+${rs(a.price)}</span>`, this.add.has(i))).join('')}</div></div>` : ''}
 ${it.spice ? `<div class="opt-group"><span class="label">${t('Spice')}</span><div class="chips">${['Mild', 'Medium', 'Hot'].map((s) => chip('cfg-s', s, t(s), this.spice === s)).join('')}</div></div>` : ''}
-<div class="opt-group"><span class="label">${t('Quantity')}</span><span class="stepper"><button data-act="cfg-q" data-d="-1" aria-label="One less">−</button><span>${this.qty}</span><button data-act="cfg-q" data-d="1" aria-label="One more">+</button></span></div>
-${`<div class="field"><label for="cfg-note">${t('Kitchen note')}</label><input class="input" id="cfg-note" placeholder="${t('For example: no onions, extra raita')}" value="${esc(this.note)}" data-in="cfg-note"><div class="chips" style="margin-top:4px">${QUICK_NOTES.map((n) => chip('cfg-quick', n, t(n), false)).join('')}</div></div>`}${mErr()}</div>
+<div class="field"><label for="cfg-note">${t('Kitchen note')}</label><input class="input" id="cfg-note" placeholder="${t('For example: no onions, extra raita')}" value="${esc(this.note)}" data-in="cfg-note"><div class="chips" style="margin-top:4px">${QUICK_NOTES.map((n) => chip('cfg-quick', n, t(n), false)).join('')}</div></div>`;
+            const picked = this.add.size || this.note || (it.spice && this.spice !== 'Medium');
+            return `${mHead(esc(itemName(it)))}<div class="modal-body cfg">
+${it.variants.length ? `<div class="sizes">${it.variants.map((x, i) => `<button class="size ${this.v === i ? 'on' : ''}" data-act="cfg-v" data-v="${i}" aria-pressed="${this.v === i}"><b>${esc(x.name)}</b><span>${rs(priceAt(st, it, i))}</span></button>`).join('')}</div>` : ''}
+<div class="cfg-qty"><span class="stepper big"><button data-act="cfg-q" data-d="-1" aria-label="One less">−</button><span>${this.qty}</span><button data-act="cfg-q" data-d="1" aria-label="One more">+</button></span></div>
+${this.more || picked ? extras : `<button class="cfg-more" data-act="cfg-more">${ic('plus', 16)} ${t(it.addons.length || it.spice ? 'Extras, spice or note' : 'Kitchen note')}</button>`}${mErr()}</div>
 ${mFoot(`${t('Add to order')}, ${rs(unit * this.qty)}`, 'cfg-add')}`;
           },
         });
@@ -12437,6 +12536,10 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
         },
         'cfg-v': (el) => {
           M.v = +el.dataset.v;
+          renderModal();
+        },
+        'cfg-more': () => {
+          M.more = !M.more;
           renderModal();
         },
         'cfg-a': (el) => {
