@@ -3766,105 +3766,131 @@
       }
 
       /* =============================================================
-         Palette: "deep ocean and mango". A deep teal for the main actions,
-         mango for highlights, sky blue for info, coral red for danger,
-         on cool sea-glass surfaces. Depth comes from light falling on the
-         cards (a top highlight and a soft lift), not from patterns. Token
+         Palette: "lantern night". Harbour navy (#01386A) carries the brand
+         and every main action; ember (#EE4B2B) is the spark for markers,
+         alerts and danger; cream (#F5E8AA) brings warmth to the page and
+         the warning tones. Light theme sits on warm paper; dark theme is a
+         deep navy night with cream text. Depth comes from blurred colour
+         behind the page and lifted solid cards, never from glass. Token
          names stay as they were (green = main action, indigo = info,
-         saffron = attention).
+         saffron = attention, chili = danger).
          ============================================================= */
       :root:not([data-theme='dark']) {
-        --bg: #eaf0f1;
-        --surface: #ffffff;
-        --surface-2: #f5f9f9;
-        --ink: #0f1f26;
-        --muted: #4e636b;
-        --faint: #687b83;
-        --line: #dbe5e7;
-        --line-strong: #c4d1d4;
-        --green: #0b7f86;
-        --green-hover: #096d73;
-        --green-soft: #dcf0ef;
-        --green-ink: #07616a;
-        --indigo: #3a76cc;
-        --indigo-soft: #e2ebfa;
-        --indigo-ink: #285aa3;
-        --saffron: #f2a33a;
-        --saffron-soft: #fdeed6;
-        --saffron-ink: #7a4a06;
-        --chili: #df4349;
-        --chili-soft: #fce3e3;
-        --chili-ink: #ad2a30;
-        --night: #0b1f27;
-        --night-2: #17363f;
-        --night-ink: #a9c3c9;
-        --accent: #f2a33a;
+        --bg: #f4efdc;
+        --surface: #fffdf6;
+        --surface-2: #faf5e6;
+        --ink: #0b1d33;
+        --muted: #4c5868;
+        --faint: #66707d;
+        --line: #e8dfc4;
+        --line-strong: #d6caa6;
+        --heading: #01386a;
+        --navy: #01386a;
+        --ember: #ee4b2b;
+        --cream: #f5e8aa;
+        --green: #01386a;
+        --green-hover: #0a4c8c;
+        --green-soft: #e1eaf4;
+        --green-ink: #01386a;
+        --indigo: #2f6db0;
+        --indigo-soft: #e2ecf8;
+        --indigo-ink: #1f528a;
+        --saffron: #d99a1e;
+        --saffron-soft: #f8edbd;
+        --saffron-ink: #6b4500;
+        --chili: #e03f20;
+        --chili-soft: #fde3dc;
+        --chili-ink: #b02a12;
+        --night: #01284d;
+        --night-2: #0b3f72;
+        --night-ink: #bccbdc;
+        --accent: #f5e8aa;
         --jaali: linear-gradient(transparent, transparent);
-        --grad: linear-gradient(135deg, #0a737b 0%, #13a196 100%);
-        --glow: 0 8px 22px -6px rgba(11, 127, 134, 0.45);
-        --aura-1: rgba(19, 161, 150, 0.3);
-        --aura-2: rgba(242, 163, 58, 0.16);
-        --page-glow: rgba(19, 161, 150, 0.1);
+        --grad: linear-gradient(135deg, #01386a 0%, #0d5296 100%);
+        --glow: 0 8px 22px -8px rgba(1, 56, 106, 0.55);
+        --aura-1: rgba(238, 75, 43, 0.3);
+        --aura-2: rgba(245, 232, 170, 0.2);
+        --page-glow: rgba(1, 56, 106, 0.1);
+        --page-ember: rgba(238, 75, 43, 0.08);
+        --page-cream: rgba(245, 232, 170, 0.75);
         --lift:
-          inset 0 1px 0 rgba(255, 255, 255, 0.9),
-          0 1px 2px rgba(15, 31, 38, 0.06),
-          0 10px 28px -12px rgba(15, 31, 38, 0.18);
-        --ring: 0 0 0 3px rgba(11, 127, 134, 0.32);
+          inset 0 1px 0 rgba(255, 255, 255, 0.95),
+          0 1px 2px rgba(11, 29, 51, 0.06),
+          0 12px 30px -14px rgba(1, 40, 77, 0.22);
+        --ring: 0 0 0 3px rgba(238, 75, 43, 0.35);
         --shadow:
-          0 1px 2px rgba(15, 31, 38, 0.06), 0 8px 22px -10px rgba(15, 31, 38, 0.16);
-        --shadow-lg: 0 24px 60px -12px rgba(15, 31, 38, 0.3);
-        --scrim: rgba(11, 31, 39, 0.5);
+          0 1px 2px rgba(11, 29, 51, 0.06), 0 8px 22px -10px rgba(1, 40, 77, 0.18);
+        --shadow-lg: 0 24px 60px -12px rgba(1, 40, 77, 0.32);
+        --scrim: rgba(1, 26, 50, 0.55);
       }
-      /* Dark: deep sea, never pure black; brighter tints of each colour so
-         text and buttons are easy to read without glare. */
+      /* Dark: a deep navy night, never black; cream text, brighter blue
+         for actions, a warmer ember so alerts glow without glare. */
       :root[data-theme='dark'] {
-        --bg: #061116;
-        --surface: #0c1c22;
-        --surface-2: #11262d;
-        --ink: #e4f0f1;
-        --muted: #9db4ba;
-        --faint: #73898f;
-        --line: #1b333b;
-        --line-strong: #29454e;
-        --green: #10958d;
-        --green-hover: #16a89f;
-        --green-soft: rgba(25, 179, 166, 0.16);
-        --green-ink: #7fe0d5;
-        --indigo: #5a9cf0;
-        --indigo-soft: rgba(90, 156, 240, 0.16);
-        --indigo-ink: #a9cbf8;
-        --saffron: #f5b04d;
-        --saffron-soft: rgba(245, 176, 77, 0.14);
-        --saffron-ink: #f8cd8a;
-        --chili: #f2676b;
-        --chili-soft: rgba(242, 103, 107, 0.15);
-        --chili-ink: #f7a3a5;
-        --night: #040d11;
-        --night-2: #12303a;
-        --night-ink: #a9c3c9;
-        --accent: #f5b04d;
+        --bg: #050e1b;
+        --surface: #0b1a2d;
+        --surface-2: #10233b;
+        --ink: #f4ecd2;
+        --muted: #a8b4c4;
+        --faint: #7c899b;
+        --line: #182b44;
+        --line-strong: #24395a;
+        --heading: #f5e8aa;
+        --navy: #0d4f96;
+        --ember: #ff6242;
+        --cream: #f5e8aa;
+        --green: #2a6fc0;
+        --green-hover: #3a80d2;
+        --green-soft: rgba(74, 140, 220, 0.18);
+        --green-ink: #a9caf2;
+        --indigo: #6ea3e6;
+        --indigo-soft: rgba(110, 163, 230, 0.16);
+        --indigo-ink: #b5d0f4;
+        --saffron: #f2d27a;
+        --saffron-soft: rgba(245, 232, 170, 0.14);
+        --saffron-ink: #f5e8aa;
+        --chili: #ff6242;
+        --chili-soft: rgba(255, 98, 66, 0.16);
+        --chili-ink: #ffa48f;
+        --night: #030b16;
+        --night-2: #0f2847;
+        --night-ink: #b3c1d3;
+        --accent: #f5e8aa;
         --jaali: linear-gradient(transparent, transparent);
-        --grad: linear-gradient(135deg, #0b7f82 0%, #15a397 100%);
-        --glow: 0 8px 26px -6px rgba(25, 179, 166, 0.45);
-        --aura-1: rgba(25, 179, 166, 0.22);
-        --aura-2: rgba(245, 176, 77, 0.1);
-        --page-glow: rgba(25, 179, 166, 0.08);
+        --grad: linear-gradient(135deg, #0d4a8a 0%, #2468b8 100%);
+        --glow: 0 8px 26px -8px rgba(60, 130, 220, 0.5);
+        --aura-1: rgba(255, 98, 66, 0.22);
+        --aura-2: rgba(245, 232, 170, 0.1);
+        --page-glow: rgba(42, 111, 192, 0.16);
+        --page-ember: rgba(255, 98, 66, 0.07);
+        --page-cream: rgba(245, 232, 170, 0.04);
         --lift:
-          inset 0 1px 0 rgba(255, 255, 255, 0.05),
-          0 1px 2px rgba(0, 0, 0, 0.4),
-          0 14px 34px -14px rgba(0, 0, 0, 0.7);
-        --ring: 0 0 0 3px rgba(245, 176, 77, 0.45);
+          inset 0 1px 0 rgba(245, 232, 170, 0.05),
+          0 1px 2px rgba(0, 0, 0, 0.45),
+          0 16px 36px -16px rgba(0, 0, 0, 0.75);
+        --ring: 0 0 0 3px rgba(255, 98, 66, 0.45);
         --shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
-        --shadow-lg: 0 24px 60px -12px rgba(0, 0, 0, 0.7);
-        --scrim: rgba(2, 8, 11, 0.72);
+        --shadow-lg: 0 24px 60px -12px rgba(0, 0, 0, 0.75);
+        --scrim: rgba(2, 7, 15, 0.74);
       }
-      /* volume: a soft light from the top of the page, and lifted cards */
+      /* depth: blurred fields of navy, ember and cream behind the page */
       .main {
-        background-image: radial-gradient(
-          1100px 420px at 75% -120px,
-          var(--page-glow),
-          transparent 70%
-        );
+        background-image:
+          radial-gradient(
+            900px 420px at 85% -140px,
+            var(--page-glow),
+            transparent 70%
+          ),
+          radial-gradient(
+            700px 380px at -10% 110%,
+            var(--page-ember),
+            transparent 70%
+          ),
+          radial-gradient(
+            800px 300px at 20% -80px,
+            var(--page-cream),
+            transparent 70%
+          );
+        background-attachment: local;
       }
       .panel {
         background: linear-gradient(
@@ -3927,8 +3953,8 @@
         color: var(--night-ink);
       }
       :root[data-theme='dark'] .kpi.lead {
-        background-color: #3a24a8;
-        border-color: #3a24a8;
+        background-color: #01386a;
+        border-color: #01386a;
       }
       /* dark mode: cards sit slightly above the page, inputs are clearly fields */
       :root[data-theme='dark'] .input,
@@ -4004,7 +4030,7 @@
         box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
       }
       .rail-btn.on::before {
-        box-shadow: 0 0 6px rgba(212, 176, 106, 0.5);
+        box-shadow: 0 0 6px rgba(238, 75, 43, 0.6);
       }
       .logo {
         color: #fff;
@@ -4040,14 +4066,14 @@
         aspect-ratio: 1;
         left: -8%;
         top: -40%;
-        background: #3ee0c8;
+        background: #ee4b2b;
       }
       .hero-aura i:nth-child(2) {
         width: 38%;
         aspect-ratio: 1;
         right: 4%;
         bottom: -55%;
-        background: #f2a33a;
+        background: #f5e8aa;
         opacity: 0.42;
       }
       .hero-aura i:nth-child(3) {
@@ -4055,7 +4081,7 @@
         aspect-ratio: 1;
         left: 42%;
         top: -30%;
-        background: #4f8fe6;
+        background: #3f8fe0;
         opacity: 0.4;
       }
       .hero-txt {
@@ -4725,6 +4751,46 @@
           transition:
             filter 0.15s,
             box-shadow 0.15s;
+        }
+      }
+      /* ---- Headings: navy titles (cream at night), and each page title
+         carries an ember-to-cream marker down its side ---- */
+      .page-head h2,
+      .panel-head h3,
+      .dash-sec h3,
+      .modal-head h3 {
+        color: var(--heading);
+      }
+      .page-head > div:first-child {
+        position: relative;
+        padding-inline-start: 16px;
+      }
+      .page-head > div:first-child::before {
+        content: '';
+        position: absolute;
+        inset-inline-start: 0;
+        top: 4px;
+        bottom: 4px;
+        width: 5px;
+        border-radius: 5px;
+        background: linear-gradient(180deg, var(--ember), var(--cream));
+      }
+      .dash-sec::after {
+        background: linear-gradient(90deg, var(--line-strong), transparent);
+      }
+      .rail-btn.on::before {
+        background: var(--ember);
+      }
+      .hero-aura i:nth-child(1) {
+        opacity: 0.45;
+      }
+      /* a search box in a filter bar sits at the far end */
+      .obar > div:last-child:not(.chips) {
+        margin-inline-start: auto;
+      }
+      @media (max-width: 760px) {
+        .obar > div:last-child:not(.chips) {
+          width: 100% !important;
         }
       }
     </style>
@@ -6328,6 +6394,15 @@
         'In kitchen': 'کچن میں',
         'Branches open': 'کھلی برانچیں',
         'Right now': 'اس وقت',
+        'Clear filters': 'فلٹر ہٹائیں',
+        'Search ingredients': 'سامان تلاش کریں',
+        'All customers': 'تمام گاہک',
+        'Owes udhaar': 'ادھار باقی',
+        'No ingredients match': 'کوئی سامان نہیں ملا',
+        'Try another name or filter.': 'کوئی اور نام یا فلٹر آزمائیں۔',
+        'Search token, name or phone': 'ٹوکن، نام یا فون تلاش کریں',
+        'Search name, action or detail': 'نام، کام یا تفصیل تلاش کریں',
+        'Out of stock': 'اسٹاک ختم',
         'Today in detail': 'آج کی تفصیل',
         'At a glance': 'ایک نظر میں',
         'Across all branches': 'تمام برانچوں میں',
@@ -10324,6 +10399,24 @@
             .slice(0, 2)
             .join(''),
         )}</span>`;
+      // Page-by-page footer for long lists. U.pg remembers the page of each
+      // list; a new search or filter sends it back to the first page.
+      function pageOf(list, key, size = 20) {
+        U.pg = U.pg || {};
+        const pages = Math.max(1, Math.ceil(list.length / size)),
+          p = Math.max(0, Math.min(U.pg[key] || 0, pages - 1));
+        U.pg[key] = p;
+        const rows = list.slice(p * size, p * size + size);
+        const html =
+          list.length > size
+            ? `<div class="pager"><span>${t('Showing {a} to {b} of {n}', { a: p * size + 1, b: p * size + rows.length, n: list.length })}</span><span class="row"><button class="btn btn-ghost btn-xs" data-act="pg" data-k="${key}" data-v="-1" ${p <= 0 ? 'disabled' : ''}>${t('Previous')}</button><span>${p + 1} / ${pages}</span><button class="btn btn-ghost btn-xs" data-act="pg" data-k="${key}" data-v="1" ${p >= pages - 1 ? 'disabled' : ''}>${t('Next')}</button></span></div>`
+            : '';
+        return { rows, html };
+      }
+      const resetPage = (key) => {
+        U.pg = U.pg || {};
+        U.pg[key] = 0;
+      };
       const chip = (act, v, label, on, n, extra = '') =>
         `<button class="chip ${on ? 'on' : ''}" data-act="${act}" data-v="${esc(v)}" aria-pressed="${!!on}" ${extra}>${label}${n != null ? `<span class="n">${n}</span>` : ''}</button>`;
       const sw = (on, act, attrs, label, disabled) =>
@@ -10822,7 +10915,15 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
       function ordersView() {
         const st = U.store,
           F = orderFilters(st),
-          list = (F[U.filter] || F.open).slice();
+          oq = (U.orderQ || '').trim().toLowerCase();
+        // Search by token, order number, table, customer name or phone.
+        const list = (F[U.filter] || F.open).filter(
+          (o) =>
+            !oq ||
+            `${o.token || ''} ${o.no || ''} ${o.table || ''} ${o.cust ? `${o.cust.name || ''} ${o.cust.phone || ''}` : ''}`
+              .toLowerCase()
+              .includes(oq),
+        );
         if (U.filter !== 'paid') list.sort((a, b) => a.createdAt - b.createdAt);
         const open = dayOpen(st),
           canNew = can('order') && open;
@@ -10849,7 +10950,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
           'orders',
         )}
     ${open ? '' : `<div class="notice bad" style="margin-bottom:14px">${t('This business day is closed. Start the next business day first.')} ${can('close') ? `<button class="btn btn-sm btn-ghost" style="margin-inline-start:8px" data-act="go" data-s="close">${t('Day close')}</button>` : ''}</div>`}
-    <div class="obar"><div class="chips" role="group" aria-label="Filter">${filters.map(([k, l]) => chip('ofilter', k, t(l), U.filter === k, F[k].length)).join('')}</div></div>
+    <div class="obar"><div class="chips" role="group" aria-label="Filter">${filters.map(([k, l]) => chip('ofilter', k, t(l), U.filter === k, F[k].length)).join('')}</div><div style="width:240px">${searchInput('order-q', U.orderQ || '', t('Search token, name or phone'), 'order-q')}</div></div>
     <div class="oboard">${canNew && U.filter !== 'paid' ? `<button class="new-tile" data-act="new-order">${ic('plus', 28)}${t('New order')}<span class="hint">${t('Dine-in, takeaway or delivery')}</span></button>` : ''}
 ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class="panel" style="grid-column:1/-1">${emptyBox(U.filter === 'paid' ? t('No paid orders yet today') : t('No orders here'), U.filter === 'paid' ? t('Paid orders show here once the bill is settled.') : t('Try another filter.'))}</div>` : '')}</div>
     <div class="soon-list">${soon('reservations')}${soon('merge')}${soon('riders')}</div></div>`;
@@ -11654,7 +11755,7 @@ ${dashSec(t('Across all branches'), t('Payments, best sellers and low stock, add
                 `<li${canScreen('stock') ? ' class="click" data-act="go" data-s="stock" tabindex="0"' : ''}><span class="dl-ic tone-chili">${ic('box', 18)}</span><span class="dl-nm">${esc(ingName(g.id))}<small>${t('{q} left, low at {x}', { q: `${fmtQty(stockQty(st, g.id))} ${g.unit}`, x: fmtQty(lowAt(st, g.id)) })}</small></span><span class="dl-tag low">${t('Low stock')}</span></li>`,
             ),
           ];
-        const headBtns = `${can('settings') ? `<button class="btn btn-ghost" data-act="go" data-s="settings">${ic('gear', 18)} ${t('Settings')}</button>` : ''}${can('order') && dayOpen ? `<button class="btn btn-primary" data-act="new-order">${ic('plus', 18)} ${t('New order')}</button>` : ''}`;
+        const headBtns = `${canAll() && myStores().length > 1 ? `<button class="btn btn-ghost" data-act="all-stores">${ic('back', 18)} ${t('All stores')}</button>` : ''}${can('settings') ? `<button class="btn btn-ghost" data-act="go" data-s="settings">${ic('gear', 18)} ${t('Settings')}</button>` : ''}${can('order') && dayOpen ? `<button class="btn btn-primary" data-act="new-order">${ic('plus', 18)} ${t('New order')}</button>` : ''}`;
         return `<div class="page dash">${pageHead(`${t('Dashboard')}: ${esc(t(store(st).name))}`, `${dayLabel(d.date)}. ${t('Updates as orders, payments and stock change.')}`, headBtns ? `<div class="dash-acts">${headBtns}</div>` : '', 'dashboard')}
     ${checklistCard()}${store(st).status === 'paused' ? `<div class="notice warn" style="margin-bottom:16px">${t('This branch is paused. New orders are stopped.')}</div>` : ''}
 <div class="panel kpi lead dash-hero"><div class="hero-aura" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -11836,15 +11937,29 @@ ${sel.recipe.length ? `<div class="table-wrap panel"><table class="tbl"><thead><
             .filter((m) => m.store === st)
             .slice(-12)
             .reverse();
-          body = `<div class="panel"><div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Ingredient')}</th><th class="r">${t('On hand')}</th><th style="width:16%"></th><th class="r">${t('Threshold')}</th><th>${t('Status')}</th><th class="r">${t('Value')}</th><th></th></tr></thead><tbody>
-${D.ingredients
+          // Search by name, and narrow to low or out-of-stock items.
+          const sq = (U.stockQ || '').trim().toLowerCase(),
+            SF = U.stockF || 'all',
+            stateOf = (g) => {
+              const q = stockQty(st, g.id);
+              return q <= 0 ? 'out' : q <= lowAt(st, g.id) ? 'low' : 'ok';
+            },
+            named = D.ingredients.filter(
+              (g) => !sq || ingName(g.id).toLowerCase().includes(sq),
+            ),
+            nLow = named.filter((g) => stateOf(g) === 'low').length,
+            nOut = named.filter((g) => stateOf(g) === 'out').length,
+            ingList = named.filter((g) => SF === 'all' || stateOf(g) === SF);
+          body = `<div class="obar"><div class="chips" role="group" aria-label="${t('Filter')}">${chip('stock-f', 'all', t('All'), SF === 'all', named.length)}${chip('stock-f', 'low', t('Low stock'), SF === 'low', nLow)}${chip('stock-f', 'out', t('Out of stock'), SF === 'out', nOut)}</div><div style="width:240px">${searchInput('stock-q', U.stockQ || '', t('Search ingredients'), 'stock-q')}</div></div>
+<div class="panel"><div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Ingredient')}</th><th class="r">${t('On hand')}</th><th style="width:16%"></th><th class="r">${t('Threshold')}</th><th>${t('Status')}</th><th class="r">${t('Value')}</th><th></th></tr></thead><tbody>
+${ingList
   .map((g) => {
     const q = stockQty(st, g.id),
       lo = lowAt(st, g.id),
       s = q <= 0 ? 'out' : q <= lo ? 'low' : '';
     return `<tr><td><b>${esc(ingName(g.id))}</b><div class="hint">${rs(g.cost)}/${g.unit}</div></td><td class="r"><b>${fmtQty(q)}</b> ${g.unit}</td><td><div class="meter ${s}" aria-hidden="true"><i style="width:${Math.min(100, (q / Math.max(0.01, lo * 3)) * 100)}%"></i></div></td><td class="r">${fmtQty(lo)} ${g.unit}</td><td>${s === 'out' || s === 'low' ? `<span class="badge ${s === 'out' ? 'b-chili' : 'b-saffron'}">${t(s === 'out' ? 'Out of stock' : 'Low stock')}</span>` : ''}</td><td class="r">${rs(q * g.cost)}</td><td><div class="row" style="flex-wrap:nowrap;justify-content:flex-end">${can('stock') ? `<button class="icon-btn sbtn in" data-act="stock-move" data-k="in" data-g="${g.id}" title="${t('Stock in')}" aria-label="${t('Stock in')}">${ic('plus', 18)}</button><button class="icon-btn sbtn" data-act="stock-move" data-k="out" data-g="${g.id}" title="${t('Stock out')}" aria-label="${t('Stock out')}">${ic('minus', 18)}</button><button class="icon-btn sbtn" data-act="stock-move" data-k="adjust" data-g="${g.id}" title="${t('Adjust')}" aria-label="${t('Adjust')}">${ic('note', 18)}</button>` : ''}</div></td></tr>`;
   })
-  .join('')}
+  .join('') || `<tr><td colspan="7">${emptyBox(t('No ingredients match'), t('Try another name or filter.'))}</td></tr>`}
 </tbody></table></div><p class="hint" style="padding:10px 18px">${t('Stock value')}: <b>${rs(sum(D.ingredients, (g) => stockQty(st, g.id) * g.cost))}</b></p></div>
 <div class="panel" style="margin-top:16px"><div class="panel-head"><h3>${t('Recent movements')}</h3><span class="hint">${t('Newest first')}</span></div>
 <div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Time')}</th><th>${t('Ingredient')}</th><th class="r">${t('Change')}</th><th>${t('Type')}</th><th>${t('Reason')}</th><th>${t('User')}</th></tr></thead><tbody>${moves.map((m) => `<tr><td class="hint">${fmtDT(m.at)}</td><td>${esc(ingName(m.ing))}</td><td class="r" style="font-weight:600;color:${m.qty < 0 ? 'var(--chili-ink)' : 'var(--green-ink)'}">${m.qty > 0 ? '+' : '−'}${fmtQty(Math.abs(m.qty))} ${ing(m.ing).unit}</td><td>${t(MOVE_NAME[m.type] || m.type)}${m.short ? ` <span class="badge b-chili">${t('short')} ${fmtQty(m.short)}</span>` : ''}</td><td>${esc(m.reason)}</td><td class="hint">${esc(uname(m.user))}</td></tr>`).join('') || `<tr><td colspan="6">${emptyBox(t('No movements yet'), '')}</td></tr>`}</tbody></table></div></div>
@@ -11921,10 +12036,15 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
           }))
           .sort((a, b) => b.bal - a.bal || b.last - a.last);
         const owed = sum(D.customers, (c) => custBalance(c.id));
+        // All customers, or only those who still owe udhaar.
+        const CF = U.custF || 'all',
+          owing = list.filter((r) => r.bal > 0),
+          pg = pageOf(CF === 'owes' ? owing : list, 'cust');
         return `<div class="page">${pageHead(t('Customers'), t('{n} customers shared by every branch. {x} udhaar outstanding.', { n: D.customers.length, x: rs(owed) }), `<div style="width:270px">${searchInput('cust-q', U.custQ, t('Search name or phone'), 'cust-q')}</div>${can('customers') ? `<button class="btn btn-primary" data-act="cust-new">${ic('plus', 18)} ${t('New customer')}</button>` : ''}`, 'customers')}
+    <div class="obar"><div class="chips" role="group" aria-label="${t('Filter')}">${chip('cust-f', 'all', t('All customers'), CF === 'all', list.length)}${chip('cust-f', 'owes', t('Owes udhaar'), CF === 'owes', owing.length)}</div></div>
     <div class="panel"><div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Customer')}</th><th>${t('Phone number')}</th><th class="r">${t('Total spend')}</th><th>${t('Last visit')}</th><th class="r">${t('Outstanding')}</th></tr></thead><tbody>
-    ${list.map(({ c, bal, spend, last }) => `<tr class="click" data-act="cust-open" data-id="${c.id}" tabindex="0"><td><b>${esc(c.name)}</b></td><td class="num">${esc(showPhone(c.phone))}</td><td class="r">${rs(spend)}</td><td>${last ? fmtDT(last) : '—'}</td><td class="r">${bal > 0 ? `<span class="badge b-saffron">${rs(bal)}</span>` : '<span class="hint">Rs. 0</span>'}</td></tr>`).join('') || `<tr><td colspan="5">${emptyBox(t('No customers match'), t('Check the spelling or the phone number.'), can('customers') ? `<button class="btn btn-primary" data-act="cust-new">${t('New customer')}</button>` : '')}</td></tr>`}
-    </tbody></table></div></div><div class="soon-list">${soon('loyalty')}</div></div>`;
+    ${pg.rows.map(({ c, bal, spend, last }) => `<tr class="click" data-act="cust-open" data-id="${c.id}" tabindex="0"><td><b>${esc(c.name)}</b></td><td class="num">${esc(showPhone(c.phone))}</td><td class="r">${rs(spend)}</td><td>${last ? fmtDT(last) : '—'}</td><td class="r">${bal > 0 ? `<span class="badge b-saffron">${rs(bal)}</span>` : '<span class="hint">Rs. 0</span>'}</td></tr>`).join('') || `<tr><td colspan="5">${emptyBox(t('No customers match'), t('Check the spelling or the phone number.'), can('customers') ? `<button class="btn btn-primary" data-act="cust-new">${t('New customer')}</button>` : '')}</td></tr>`}
+    </tbody></table></div>${pg.html}</div><div class="soon-list">${soon('loyalty')}</div></div>`;
       }
 
       /* =============================================================
@@ -12145,13 +12265,28 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
           list = list.filter((a) => a.action === F.action);
         if (F.from) list = list.filter((a) => ymd(a.at) >= F.from);
         if (F.to) list = list.filter((a) => ymd(a.at) <= F.to);
-        const shown = list.slice().reverse().slice(0, 300);
+        const aq = (U.auditQ || '').trim().toLowerCase();
+        if (aq)
+          list = list.filter((a) =>
+            `${uname(a.user)} ${a.details} ${a.ref || ''} ${t(AUDIT_ACTIONS[a.action] || a.action)}`
+              .toLowerCase()
+              .includes(aq),
+          );
+        const filtered =
+          aq ||
+          F.store !== 'all' ||
+          F.user !== 'all' ||
+          F.action !== 'all' ||
+          F.from ||
+          F.to;
+        const pg = pageOf(list.slice().reverse(), 'audit', 25),
+          shown = pg.rows;
         const storeOpts = [
           ['all', t('All stores')],
           ...(u.role === 'owner' ? [['all-biz', t('Business-wide')]] : []),
           ...ids.map((id) => [id, t(store(id).name)]),
         ].filter((x) => x[0] !== 'all-biz');
-        return `<div class="page">${pageHead(t('Audit log'), t('{n} records. Records cannot be edited or deleted.', { n: list.length }), '', 'audit')}
+        return `<div class="page">${pageHead(t('Audit log'), t('{n} records. Records cannot be edited or deleted.', { n: list.length }), `<div style="width:260px">${searchInput('audit-q', U.auditQ || '', t('Search name, action or detail'), 'audit-q')}</div>${filtered ? `<button class="btn btn-ghost" data-act="audit-clear">${ic('x', 18)} ${t('Clear filters')}</button>` : ''}`, 'audit')}
     <div class="panel panel-pad" style="margin-bottom:14px"><div class="grid g5" style="gap:10px">
 <div class="field" style="margin:0"><label for="af-store">${t('Store')}</label>${selectBox('af-store', storeOpts, F.store, 'data-ch="audit-f" data-k="store"')}</div>
 <div class="field" style="margin:0"><label for="af-user">${t('User')}</label>${selectBox('af-user', [['all', t('Everyone')], ...D.users.map((x) => [x.id, x.name])], F.user, 'data-ch="audit-f" data-k="user"')}</div>
@@ -12160,7 +12295,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
 <div class="field" style="margin:0"><label for="af-to">${t('To')}</label><input class="input" type="date" id="af-to" value="${F.to}" data-ch="audit-f" data-k="to"></div></div></div>
     <div class="panel"><div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Time')}</th><th>${t('User')}</th><th>${t('Store')}</th><th>${t('Action')}</th><th>${t('Details')}</th></tr></thead><tbody>
     ${shown.map((a) => `<tr><td class="hint" style="white-space:nowrap">${fmtDT(a.at)}</td><td><b>${esc(uname(a.user))}</b><div class="hint">${a.role === 'system' ? '' : roleName(a.role)}</div></td><td>${a.store === 'all' ? t('Business') : store(a.store) ? esc(t(store(a.store).name)) : `<span class="hint">${t('Deleted branch')}</span>`}</td><td>${t(AUDIT_ACTIONS[a.action] || a.action)}</td><td>${esc(a.details)}${a.ref ? ` <span class="hint">${esc(a.ref)}</span>` : ''}</td></tr>`).join('') || `<tr><td colspan="5">${emptyBox(t('No records match these filters'), '')}</td></tr>`}
-    </tbody></table></div></div><div class="soon-list">${soon('export')}</div></div>`;
+    </tbody></table></div>${pg.html}</div><div class="soon-list">${soon('export')}</div></div>`;
       }
       function roadmapView() {
         const group = (status, title, sub) => {
@@ -13656,6 +13791,28 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
           U.filter = el.dataset.v;
           render();
         },
+        pg: (el) => {
+          U.pg[el.dataset.k] = (U.pg[el.dataset.k] || 0) + +el.dataset.v;
+          render();
+        },
+        'cust-f': (el) => {
+          U.custF = el.dataset.v;
+          resetPage('cust');
+          render();
+        },
+        'stock-f': (el) => {
+          U.stockF = el.dataset.v;
+          render();
+        },
+        'audit-clear': () => {
+          U.audit = { store: 'all', user: 'all', action: 'all', from: '', to: '' };
+          U.auditQ = '';
+          resetPage('audit');
+          render();
+        },
+        'all-stores': () => {
+          if (setStore('all', 'dashboard')) render();
+        },
         period: (el) => {
           U.period = el.dataset.v;
           render();
@@ -14677,6 +14834,7 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
         },
         'audit-f': (el) => {
           U.audit[el.dataset.k] = el.value;
+          resetPage('audit');
           render();
         },
         'printer-width': (el) => {
@@ -14707,6 +14865,20 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
         },
         'cust-q': (el) => {
           U.custQ = el.value;
+          resetPage('cust');
+          render();
+        },
+        'order-q': (el) => {
+          U.orderQ = el.value;
+          render();
+        },
+        'stock-q': (el) => {
+          U.stockQ = el.value;
+          render();
+        },
+        'audit-q': (el) => {
+          U.auditQ = el.value;
+          resetPage('audit');
           render();
         },
         'cp-q': (el) => {
