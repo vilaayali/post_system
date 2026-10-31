@@ -12304,7 +12304,18 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
         }
         doPrint(kitchenTokenHTML(o, tk, reprint));
       }
+      // Bills and tokens print at the branch's paper width (Settings, Printers).
       function doPrint(html) {
+        const s = D.settings[U.store],
+          w = s && s.printers && s.printers.width === '58mm' ? 58 : 80,
+          m = w === 58 ? 2 : 3;
+        let ps = $('#page-size');
+        if (!ps) {
+          ps = document.createElement('style');
+          ps.id = 'page-size';
+          document.head.appendChild(ps);
+        }
+        ps.textContent = `@media print{@page{size:${w}mm auto;margin:${m}mm}#print-area .receipt{max-width:${w - 2 * m}mm;font-size:${w === 58 ? 10.5 : 12}px}${w === 58 ? '#print-area .rtoken b{font-size:38px}#print-area .rh b{font-size:15px}' : ''}}`;
         $('#print-area').innerHTML = html;
         try {
           window.print();
