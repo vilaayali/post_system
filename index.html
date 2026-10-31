@@ -4071,6 +4071,10 @@
         font-variant-numeric: tabular-nums;
         margin: 2px 0 4px;
       }
+      .br-tbl .r,
+      .br-tbl td:last-child {
+        white-space: nowrap;
+      }
       .dash-acts {
         display: flex;
         flex-wrap: wrap;
@@ -4216,6 +4220,9 @@
         font-size: 28px;
         font-weight: 800;
         line-height: 1.15;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         font-variant-numeric: tabular-nums;
       }
       .stat .s {
@@ -4400,7 +4407,7 @@
           line-height: 1.25;
         }
         .stat .v {
-          font-size: 22px;
+          font-size: 19px;
         }
         .stat .s {
           display: none;
@@ -6199,6 +6206,11 @@
         Now: 'ابھی',
         'Needs attention': 'توجہ طلب',
         'In kitchen': 'کچن میں',
+        'Branches open': 'کھلی برانچیں',
+        'Low stock alerts': 'کم اسٹاک الرٹ',
+        '{n} closed for the day': '{n} آج کے لیے بند',
+        'Across {n} branches': '{n} برانچوں میں',
+        '{n} more': '{n} مزید',
         'Nothing needs attention right now': 'ابھی کچھ بھی توجہ طلب نہیں',
         '{q} left, low at {x}': '{q} باقی، کم کی حد {x}',
         'Udhaar collected today: {x}': 'آج وصول ادھار: {x}',
@@ -10215,7 +10227,7 @@
         return out.join('');
       }
       const needsStore = (s) =>
-        ['orders', 'order', 'pay', 'dashboard', 'stock', 'settings'].includes(
+        ['orders', 'order', 'pay', 'stock', 'settings'].includes(
           s,
         );
 
@@ -10226,7 +10238,8 @@
       function homeScreen() {
         const u = user();
         if (!u) return 'login';
-        if (U.store === 'all') return 'allstores';
+        if (U.store === 'all')
+          return canScreen('dashboard') ? 'dashboard' : 'allstores';
         if (u.role === 'owner' && D.onboarding && D.onboarding.checklist)
           return 'dashboard';
         if (canScreen('orders')) return 'orders';
@@ -10291,6 +10304,9 @@
           !canScreen(U.screen)
         )
           U.screen = homeScreen();
+        // All stores lives inside the Dashboard tab now.
+        if (U.screen === 'allstores' && canScreen('dashboard'))
+          U.screen = 'dashboard';
         const main = $('#main'),
           items = $('.items');
         const keep = main && lastScreen === U.screen ? main.scrollTop : 0,
@@ -10420,7 +10436,9 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
         ];
         return list.filter(
           ([k]) =>
-            canScreen(k) && !(k === 'dashboard' && !U.store),
+            canScreen(k) &&
+            !(k === 'dashboard' && !U.store) &&
+            !(k === 'allstores' && canScreen('dashboard')),
         );
       }
       function railCount(k) {
@@ -10542,9 +10560,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
               ? 'Stock'
               : U.screen === 'settings'
                 ? 'Settings'
-                : U.screen === 'dashboard'
-                  ? 'Dashboard'
-                  : 'Orders',
+                : 'Orders',
           );
         switch (U.screen) {
           case 'orders':
@@ -10558,7 +10574,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
           case 'allstores':
             return allStoresView();
           case 'dashboard':
-            return dashView();
+            return U.store === 'all' ? allStoresView() : dashView();
           case 'menu':
             return menuView();
           case 'stock':
@@ -11169,8 +11185,6 @@ ${disc}
         );
         const allSettled = stats.flatMap((s) => s.settled);
         const lows = ids.flatMap((id) => lowList(id).map((g) => ({ id, g })));
-        const kpi = (label, v, s, lead) =>
-          `<div class="panel kpi ${lead ? 'lead' : ''}"><small>${label}</small><div class="v">${v}</div>${s ? `<div class="s">${s}</div>` : ''}</div>`;
         const periodText =
           PER === 'today'
             ? t('Each store’s current business day')
@@ -11212,69 +11226,47 @@ ${disc}
         const shown = rows.slice(F.page * PAGE, F.page * PAGE + PAGE);
         const th = (k, l, r) =>
           `<th class="${r ? 'r' : ''}"><button class="${F.sort === k ? 'on' : ''}" data-act="as-sort" data-v="${k}">${t(l)}${F.sort === k ? ic(F.dir < 0 ? 'down' : 'up', 14) : ''}</button></th>`;
-        const perf = (list, title, cls) =>
-          `<div class="panel"><div class="panel-head"><h3>${t(title)}</h3><span class="hint">${t('By sales in this period')}</span></div>${list.length ? `<div class="table-wrap"><table class="tbl"><tbody>${list.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex="0"><td><span class="rank">${rankOf(s.id)}</span></td><td><b>${esc(t(store(s.id).name))}</b><div class="hint">${esc(groupOf(s.id))}</div></td><td class="r"><b class="${cls}">${rs(s.sales)}</b><div class="hint">${s.orders} ${t('orders')}</div></td></tr>`).join('')}</tbody></table></div>` : emptyBox(t('No sales in this period'), '')}</div>`;
-        const n3 = Math.min(3, Math.floor(ranked.length / 2) || 1);
-        return `<div class="page">${pageHead(t('All stores'), `${periodText}. ${t('{n} branches included.', { n: ids.length })}`, `<div class="chips" role="group" aria-label="${t('Period')}">${PERIODS.map(([k, l]) => chip('period', k, t(l), PER === k)).join('')}</div>`, 'allstores')}
-    <div class="grid g4" style="margin-bottom:16px">${kpi(t('Total sales'), rs(tot.sales), t('{n} bills', { n: tot.orders }), true)}${kpi(t('Total orders'), n0(tot.orders), t('Paid and settled'))}${kpi(t('Average bill'), rs(tot.orders ? tot.sales / tot.orders : 0), '')}${kpi(t('Udhaar'), rs(byM.udhaar), t('Credit sales, not yet cash'))}</div>
-    <div class="grid g5" style="margin-bottom:16px">${METHODS.filter(
-      (m) => m[0] !== 'udhaar',
-    )
-      .map(([k, l]) =>
-        kpi(
-          t(l),
-          rs(byM[k]),
-          tot.sales
-            ? `${Math.round(
-                (byM[k] /
-                  Math.max(
-                    1,
-                    sum(METHODS, ([x]) => byM[x]),
-                  )) *
-                  100,
-              )}%`
-            : '',
-        ),
-      )
-      .join('')}</div>
-    ${
-      ids.length > 1
-        ? `<div class="grid g2" style="margin-bottom:16px">${perf(ranked.slice(0, n3), 'Top performers', '')}${perf(
-            ranked
-              .slice(-n3)
-              .reverse()
-              .filter((s) => ranked.length > 1),
-            'Needs attention',
-            '',
-          )}</div>`
-        : ''
-    }
-    <div class="panel" style="margin-bottom:16px"><div class="panel-head"><h3>${t('Branches')}</h3><div class="row"><div style="width:220px">${searchInput('as-q', F.q, t('Search branches'), 'as-q')}</div>${groups.length > 1 ? selectBox('as-group', [['all', useRegion ? t('All regions') : t('All cities')], ...groups.map((g) => [g, g])], F.group, 'data-ch="as-group" style="width:170px" aria-label="Group"') : ''}</div></div>
-<div class="table-wrap"><table class="tbl"><thead><tr><th>#</th>${th('name', 'Store')}${th('sales', 'Sales', 1)}${th('orders', 'Orders', 1)}${th('avg', 'Average bill', 1)}<th>${t('Payment methods')}</th>${th('low', 'Low stock', 1)}<th>${t('Day close')}</th></tr></thead><tbody>
-${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex="0"><td><span class="rank">${rankOf(s.id)}</span></td><td><b>${esc(t(store(s.id).name))}</b>${store(s.id).status === 'paused' ? ` <span class="badge b-saffron">${t('Paused')}</span>` : ''}<div class="hint">${esc(groupOf(s.id))}</div></td><td class="r"><b>${rs(s.sales)}</b></td><td class="r">${s.orders}</td><td class="r">${rs(s.avg)}</td><td class="mini">${methodMini(s.byM)}</td><td class="r">${s.low ? `<span class="badge b-saffron">${s.low}</span>` : '0'}</td><td>${s.day.status === 'closed' ? `<span class="badge b-green">${ic('check')} ${t('Closed')}</span>` : `<span class="badge b-saffron">${t('Awaiting close')}</span>`}<div class="hint">${dayLabel(s.day.date)}</div></td></tr>`).join('') || `<tr><td colspan="8">${emptyBox(t('No branch matches'), '')}</td></tr>`}
-</tbody></table></div>
-<div class="pager"><span>${t('Showing {a} to {b} of {n}', { a: rows.length ? F.page * PAGE + 1 : 0, b: F.page * PAGE + shown.length, n: rows.length })}</span><span class="row"><button class="btn btn-ghost btn-xs" data-act="as-page" data-v="-1" ${F.page <= 0 ? 'disabled' : ''}>${t('Previous')}</button><span>${F.page + 1} / ${pages}</span><button class="btn btn-ghost btn-xs" data-act="as-page" data-v="1" ${F.page >= pages - 1 ? 'disabled' : ''}>${t('Next')}</button></span></div></div>
-    <div class="grid g2" style="margin-bottom:16px">
-<div class="panel"><div class="panel-head"><h3>${t('Top items')}: ${t('All stores')}</h3><span class="hint">${t('Plates sold')}</span></div>${
-          allSettled.length
-            ? barRows(
-                topItems(allSettled).map(([n, q2]) => [esc(n), q2]),
-                (v) => `${v}`,
-              )
-            : emptyBox(t('No sales in this period'), '')
-        }</div>
-<div class="panel"><div class="panel-head"><h3>${t('Low stock')}</h3><span class="hint">${lows.length} ${t('alerts')}</span></div>
-  ${
-    lows.length
-      ? `<div class="table-wrap" style="max-height:380px;overflow-y:auto"><table class="tbl"><thead><tr><th>${t('Ingredient')}</th><th>${t('Store')}</th><th class="r">${t('On hand')}</th><th class="r">${t('Threshold')}</th></tr></thead><tbody>${lows
-          .slice(0, 60)
+        // Days in the period, oldest first, for the multi-day curve.
+        const dayList = [
+          ...new Set(ids.flatMap((id) => [...periodDays(id, PER)])),
+        ].sort();
+        const openNow = stats.filter((s) => s.day.status === 'open').length;
+        const lowRows = lows
+          .slice(0, 8)
           .map(
             ({ id, g }) =>
-              `<tr class="click" data-act="low-open" data-v="${id}" tabindex="0"><td><b>${esc(ingName(g.id))}</b></td><td>${esc(t(store(id).name))}</td><td class="r" style="color:${stockQty(id, g.id) <= 0 ? 'var(--chili-ink)' : 'var(--saffron-ink)'};font-weight:600">${fmtQty(stockQty(id, g.id))} ${g.unit}</td><td class="r">${fmtQty(lowAt(id, g.id))} ${g.unit}</td></tr>`,
-          )
-          .join('')}</tbody></table></div>`
-      : emptyBox(t('Everything is above its threshold'), '')
-  }</div>
+              `<li class="click" data-act="low-open" data-v="${id}" tabindex="0"><span class="dl-ic tone-chili">${ic('box', 18)}</span><span class="dl-nm">${esc(ingName(g.id))}<small>${esc(t(store(id).name))}, ${t('{q} left, low at {x}', { q: `${fmtQty(stockQty(id, g.id))} ${g.unit}`, x: fmtQty(lowAt(id, g.id)) })}</small></span></li>`,
+          );
+        return `<div class="page dash">${pageHead(`${t('Dashboard')}: ${t('All stores')}`, `${periodText}. ${t('{n} branches included.', { n: ids.length })}`, `<div class="chips" role="group" aria-label="${t('Period')}">${PERIODS.map(([k, l]) => chip('period', k, t(l), PER === k)).join('')}</div>`, 'allstores')}
+<div class="panel kpi lead dash-hero"><div class="hero-aura" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="hero-txt"><small>${t('Total sales')}</small><div class="v" data-count="${tot.sales}" data-rs="1">${rs(tot.sales)}</div><div class="s">${t('{n} bills, average {x}', { n: tot.orders, x: rs(tot.orders ? Math.round(tot.sales / tot.orders) : 0) })}</div>${typeSplit(allSettled)}</div>
+  ${PER === 'today' ? salesCurve(allSettled) : dailyCurve(allSettled, dayList)}</div>
+<div class="dash-stats">
+${statTile('green', 'close', t('Branches open'), `${openNow}/${ids.length}`, t('{n} closed for the day', { n: ids.length - openNow }), 'branch')}
+${statTile('saffron', '', t('Udhaar'), rs(byM.udhaar || 0), t('Credit sales, not yet cash'), 'book')}
+${statTile('chili', '', t('Low stock alerts'), lows.length, t('Across {n} branches', { n: new Set(lows.map((l) => l.id)).size }), 'box', lows.length, lows.length > 0)}
+</div>
+    <div class="panel" style="margin-bottom:16px"><div class="panel-head"><h3>${t('Branches')}</h3><div class="row"><div style="width:220px">${searchInput('as-q', F.q, t('Search branches'), 'as-q')}</div>${groups.length > 1 ? selectBox('as-group', [['all', useRegion ? t('All regions') : t('All cities')], ...groups.map((g) => [g, g])], F.group, 'data-ch="as-group" style="width:170px" aria-label="Group"') : ''}</div></div>
+<div class="table-wrap"><table class="tbl br-tbl"><thead><tr><th>#</th>${th('name', 'Store')}${th('sales', 'Sales', 1)}${th('orders', 'Orders', 1)}${th('avg', 'Average bill', 1)}${th('low', 'Low stock', 1)}<th>${t('Day close')}</th></tr></thead><tbody>
+${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex="0"><td><span class="rank">${rankOf(s.id)}</span></td><td><b>${esc(t(store(s.id).name))}</b>${store(s.id).status === 'paused' ? ` <span class="badge b-saffron">${t('Paused')}</span>` : ''}<div class="hint">${esc(groupOf(s.id))}</div></td><td class="r"><b>${rs(s.sales)}</b></td><td class="r">${s.orders}</td><td class="r">${rs(s.avg)}</td><td class="r">${s.low ? `<span class="badge b-saffron">${s.low}</span>` : '0'}</td><td>${s.day.status === 'closed' ? `<span class="badge b-green">${ic('check')} ${t('Closed')}</span>` : `<span class="badge b-saffron">${t('Awaiting close')}</span>`}<div class="hint">${dayLabel(s.day.date)}</div></td></tr>`).join('') || `<tr><td colspan="7">${emptyBox(t('No branch matches'), '')}</td></tr>`}
+</tbody></table></div>
+<div class="pager"><span>${t('Showing {a} to {b} of {n}', { a: rows.length ? F.page * PAGE + 1 : 0, b: F.page * PAGE + shown.length, n: rows.length })}</span><span class="row"><button class="btn btn-ghost btn-xs" data-act="as-page" data-v="-1" ${F.page <= 0 ? 'disabled' : ''}>${t('Previous')}</button><span>${F.page + 1} / ${pages}</span><button class="btn btn-ghost btn-xs" data-act="as-page" data-v="1" ${F.page >= pages - 1 ? 'disabled' : ''}>${t('Next')}</button></span></div></div>
+    <div class="dash-grid">
+<div class="panel"><div class="panel-head"><h3>${t('Payment methods')}</h3></div>${
+          Object.values(byM).some((v) => v)
+            ? payList(byM)
+            : emptyBox(t('No sales in this period'), '')
+        }</div>
+<div class="panel"><div class="panel-head"><h3>${t('Top items')}</h3></div>${
+          allSettled.length
+            ? rankList(topItems(allSettled).map(([n, q2]) => [esc(n), q2]))
+            : emptyBox(t('No sales in this period'), '')
+        }</div>
+<div class="panel"><div class="panel-head"><h3>${t('Low stock')}</h3>${lows.length > 8 ? `<span class="hint">${t('{n} more', { n: lows.length - 8 })}</span>` : ''}</div>${
+          lowRows.length
+            ? `<ul class="dl-list attn">${lowRows.join('')}</ul>`
+            : emptyBox(t('Everything is above its threshold'), '')
+        }</div>
     </div>
     <div class="soon-list">${soon('export')}${soon('heatmap')}</div></div>`;
       }
@@ -11303,7 +11295,19 @@ ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex
             );
           pts.push(run);
         }
-        const max = Math.max(1, run),
+        const lbl = (h) =>
+          `${((h + 11) % 12) + 1}${h < 12 ? 'am' : 'pm'}`;
+        return curveSVG(pts, lbl(from), t('Now'));
+      }
+      // Running total across several days, one point per business day.
+      function dailyCurve(settled, days) {
+        let run = 0;
+        const pts = [0, ...days.map((d) => (run += sum(settled.filter((o) => o.settledDay === d), (o) => o.bill.total)))];
+        return curveSVG(pts, dayLabel(days[0]), t('Today'));
+      }
+      function curveSVG(pts, fromLbl, toLbl) {
+        const span = Math.max(1, pts.length - 1),
+          max = Math.max(1, ...pts),
           W = 300,
           H = 80;
         const xy = pts.map((v, i) => [
@@ -11319,9 +11323,19 @@ ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex
           d += ` C${mx},${y0} ${mx},${y1} ${x1},${y1}`;
         }
         const last = xy[xy.length - 1];
-        const lbl = (h) =>
-          `${((h + 11) % 12) + 1}${h < 12 ? 'am' : 'pm'}`;
-        return `<div class="curve"><div class="cv-plot"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="cv-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path class="cv-area" d="${d} L${W},${H} L0,${H} Z" fill="url(#cv-fill)"/><path class="cv-line" d="${d}" fill="none" stroke="#fff" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linecap="round"/></svg><span class="cv-dot" style="left:${(last[0] / W) * 100}%;top:${(last[1] / H) * 100}%"></span></div><div class="cv-axis"><span>${lbl(from)}</span><span>${t('Now')}</span></div></div>`;
+        return `<div class="curve"><div class="cv-plot"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="cv-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path class="cv-area" d="${d} L${W},${H} L0,${H} Z" fill="url(#cv-fill)"/><path class="cv-line" d="${d}" fill="none" stroke="#fff" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linecap="round"/></svg><span class="cv-dot" style="left:${(last[0] / W) * 100}%;top:${(last[1] / H) * 100}%"></span></div><div class="cv-axis"><span>${fromLbl}</span><span>${toLbl}</span></div></div>`;
+      }
+      // Sales split by order type, shown under the hero's total.
+      function typeSplit(settled) {
+        return `<div class="hero-split">${['dine', 'take', 'delivery']
+          .map((k) => `<div class="hs-item"><span>${ic(TYPE_IC[k], 16)}${t(TYPE_NAME[k])}</span><b>${rs(sum(settled.filter((o) => o.type === k), (o) => o.bill.total))}</b></div>`)
+          .join('')}</div>`;
+      }
+      // tone picks a stat tile's accent colour; busy makes its dot breathe.
+      // A tile with a screen opens it.
+      function statTile(tone, to, label, v, sub, icon, count, busy) {
+        const go = to && canScreen(to);
+        return `<${go ? `button type="button" data-act="go" data-s="${to}"` : 'div'} class="panel stat" style="--tone:var(--${tone});--tone-soft:var(--${tone}-soft);--tone-ink:var(--${tone}-ink)"><span class="st-ic">${ic(icon, 20)}${busy ? '<i class="st-ping"></i>' : ''}</span><span class="st-body"><small>${label}</small><span class="v"${count != null ? ` data-count="${count}"` : ''}>${v}</span><span class="s">${sub}</span></span></${go ? 'button' : 'div'}>`;
       }
       // Payment methods as a plain list, biggest first, with its share.
       function payList(byM) {
@@ -11374,15 +11388,7 @@ ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex
         // Numbers count up when the dashboard opens (see playIntro).
         const kitchen = open.filter((o) => o.tickets.length && !o.fulfil).length,
           dayOpen = d.status === 'open';
-        // Sales split by order type, shown under the total.
-        const split = ['dine', 'take', 'delivery']
-          .map((k) => [k, sum(s.settled.filter((o) => o.type === k), (o) => o.bill.total)])
-          .map(([k, v]) => `<div class="hs-item"><span>${ic(TYPE_IC[k], 16)}${t(TYPE_NAME[k])}</span><b>${rs(v)}</b></div>`)
-          .join('');
-        // tone picks the tile's accent colour; busy makes its dot breathe.
-        // A tile opens the screen where that number is worked on.
-        const stat = (tone, to, label, v, sub, icon, count, busy) =>
-          `<${canScreen(to) ? `button type="button" data-act="go" data-s="${to}"` : 'div'} class="panel stat" style="--tone:var(--${tone});--tone-soft:var(--${tone}-soft);--tone-ink:var(--${tone}-ink)"><span class="st-ic">${ic(icon, 20)}${busy ? '<i class="st-ping"></i>' : ''}</span><span class="st-body"><small>${label}</small><span class="v"${count != null ? ` data-count="${count}"` : ''}>${v}</span><span class="s">${sub}</span></span></${canScreen(to) ? 'button' : 'div'}>`;
+        const stat = statTile;
         // Deliveries still on the road and stock running low, in one list.
         const stockOn = feature(st, 'stock'),
           attn = [
@@ -11399,7 +11405,7 @@ ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex
         return `<div class="page dash">${pageHead(`${t('Dashboard')}: ${esc(t(store(st).name))}`, `${dayLabel(d.date)}. ${t('Updates as orders, payments and stock change.')}`, headBtns ? `<div class="dash-acts">${headBtns}</div>` : '', 'dashboard')}
     ${checklistCard()}${store(st).status === 'paused' ? `<div class="notice warn" style="margin-bottom:16px">${t('This branch is paused. New orders are stopped.')}</div>` : ''}
 <div class="panel kpi lead dash-hero"><div class="hero-aura" aria-hidden="true"><i></i><i></i><i></i></div>
-  <div class="hero-txt"><small>${t('Today’s sales')}</small><div class="v" data-count="${s.sales}" data-rs="1">${rs(s.sales)}</div><div class="s">${t('{n} bills, average {x}', { n: s.orders, x: rs(s.avg) })}</div><div class="hero-split">${split}</div></div>
+  <div class="hero-txt"><small>${t('Today’s sales')}</small><div class="v" data-count="${s.sales}" data-rs="1">${rs(s.sales)}</div><div class="s">${t('{n} bills, average {x}', { n: s.orders, x: rs(s.avg) })}</div>${typeSplit(s.settled)}</div>
   ${salesCurve(s.settled)}</div>
 <div class="dash-stats">
 ${stat('green', 'orders', t('In the kitchen'), kitchen, t('Tokens printed, not served or sent out yet'), 'ticket', kitchen, kitchen > 0)}
