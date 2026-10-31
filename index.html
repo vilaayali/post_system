@@ -4071,6 +4071,11 @@
         font-variant-numeric: tabular-nums;
         margin: 2px 0 4px;
       }
+      .dash-acts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
       .dash-hero .hero-txt > small {
         font-size: 14px;
         font-weight: 600;
@@ -11392,7 +11397,8 @@ ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex
                 `<li${canScreen('stock') ? ' class="click" data-act="go" data-s="stock" tabindex="0"' : ''}><span class="dl-ic tone-chili">${ic('box', 18)}</span><span class="dl-nm">${esc(ingName(g.id))}<small>${t('{q} left, low at {x}', { q: `${fmtQty(stockQty(st, g.id))} ${g.unit}`, x: fmtQty(lowAt(st, g.id)) })}</small></span><span class="dl-tag low">${t('Low stock')}</span></li>`,
             ),
           ];
-        return `<div class="page dash">${pageHead(esc(t(store(st).name)), dayLabel(d.date), '', 'dashboard')}
+        const headBtns = `${can('settings') ? `<button class="btn btn-ghost" data-act="go" data-s="settings">${ic('gear', 18)} ${t('Settings')}</button>` : ''}${can('order') && dayOpen ? `<button class="btn btn-primary" data-act="new-order">${ic('plus', 18)} ${t('New order')}</button>` : ''}`;
+        return `<div class="page dash">${pageHead(`${t('Dashboard')}: ${esc(t(store(st).name))}`, `${dayLabel(d.date)}. ${t('Updates as orders, payments and stock change.')}`, headBtns ? `<div class="dash-acts">${headBtns}</div>` : '', 'dashboard')}
     ${checklistCard()}${store(st).status === 'paused' ? `<div class="notice warn" style="margin-bottom:16px">${t('This branch is paused. New orders are stopped.')}</div>` : ''}
 <div class="panel kpi lead dash-hero"><div class="hero-aura" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="hero-txt"><small>${t('Today’s sales')}</small><div class="v" data-count="${s.sales}" data-rs="1">${rs(s.sales)}</div><div class="s">${t('{n} bills, average {x}', { n: s.orders, x: rs(s.avg) })}</div><div class="hero-split">${split}</div></div>
