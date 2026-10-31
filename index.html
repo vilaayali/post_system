@@ -3764,6 +3764,150 @@
           transition-duration: 0.01ms !important;
         }
       }
+
+      /* =============================================================
+         Brand palette: midnight #030164, indigo #363199, harbour blue
+         #2D7495, butter #E8E085. Token names stay as they were (green =
+         the main action colour, indigo = info, saffron = attention) so
+         every screen picks the palette up from here.
+         ============================================================= */
+      :root:not([data-theme='dark']) {
+        --bg: #f1f1f8;
+        --surface: #ffffff;
+        --surface-2: #f6f6fb;
+        --ink: #0f0e3d;
+        --muted: #55567a;
+        --faint: #72739a;
+        --line: #e0e0ec;
+        --line-strong: #c9c9dc;
+        --green: #363199;
+        --green-hover: #2b2780;
+        --green-soft: #e7e6f7;
+        --green-ink: #2b2780;
+        --indigo: #2d7495;
+        --indigo-soft: #dfedf3;
+        --indigo-ink: #1e5670;
+        --saffron: #e8e085;
+        --saffron-soft: #f8f5d2;
+        --saffron-ink: #57500c;
+        --chili: #c0352c;
+        --chili-soft: #fae3e1;
+        --chili-ink: #9b241d;
+        --night: #030164;
+        --night-2: #1d1a8a;
+        --night-ink: #c3c2f0;
+        --accent: #e8e085;
+        --ring: 0 0 0 3px rgba(54, 49, 153, 0.35);
+        --shadow:
+          0 1px 2px rgba(3, 1, 100, 0.06), 0 4px 14px rgba(3, 1, 100, 0.06);
+        --shadow-lg: 0 18px 50px rgba(3, 1, 100, 0.22);
+        --scrim: rgba(3, 1, 60, 0.5);
+      }
+      /* Dark: a deep midnight blue rather than grey, with lighter tints of
+         the brand colours so text and buttons stay easy to read. */
+      :root[data-theme='dark'] {
+        --bg: #07072a;
+        --surface: #0f0f3a;
+        --surface-2: #161648;
+        --ink: #eeeef9;
+        --muted: #b0b0d4;
+        --faint: #8080ad;
+        --line: #26265e;
+        --line-strong: #383874;
+        --green: #5a54d8;
+        --green-hover: #6c66e4;
+        --green-soft: rgba(108, 102, 228, 0.22);
+        --green-ink: #c6c3fb;
+        --indigo: #4f9cc0;
+        --indigo-soft: rgba(79, 156, 192, 0.2);
+        --indigo-ink: #a3d4ea;
+        --saffron: #e8e085;
+        --saffron-soft: rgba(232, 224, 133, 0.16);
+        --saffron-ink: #efe8a0;
+        --chili: #f07a72;
+        --chili-soft: rgba(240, 122, 114, 0.18);
+        --chili-ink: #f8aea8;
+        --night: #030164;
+        --night-2: #1f1c92;
+        --night-ink: #c3c2f0;
+        --accent: #e8e085;
+        --ring: 0 0 0 3px rgba(232, 224, 133, 0.45);
+        --shadow: 0 1px 2px rgba(0, 0, 20, 0.5);
+        --shadow-lg: 0 18px 50px rgba(0, 0, 20, 0.7);
+        --scrim: rgba(0, 0, 18, 0.7);
+      }
+      .scrim {
+        background: var(--scrim);
+      }
+      /* the brand mark and rail highlights use butter, not the warning yellow */
+      .logo small,
+      .login-brand .mark span {
+        color: var(--accent);
+      }
+      .rail-btn.on::before {
+        background: var(--accent);
+      }
+      .rail-btn.on svg {
+        color: var(--accent);
+      }
+      .rail-btn:focus-visible {
+        box-shadow: 0 0 0 2px var(--accent);
+      }
+      .rail-count.warn,
+      .banner.warn {
+        color: #2a2600;
+      }
+      /* platform admin: a darker midnight so it reads as a different place */
+      .app.admin .rail {
+        background: #01003a;
+        border-color: #01003a;
+      }
+      .app.admin .rail-btn,
+      .app.admin .rail-group {
+        color: var(--night-ink);
+      }
+      .app.admin .rail-btn:hover {
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .app.admin .rail-btn.on {
+        background: var(--night-2);
+      }
+      .app.admin .logo,
+      .staff-card.admin .pinhint {
+        color: var(--accent);
+      }
+      .banner.imp,
+      .kpi.dark,
+      .staff-card.admin {
+        background: var(--night);
+        border-color: var(--night);
+        color: #fff;
+      }
+      .kpi.dark small,
+      .kpi.dark .s,
+      .staff-card.admin small {
+        color: var(--night-ink);
+      }
+      :root[data-theme='dark'] .kpi.lead {
+        background-color: #2b2780;
+        border-color: #2b2780;
+      }
+      /* dark mode: cards sit slightly above the page, inputs are clearly fields */
+      :root[data-theme='dark'] .input,
+      :root[data-theme='dark'] select,
+      :root[data-theme='dark'] textarea {
+        background: var(--bg);
+        border-color: var(--line-strong);
+        color: var(--ink);
+      }
+      :root[data-theme='dark'] .input::placeholder,
+      :root[data-theme='dark'] textarea::placeholder {
+        color: var(--faint);
+      }
+      :root[data-theme='dark'] .seg button.on,
+      :root[data-theme='dark'] .btn-primary {
+        color: #fff;
+      }
     </style>
   </head>
   <body>
