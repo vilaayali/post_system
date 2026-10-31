@@ -4075,6 +4075,124 @@
       .br-tbl td:last-child {
         white-space: nowrap;
       }
+      /* the "i" beside a heading or label, and the note it opens */
+      .tip {
+        display: inline-grid;
+        place-items: center;
+        flex: none;
+        width: 18px;
+        height: 18px;
+        margin-inline-start: 7px;
+        padding: 0;
+        border: 1.5px solid currentColor;
+        border-radius: 50%;
+        background: none;
+        color: var(--faint);
+        font: italic 700 11px/1 Georgia, 'Times New Roman', serif;
+        cursor: help;
+        transition:
+          color 0.15s,
+          background-color 0.15s;
+      }
+      .tip:hover {
+        color: var(--green-ink);
+        background: var(--green-soft);
+      }
+      .tip:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 2px;
+      }
+      .dash-hero .tip {
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .dash-hero .tip:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.2);
+      }
+      #tipbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 400;
+        max-width: min(280px, calc(100vw - 24px));
+        padding: 10px 13px;
+        border-radius: 12px;
+        background: var(--night);
+        color: #eaf4f5;
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.08),
+          0 14px 34px -12px rgba(0, 0, 0, 0.5);
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.5;
+        pointer-events: none;
+        visibility: hidden;
+        opacity: 0;
+        transition:
+          opacity 0.15s,
+          visibility 0.15s;
+      }
+      #tipbox.on {
+        visibility: visible;
+        opacity: 1;
+      }
+      /* section headings: a title, its "i", then a rule to the edge */
+      .dash .dash-hero,
+      .dash .dash-stats {
+        margin-bottom: 0;
+      }
+      .dash-sec {
+        display: flex;
+        align-items: center;
+        margin: 24px 2px 12px;
+      }
+      .dash-sec h3 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 800;
+      }
+      .dash-sec::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        margin-inline-start: 14px;
+        background: var(--line-strong);
+      }
+      .dh-t {
+        display: flex;
+        align-items: center;
+      }
+      .dh-ic {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 30px;
+        height: 30px;
+        margin-inline-end: 10px;
+        border-radius: 9px;
+        background: var(--tone-soft);
+        color: var(--tone-ink);
+      }
+      .trend {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin: 2px 0 6px;
+        padding: 3px 10px 3px 7px;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.18);
+        color: #fff;
+        font-size: 12.5px;
+        font-weight: 700;
+      }
+      .trend.down {
+        background: rgba(0, 0, 0, 0.16);
+      }
+      .hero-txt > small {
+        display: flex;
+        align-items: center;
+      }
       .dash-acts {
         display: flex;
         flex-wrap: wrap;
@@ -4172,10 +4290,10 @@
         color: inherit;
         text-align: start;
       }
-      button.stat {
+      .stat[data-act] {
         cursor: pointer;
       }
-      button.stat:focus-visible {
+      .stat[data-act]:focus-visible {
         outline: 2px solid var(--tone);
         outline-offset: 2px;
       }
@@ -4212,6 +4330,8 @@
         min-width: 0;
       }
       .st-body small {
+        display: flex;
+        align-items: center;
         color: var(--muted);
         font-size: 13px;
         font-weight: 600;
@@ -6207,6 +6327,50 @@
         'Needs attention': 'توجہ طلب',
         'In kitchen': 'کچن میں',
         'Branches open': 'کھلی برانچیں',
+        'Right now': 'اس وقت',
+        'Today in detail': 'آج کی تفصیل',
+        'At a glance': 'ایک نظر میں',
+        'Across all branches': 'تمام برانچوں میں',
+        '{p}% more than yesterday by now': 'کل اس وقت سے {p}% زیادہ',
+        '{p}% less than yesterday by now': 'کل اس وقت سے {p}% کم',
+        'Total of bills paid and closed today. Open orders are added once they are paid. The line shows how the total grew hour by hour.':
+          'آج ادا اور بند ہونے والے بلوں کا کل۔ کھلے آرڈر ادائیگی کے بعد شامل ہوتے ہیں۔ لکیر دکھاتی ہے کہ کل رقم گھنٹہ بہ گھنٹہ کیسے بڑھی۔',
+        'Live counts for this branch. Tap a card to open the screen where you handle it.':
+          'اس برانچ کی تازہ گنتی۔ کسی کارڈ کو دبائیں تو اس کا صفحہ کھل جائے گا۔',
+        'Orders whose token has gone to the kitchen but are not served or sent out yet.':
+          'وہ آرڈر جن کا ٹوکن کچن میں جا چکا ہے مگر ابھی پیش یا روانہ نہیں ہوئے۔',
+        'Delivery orders not delivered yet. Some are still cooking, others are on the way.':
+          'ڈیلیوری آرڈر جو ابھی پہنچے نہیں۔ کچھ بن رہے ہیں، کچھ راستے میں ہیں۔',
+        'Whether today’s business day is still open. Close it at night to count the cash drawer and lock the day.':
+          'آج کا کاروباری دن کھلا ہے یا بند۔ رات کو بند کریں تاکہ کیش گنا جائے اور دن لاک ہو جائے۔',
+        'Where today’s money came from, what sold best, and what needs a look.':
+          'آج پیسہ کہاں سے آیا، کیا سب سے زیادہ بکا، اور کس چیز پر توجہ چاہیے۔',
+        'Money received today, by how customers paid. Udhaar is food given on credit, not cash in hand.':
+          'آج وصول ہونے والی رقم، ادائیگی کے طریقے کے لحاظ سے۔ ادھار وہ کھانا ہے جو قرض پر دیا گیا، نقد نہیں۔',
+        'The five dishes sold most today, by number of plates.':
+          'آج سب سے زیادہ بکنے والی پانچ ڈشیں، پلیٹوں کی تعداد کے لحاظ سے۔',
+        'Deliveries still out and ingredients running low. Tap a row to open it.':
+          'راستے میں ڈیلیوریاں اور ختم ہوتا سامان۔ کھولنے کے لیے قطار دبائیں۔',
+        'Total of bills paid and closed at all your branches in the chosen period. The line shows how the total grew.':
+          'منتخب مدت میں تمام برانچوں کے ادا اور بند بلوں کا کل۔ لکیر دکھاتی ہے کہ کل رقم کیسے بڑھی۔',
+        'A quick health check across all branches.':
+          'تمام برانچوں کا فوری جائزہ۔',
+        'Branches whose business day is still open. Each branch should close its day every night.':
+          'وہ برانچیں جن کا کاروباری دن ابھی کھلا ہے۔ ہر برانچ کو ہر رات دن بند کرنا چاہیے۔',
+        'Food given on credit in this period. Customers owe it to you; it is not cash yet.':
+          'اس مدت میں ادھار پر دیا گیا کھانا۔ یہ رقم گاہکوں کے ذمے ہے، ابھی نقد نہیں۔',
+        'Ingredients below their low-stock level, counted across all branches.':
+          'کم اسٹاک کی حد سے نیچے سامان، تمام برانچوں کو ملا کر۔',
+        'Every branch ranked by sales. Tap a branch to open its own dashboard, or tap a column name to sort.':
+          'ہر برانچ سیل کے لحاظ سے۔ برانچ دبائیں تو اس کا ڈیش بورڈ کھلے گا، کالم کا نام دبا کر ترتیب بدلیں۔',
+        'Payments, best sellers and low stock, added up for every branch.':
+          'ادائیگیاں، سب سے زیادہ بکنے والی چیزیں اور کم اسٹاک، تمام برانچوں کو ملا کر۔',
+        'Money received in this period at all branches, by how customers paid.':
+          'اس مدت میں تمام برانچوں میں وصول رقم، ادائیگی کے طریقے کے لحاظ سے۔',
+        'The five dishes sold most at all branches in this period, by number of plates.':
+          'اس مدت میں تمام برانچوں میں سب سے زیادہ بکنے والی پانچ ڈشیں۔',
+        'Ingredients running low, with the branch they are in. Tap one to open that branch’s stock.':
+          'ختم ہوتا سامان اور اس کی برانچ۔ دبائیں تو اس برانچ کا اسٹاک کھلے گا۔',
         'Low stock alerts': 'کم اسٹاک الرٹ',
         '{n} closed for the day': '{n} آج کے لیے بند',
         'Across {n} branches': '{n} برانچوں میں',
@@ -10270,7 +10434,8 @@
             $('#main') && lastScreen === U.mode + U.adminScreen
               ? $('#main').scrollTop
               : 0;
-          $('#root').innerHTML = html;
+          hideTip();
+        $('#root').innerHTML = html;
           if ($('#main')) $('#main').scrollTop = keep;
           lastScreen = U.mode + U.adminScreen;
           return;
@@ -11239,30 +11404,33 @@ ${disc}
           );
         return `<div class="page dash">${pageHead(`${t('Dashboard')}: ${t('All stores')}`, `${periodText}. ${t('{n} branches included.', { n: ids.length })}`, `<div class="chips" role="group" aria-label="${t('Period')}">${PERIODS.map(([k, l]) => chip('period', k, t(l), PER === k)).join('')}</div>`, 'allstores')}
 <div class="panel kpi lead dash-hero"><div class="hero-aura" aria-hidden="true"><i></i><i></i><i></i></div>
-  <div class="hero-txt"><small>${t('Total sales')}</small><div class="v" data-count="${tot.sales}" data-rs="1">${rs(tot.sales)}</div><div class="s">${t('{n} bills, average {x}', { n: tot.orders, x: rs(tot.orders ? Math.round(tot.sales / tot.orders) : 0) })}</div>${typeSplit(allSettled)}</div>
+  <div class="hero-txt"><small>${t('Total sales')}${tip(t('Total of bills paid and closed at all your branches in the chosen period. The line shows how the total grew.'))}</small><div class="v" data-count="${tot.sales}" data-rs="1">${rs(tot.sales)}</div>${PER === 'today' ? vsYesterday(ids) : ''}<div class="s">${t('{n} bills, average {x}', { n: tot.orders, x: rs(tot.orders ? Math.round(tot.sales / tot.orders) : 0) })}</div>${typeSplit(allSettled)}</div>
   ${PER === 'today' ? salesCurve(allSettled) : dailyCurve(allSettled, dayList)}</div>
+${dashSec(t('At a glance'), t('A quick health check across all branches.'))}
 <div class="dash-stats">
-${statTile('green', 'close', t('Branches open'), `${openNow}/${ids.length}`, t('{n} closed for the day', { n: ids.length - openNow }), 'branch')}
-${statTile('saffron', '', t('Udhaar'), rs(byM.udhaar || 0), t('Credit sales, not yet cash'), 'book')}
-${statTile('chili', '', t('Low stock alerts'), lows.length, t('Across {n} branches', { n: new Set(lows.map((l) => l.id)).size }), 'box', lows.length, lows.length > 0)}
+${statTile('green', 'close', t('Branches open'), t('Branches whose business day is still open. Each branch should close its day every night.'), `${openNow}/${ids.length}`, t('{n} closed for the day', { n: ids.length - openNow }), 'branch')}
+${statTile('saffron', '', t('Udhaar'), t('Food given on credit in this period. Customers owe it to you; it is not cash yet.'), rs(byM.udhaar || 0), t('Credit sales, not yet cash'), 'book')}
+${statTile('chili', '', t('Low stock alerts'), t('Ingredients below their low-stock level, counted across all branches.'), lows.length, t('Across {n} branches', { n: new Set(lows.map((l) => l.id)).size }), 'box', lows.length, lows.length > 0)}
 </div>
-    <div class="panel" style="margin-bottom:16px"><div class="panel-head"><h3>${t('Branches')}</h3><div class="row"><div style="width:220px">${searchInput('as-q', F.q, t('Search branches'), 'as-q')}</div>${groups.length > 1 ? selectBox('as-group', [['all', useRegion ? t('All regions') : t('All cities')], ...groups.map((g) => [g, g])], F.group, 'data-ch="as-group" style="width:170px" aria-label="Group"') : ''}</div></div>
+    ${dashSec(t('Branches'), t('Every branch ranked by sales. Tap a branch to open its own dashboard, or tap a column name to sort.'))}
+    <div class="panel" style="margin-bottom:16px"><div class="panel-head"><div class="row"><div style="width:220px">${searchInput('as-q', F.q, t('Search branches'), 'as-q')}</div>${groups.length > 1 ? selectBox('as-group', [['all', useRegion ? t('All regions') : t('All cities')], ...groups.map((g) => [g, g])], F.group, 'data-ch="as-group" style="width:170px" aria-label="Group"') : ''}</div></div>
 <div class="table-wrap"><table class="tbl br-tbl"><thead><tr><th>#</th>${th('name', 'Store')}${th('sales', 'Sales', 1)}${th('orders', 'Orders', 1)}${th('avg', 'Average bill', 1)}${th('low', 'Low stock', 1)}<th>${t('Day close')}</th></tr></thead><tbody>
 ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex="0"><td><span class="rank">${rankOf(s.id)}</span></td><td><b>${esc(t(store(s.id).name))}</b>${store(s.id).status === 'paused' ? ` <span class="badge b-saffron">${t('Paused')}</span>` : ''}<div class="hint">${esc(groupOf(s.id))}</div></td><td class="r"><b>${rs(s.sales)}</b></td><td class="r">${s.orders}</td><td class="r">${rs(s.avg)}</td><td class="r">${s.low ? `<span class="badge b-saffron">${s.low}</span>` : '0'}</td><td>${s.day.status === 'closed' ? `<span class="badge b-green">${ic('check')} ${t('Closed')}</span>` : `<span class="badge b-saffron">${t('Awaiting close')}</span>`}<div class="hint">${dayLabel(s.day.date)}</div></td></tr>`).join('') || `<tr><td colspan="7">${emptyBox(t('No branch matches'), '')}</td></tr>`}
 </tbody></table></div>
 <div class="pager"><span>${t('Showing {a} to {b} of {n}', { a: rows.length ? F.page * PAGE + 1 : 0, b: F.page * PAGE + shown.length, n: rows.length })}</span><span class="row"><button class="btn btn-ghost btn-xs" data-act="as-page" data-v="-1" ${F.page <= 0 ? 'disabled' : ''}>${t('Previous')}</button><span>${F.page + 1} / ${pages}</span><button class="btn btn-ghost btn-xs" data-act="as-page" data-v="1" ${F.page >= pages - 1 ? 'disabled' : ''}>${t('Next')}</button></span></div></div>
+${dashSec(t('Across all branches'), t('Payments, best sellers and low stock, added up for every branch.'))}
     <div class="dash-grid">
-<div class="panel"><div class="panel-head"><h3>${t('Payment methods')}</h3></div>${
+<div class="panel">${dashHead('card', 'indigo', t('Payment methods'), t('Money received in this period at all branches, by how customers paid.'))}${
           Object.values(byM).some((v) => v)
             ? payList(byM)
             : emptyBox(t('No sales in this period'), '')
         }</div>
-<div class="panel"><div class="panel-head"><h3>${t('Top items')}</h3></div>${
+<div class="panel">${dashHead('board', 'saffron', t('Top items'), t('The five dishes sold most at all branches in this period, by number of plates.'))}${
           allSettled.length
             ? rankList(topItems(allSettled).map(([n, q2]) => [esc(n), q2]))
             : emptyBox(t('No sales in this period'), '')
         }</div>
-<div class="panel"><div class="panel-head"><h3>${t('Low stock')}</h3>${lows.length > 8 ? `<span class="hint">${t('{n} more', { n: lows.length - 8 })}</span>` : ''}</div>${
+<div class="panel">${dashHead('box', 'chili', t('Low stock'), t('Ingredients running low, with the branch they are in. Tap one to open that branch’s stock.'), lows.length > 8 ? `<span class="hint">${t('{n} more', { n: lows.length - 8 })}</span>` : '')}${
           lowRows.length
             ? `<ul class="dl-list attn">${lowRows.join('')}</ul>`
             : emptyBox(t('Everything is above its threshold'), '')
@@ -11332,10 +11500,10 @@ ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex
           .join('')}</div>`;
       }
       // tone picks a stat tile's accent colour; busy makes its dot breathe.
-      // A tile with a screen opens it.
-      function statTile(tone, to, label, v, sub, icon, count, busy) {
+      // A tile with a screen opens it; note explains the number.
+      function statTile(tone, to, label, note, v, sub, icon, count, busy) {
         const go = to && canScreen(to);
-        return `<${go ? `button type="button" data-act="go" data-s="${to}"` : 'div'} class="panel stat" style="--tone:var(--${tone});--tone-soft:var(--${tone}-soft);--tone-ink:var(--${tone}-ink)"><span class="st-ic">${ic(icon, 20)}${busy ? '<i class="st-ping"></i>' : ''}</span><span class="st-body"><small>${label}</small><span class="v"${count != null ? ` data-count="${count}"` : ''}>${v}</span><span class="s">${sub}</span></span></${go ? 'button' : 'div'}>`;
+        return `<div class="panel stat"${go ? ` data-act="go" data-s="${to}" role="link" tabindex="0"` : ''} style="--tone:var(--${tone});--tone-soft:var(--${tone}-soft);--tone-ink:var(--${tone}-ink)"><span class="st-ic">${ic(icon, 20)}${busy ? '<i class="st-ping"></i>' : ''}</span><span class="st-body"><small>${label}${tip(note)}</small><span class="v"${count != null ? ` data-count="${count}"` : ''}>${v}</span><span class="s">${sub}</span></span></div>`;
       }
       // Payment methods as a plain list, biggest first, with its share.
       function payList(byM) {
@@ -11348,6 +11516,91 @@ ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex
       // Best sellers, ranked. The leader gets the brand colour.
       function rankList(rows) {
         return `<ol class="dl-list ranked">${rows.map(([n, q], i) => `<li><span class="dl-rk">${i + 1}</span><span class="dl-nm">${n}</span><b>×${q}</b></li>`).join('')}</ol>`;
+      }
+      // A small "i" that explains the box it sits in. Hovering or focusing
+      // it shows the note; a tap shows it on touch screens.
+      const tip = (text) =>
+        `<button type="button" class="tip" data-act="tip" data-tip="${esc(text)}" aria-label="${esc(text)}">i</button>`;
+      // Heading over a group of cards, with its own explanation.
+      const dashSec = (title, note) =>
+        `<div class="dash-sec"><h3>${title}</h3>${tip(note)}</div>`;
+      // Panel heading with a toned icon and an explanation.
+      const dashHead = (icon, tone, title, note, extra = '') =>
+        `<div class="panel-head"><h3 class="dh-t"><span class="dh-ic" style="--tone-soft:var(--${tone}-soft);--tone-ink:var(--${tone}-ink)">${ic(icon, 16)}</span>${title}${tip(note)}</h3>${extra}</div>`;
+      // One floating note for every "i", kept in <body> so no card clips it.
+      let tipBox = null,
+        tipFor = null;
+      function showTip(el) {
+        if (!tipBox) {
+          tipBox = document.createElement('div');
+          tipBox.id = 'tipbox';
+          tipBox.setAttribute('role', 'tooltip');
+          document.body.appendChild(tipBox);
+        }
+        tipFor = el;
+        tipBox.textContent = el.dataset.tip;
+        tipBox.dir = document.documentElement.dir || 'ltr';
+        tipBox.style.left = tipBox.style.top = '0px';
+        tipBox.classList.add('on');
+        const r = el.getBoundingClientRect(),
+          b = tipBox.getBoundingClientRect(),
+          m = 12;
+        const x = Math.max(
+          m,
+          Math.min(r.left + r.width / 2 - b.width / 2, innerWidth - b.width - m),
+        );
+        let y = r.bottom + 8;
+        if (y + b.height > innerHeight - m) y = r.top - b.height - 8;
+        tipBox.style.left = `${x}px`;
+        tipBox.style.top = `${y}px`;
+      }
+      function hideTip() {
+        tipFor = null;
+        if (tipBox) tipBox.classList.remove('on');
+      }
+      document.addEventListener('pointerover', (e) => {
+        const el = e.target.closest && e.target.closest('.tip');
+        if (el && e.pointerType === 'mouse') showTip(el);
+      });
+      document.addEventListener('pointerout', (e) => {
+        const el = e.target.closest && e.target.closest('.tip');
+        if (el && e.pointerType === 'mouse' && document.activeElement !== el)
+          hideTip();
+      });
+      document.addEventListener('focusin', (e) => {
+        if (e.target.classList && e.target.classList.contains('tip'))
+          showTip(e.target);
+      });
+      document.addEventListener('focusout', (e) => {
+        if (e.target === tipFor) hideTip();
+      });
+      document.addEventListener('pointerdown', (e) => {
+        if (!(e.target.closest && e.target.closest('.tip'))) hideTip();
+      });
+      addEventListener('scroll', hideTip, true);
+      addEventListener('resize', hideTip);
+      // Today's sales against yesterday up to the same time of day.
+      function vsYesterday(ids) {
+        const now = new Date(),
+          mins = now.getHours() * 60 + now.getMinutes();
+        let today = 0,
+          prev = 0;
+        ids.forEach((id) => {
+          const d = dayOf(id).date,
+            y = addDays(d, -1);
+          D.orders.forEach((o) => {
+            if (o.store !== id || o.state === 'void' || !o.settledDay) return;
+            if (o.settledDay === d) today += o.bill.total;
+            else if (o.settledDay === y) {
+              const at = new Date(o.settledAt || o.createdAt);
+              if (at.getHours() * 60 + at.getMinutes() <= mins)
+                prev += o.bill.total;
+            }
+          });
+        });
+        if (!prev) return '';
+        const p = Math.round(((today - prev) / prev) * 100);
+        return `<span class="trend ${p >= 0 ? 'up' : 'down'}">${ic(p >= 0 ? 'up' : 'down', 14)}${t(p >= 0 ? '{p}% more than yesterday by now' : '{p}% less than yesterday by now', { p: Math.abs(p) })}</span>`;
       }
       // The dashboard's one entrance: cards rise in, numbers count up, the
       // curve draws. Only when the screen is opened, never on the live
@@ -11405,25 +11658,27 @@ ${shown.map((s) => `<tr class="click" data-act="drill" data-v="${s.id}" tabindex
         return `<div class="page dash">${pageHead(`${t('Dashboard')}: ${esc(t(store(st).name))}`, `${dayLabel(d.date)}. ${t('Updates as orders, payments and stock change.')}`, headBtns ? `<div class="dash-acts">${headBtns}</div>` : '', 'dashboard')}
     ${checklistCard()}${store(st).status === 'paused' ? `<div class="notice warn" style="margin-bottom:16px">${t('This branch is paused. New orders are stopped.')}</div>` : ''}
 <div class="panel kpi lead dash-hero"><div class="hero-aura" aria-hidden="true"><i></i><i></i><i></i></div>
-  <div class="hero-txt"><small>${t('Today’s sales')}</small><div class="v" data-count="${s.sales}" data-rs="1">${rs(s.sales)}</div><div class="s">${t('{n} bills, average {x}', { n: s.orders, x: rs(s.avg) })}</div>${typeSplit(s.settled)}</div>
+  <div class="hero-txt"><small>${t('Today’s sales')}${tip(t('Total of bills paid and closed today. Open orders are added once they are paid. The line shows how the total grew hour by hour.'))}</small><div class="v" data-count="${s.sales}" data-rs="1">${rs(s.sales)}</div>${vsYesterday([st])}<div class="s">${t('{n} bills, average {x}', { n: s.orders, x: rs(s.avg) })}</div>${typeSplit(s.settled)}</div>
   ${salesCurve(s.settled)}</div>
+${dashSec(t('Right now'), t('Live counts for this branch. Tap a card to open the screen where you handle it.'))}
 <div class="dash-stats">
-${stat('green', 'orders', t('In the kitchen'), kitchen, t('Tokens printed, not served or sent out yet'), 'ticket', kitchen, kitchen > 0)}
-${stat('indigo', 'orders', t('Deliveries pending'), deliveries.length, t('{a} out for delivery', { a: deliveries.filter((o) => o.fulfil === 'out').length }), 'bike', deliveries.length, deliveries.length > 0)}
-${stat('saffron', 'close', t('Day close'), t(dayOpen ? 'Open' : 'Closed'), dayOpen ? `${t('Opening cash')} ${rs(d.opening)}` : t('Closed at {x}', { x: fmtTime(d.closedAt) }), 'cash')}
+${stat('green', 'orders', t('In the kitchen'), t('Orders whose token has gone to the kitchen but are not served or sent out yet.'), kitchen, t('Tokens printed, not served or sent out yet'), 'ticket', kitchen, kitchen > 0)}
+${stat('indigo', 'orders', t('Deliveries pending'), t('Delivery orders not delivered yet. Some are still cooking, others are on the way.'), deliveries.length, t('{a} out for delivery', { a: deliveries.filter((o) => o.fulfil === 'out').length }), 'bike', deliveries.length, deliveries.length > 0)}
+${stat('saffron', 'close', t('Day close'), t('Whether today’s business day is still open. Close it at night to count the cash drawer and lock the day.'), t(dayOpen ? 'Open' : 'Closed'), dayOpen ? `${t('Opening cash')} ${rs(d.opening)}` : t('Closed at {x}', { x: fmtTime(d.closedAt) }), 'cash')}
 </div>
+${dashSec(t('Today in detail'), t('Where today’s money came from, what sold best, and what needs a look.'))}
     <div class="dash-grid">
-<div class="panel"><div class="panel-head"><h3>${t('Payment methods')}</h3></div>${
+<div class="panel">${dashHead('card', 'indigo', t('Payment methods'), t('Money received today, by how customers paid. Udhaar is food given on credit, not cash in hand.'))}${
           Object.values(s.byM).some((v) => v)
             ? payList(s.byM)
             : emptyBox(t('No payments yet today'), '')
         }${s.collections ? `<p class="dl-foot">${t('Udhaar collected today: {x}', { x: rs(s.collections) })}</p>` : ''}</div>
-<div class="panel"><div class="panel-head"><h3>${t('Top items')}</h3></div>${
+<div class="panel">${dashHead('board', 'saffron', t('Top items'), t('The five dishes sold most today, by number of plates.'))}${
           s.settled.length
             ? rankList(topItems(s.settled).map(([n, q]) => [esc(n), q]))
             : emptyBox(t('No sales yet today'), '')
         }</div>
-<div class="panel"><div class="panel-head"><h3>${t('Needs attention')}</h3></div>${
+<div class="panel">${dashHead('eye', 'chili', t('Needs attention'), t('Deliveries still out and ingredients running low. Tap a row to open it.'))}${
           attn.length
             ? `<ul class="dl-list attn">${attn.join('')}</ul>`
             : emptyBox(t('Nothing needs attention right now'), '')
@@ -13338,6 +13593,7 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
             );
           }
         },
+        tip: (el) => showTip(el),
         drill: (el) => {
           if (setStore(el.dataset.v, 'dashboard')) render();
         },
@@ -15234,6 +15490,7 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
         const typing =
           e.target.matches && e.target.matches('input, select, textarea');
         if (e.key === 'Escape') {
+          if (tipFor) return hideTip();
           if ($('#pop-root').innerHTML) return closePop();
           if (M) return closeModal();
           if (U.kdsFull) {
@@ -15279,7 +15536,7 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
           e.key === 'Enter' &&
           !typing &&
           e.target.matches &&
-          e.target.matches('tr[data-act]')
+          e.target.matches('tr[data-act], li[data-act], .stat[data-act]')
         ) {
           e.preventDefault();
           e.target.click();
