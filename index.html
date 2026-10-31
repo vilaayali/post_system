@@ -10291,8 +10291,6 @@
           !canScreen(U.screen)
         )
           U.screen = homeScreen();
-        if (U.screen === 'dashboard' && U.store === 'all')
-          U.screen = 'allstores';
         const main = $('#main'),
           items = $('.items');
         const keep = main && lastScreen === U.screen ? main.scrollTop : 0,
@@ -10422,9 +10420,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
         ];
         return list.filter(
           ([k]) =>
-            canScreen(k) &&
-            !(k === 'dashboard' && U.store === 'all') &&
-            !(k === 'dashboard' && !U.store),
+            canScreen(k) && !(k === 'dashboard' && !U.store),
         );
       }
       function railCount(k) {
@@ -10546,7 +10542,9 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
               ? 'Stock'
               : U.screen === 'settings'
                 ? 'Settings'
-                : 'Orders',
+                : U.screen === 'dashboard'
+                  ? 'Dashboard'
+                  : 'Orders',
           );
         switch (U.screen) {
           case 'orders':
@@ -13147,7 +13145,6 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
         closePop();
         if (screen) U.screen = screen;
         else if (['order', 'pay'].includes(U.screen)) U.screen = 'orders';
-        if (U.screen === 'dashboard' && id === 'all') U.screen = 'allstores';
         return true;
       }
       function pinDigit(d) {
