@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -4745,7 +4745,6 @@
           }
         }
       }
-      }
       @media (prefers-reduced-motion: no-preference) {
         .btn-primary {
           transition:
@@ -4792,6 +4791,1204 @@
         .obar > div:last-child:not(.chips) {
           width: 100% !important;
         }
+      }
+
+      /* =============================================================
+         Studio pass. Same palette (navy, ember, cream), refined surfaces,
+         an animated sidebar with a sliding ink marker, and calm motion.
+         Design only: no markup or behaviour changes.
+         ============================================================= */
+      :root {
+        --title: 'Bricolage Grotesque', 'Figtree', system-ui, sans-serif;
+        --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        --ease-spring: cubic-bezier(0.34, 1.45, 0.5, 1);
+        --side: 236px;
+      }
+      :root:not([data-theme='dark']) {
+        --dot: rgba(1, 56, 106, 0.065);
+        --hover-lift: 0 14px 30px -18px rgba(1, 40, 77, 0.45);
+        --top-bg: rgba(255, 253, 246, 0.82);
+      }
+      :root[data-theme='dark'] {
+        --dot: rgba(245, 232, 170, 0.035);
+        --hover-lift: 0 16px 34px -18px rgba(0, 0, 0, 0.8);
+        --top-bg: rgba(11, 26, 45, 0.82);
+      }
+      @media (max-width: 1100px) and (min-width: 761px) {
+        :root {
+          --side: 200px;
+        }
+      }
+      ::selection {
+        background: var(--cream);
+        color: #01386a;
+      }
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in srgb, var(--ink) 18%, transparent)
+          transparent;
+      }
+      html[lang='ur'] body * {
+        letter-spacing: 0 !important;
+      }
+
+      /* ---------- Type ---------- */
+      .page-head h2,
+      .modal-head h3,
+      .wiz-main h2,
+      .login-side h2,
+      .locked-screen h2,
+      .lockedfeat h2,
+      .plan-card h3 {
+        font-family: var(--title);
+        font-weight: 700;
+        letter-spacing: -0.025em;
+      }
+      .page-head {
+        margin-bottom: 22px;
+        align-items: center;
+      }
+      .page-head h2 {
+        font-size: 31px;
+        line-height: 1.1;
+      }
+      .page-head p {
+        font-size: 14.5px;
+      }
+      .page-head > div:first-child::before {
+        width: 4px;
+        top: 2px;
+        bottom: 2px;
+        box-shadow: 0 0 14px rgba(238, 75, 43, 0.45);
+      }
+      .panel-head h3,
+      .sec-title,
+      .dash-sec h3 {
+        font-family: var(--title);
+        font-weight: 700;
+        letter-spacing: -0.015em;
+      }
+      .modal-head h3 {
+        font-size: 24px;
+      }
+
+      /* =============================================================
+         Sidebar
+         ============================================================= */
+      .app:not(.admin) .rail,
+      .app.admin .rail {
+        position: relative;
+        isolation: isolate;
+        padding: 16px 12px 14px;
+        gap: 2px;
+        background-image:
+          radial-gradient(130% 38% at 0% 0%, var(--aura-1), transparent 62%),
+          radial-gradient(120% 32% at 100% 100%, var(--aura-2), transparent 62%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 26%);
+        box-shadow:
+          inset -1px 0 0 rgba(255, 255, 255, 0.06),
+          10px 0 34px -24px rgba(1, 26, 50, 0.7);
+        scrollbar-width: none;
+      }
+      .app:not(.admin) .rail {
+        background-color: var(--night);
+      }
+      .app.admin .rail {
+        background-color: #0a1024;
+      }
+      .rail::-webkit-scrollbar {
+        display: none;
+      }
+      /* soft lantern light that follows the pointer */
+      .rail::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          240px circle at var(--mx, 50%) var(--my, -200px),
+          rgba(245, 232, 170, 0.09),
+          transparent 65%
+        );
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+      .rail:hover::before {
+        opacity: 1;
+      }
+      .rail .logo {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 4px 10px 16px;
+        margin-bottom: 6px;
+        font-family: var(--signage);
+        font-size: 31px;
+        font-weight: 900;
+        letter-spacing: 0.01em;
+        line-height: 1;
+        color: #fff;
+      }
+      .rail .logo::before {
+        content: '';
+        flex: none;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--ember);
+        box-shadow:
+          0 0 0 4px rgba(238, 75, 43, 0.18),
+          0 0 16px rgba(238, 75, 43, 0.75);
+      }
+      .rail .logo::after {
+        content: '';
+        position: absolute;
+        inset-inline: 10px;
+        bottom: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          rgba(245, 232, 170, 0.28),
+          rgba(255, 255, 255, 0.04)
+        );
+      }
+      [dir='rtl'] .rail .logo::after {
+        background: linear-gradient(
+          270deg,
+          rgba(245, 232, 170, 0.28),
+          rgba(255, 255, 255, 0.04)
+        );
+      }
+      .rail .logo small {
+        margin-inline-start: auto;
+        padding: 4px 9px;
+        border: 1px solid rgba(245, 232, 170, 0.28);
+        border-radius: 999px;
+        background: rgba(245, 232, 170, 0.06);
+        color: var(--cream);
+        font-family: var(--body);
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        line-height: 1;
+      }
+      .rail-group,
+      .app.admin .rail-group {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 12px 6px;
+        color: rgba(188, 203, 220, 0.6);
+        opacity: 1;
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .rail-group::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent);
+      }
+      [dir='rtl'] .rail-group::after {
+        background: linear-gradient(270deg, rgba(255, 255, 255, 0.1), transparent);
+      }
+      .rail .rail-btn,
+      .app.admin .rail .rail-btn {
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        gap: 12px;
+        min-height: 42px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: transparent;
+        color: var(--night-ink);
+        font-size: 14.5px;
+        font-weight: 600;
+        transition:
+          color 0.25s,
+          transform 0.35s var(--ease-out);
+      }
+      /* hover: a cream wash sweeps in from the edge */
+      .rail .rail-btn::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background: linear-gradient(
+          90deg,
+          rgba(245, 232, 170, 0.11),
+          rgba(245, 232, 170, 0.02)
+        );
+        opacity: 0;
+        transform: scaleX(0.2);
+        transform-origin: left center;
+        transition:
+          transform 0.45s var(--ease-out),
+          opacity 0.3s;
+      }
+      [dir='rtl'] .rail .rail-btn::after {
+        transform-origin: right center;
+        background: linear-gradient(
+          270deg,
+          rgba(245, 232, 170, 0.11),
+          rgba(245, 232, 170, 0.02)
+        );
+      }
+      .rail .rail-btn:hover,
+      .app.admin .rail .rail-btn:hover {
+        background: transparent;
+        color: #fff;
+        transform: translateX(3px);
+      }
+      [dir='rtl'] .rail .rail-btn:hover {
+        transform: translateX(-3px);
+      }
+      .rail .rail-btn:hover::after {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+      .rail .rail-btn:active {
+        transform: scale(0.97);
+      }
+      .rail .rail-btn svg {
+        transition:
+          transform 0.5s var(--ease-spring),
+          color 0.25s;
+      }
+      .rail .rail-btn:hover svg {
+        color: var(--cream);
+        transform: scale(1.14) rotate(-7deg);
+      }
+      .rail .rail-btn.on,
+      .app.admin .rail .rail-btn.on {
+        color: #fff;
+        box-shadow: none;
+      }
+      .rail.has-ink .rail-btn.on,
+      .app.admin .rail.has-ink .rail-btn.on {
+        background: transparent;
+      }
+      .rail.has-ink .rail-btn.on::before {
+        display: none;
+      }
+      .rail .rail-btn.on svg {
+        color: var(--cream);
+      }
+      .rail .rail-btn:focus-visible {
+        box-shadow: inset 0 0 0 2px var(--cream);
+      }
+      .rail .rail-btn.locked {
+        opacity: 0.55;
+      }
+      .rail-count {
+        min-width: 20px;
+        height: 20px;
+        font-size: 11px;
+        box-shadow: none;
+      }
+      .rail-count.warn {
+        background: var(--cream);
+        color: #01284d;
+        animation: count-pulse 2.6s ease-out infinite;
+      }
+      .rail-lock {
+        background: rgba(245, 232, 170, 0.16);
+        color: var(--cream);
+      }
+      .rail-spacer {
+        min-height: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        margin: 0 6px 8px;
+      }
+
+      /* the sliding ink: one marker that glides between pages */
+      .rail-ink {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        pointer-events: none;
+        border-radius: 12px;
+        background: linear-gradient(
+          90deg,
+          rgba(245, 232, 170, 0.15),
+          rgba(255, 255, 255, 0.05)
+        );
+        box-shadow:
+          inset 0 0 0 1px rgba(245, 232, 170, 0.14),
+          0 10px 26px -14px rgba(0, 0, 0, 0.7);
+        transition:
+          top 0.55s var(--ease-spring),
+          left 0.55s var(--ease-spring),
+          width 0.45s var(--ease-out),
+          height 0.45s var(--ease-out);
+      }
+      [dir='rtl'] .rail-ink {
+        background: linear-gradient(
+          270deg,
+          rgba(245, 232, 170, 0.15),
+          rgba(255, 255, 255, 0.05)
+        );
+      }
+      .rail-ink::before {
+        content: '';
+        position: absolute;
+        inset-inline-start: -12px;
+        top: 9px;
+        bottom: 9px;
+        width: 4px;
+        border-radius: 0 4px 4px 0;
+        background: linear-gradient(180deg, #ff7a52, var(--ember));
+        box-shadow: 0 0 14px rgba(238, 75, 43, 0.85);
+      }
+      [dir='rtl'] .rail-ink::before {
+        border-radius: 4px 0 0 4px;
+      }
+      .rail-ink::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: linear-gradient(
+          100deg,
+          transparent 30%,
+          rgba(245, 232, 170, 0.22) 50%,
+          transparent 70%
+        );
+        opacity: 0;
+      }
+      .rail-ink.move::after {
+        animation: ink-glint 0.9s 0.25s var(--ease-out);
+      }
+      .rail-ink.move::before {
+        animation: ink-bar 0.55s var(--ease-out);
+      }
+
+      /* entrance: the sidebar unfolds once per sign-in */
+      .rail.rail-enter .logo,
+      .rail.rail-enter .rail-group,
+      .rail.rail-enter .rail-btn {
+        animation: rail-in 0.6s var(--ease-out) backwards;
+        animation-delay: calc(var(--i, 0) * 32ms + 60ms);
+      }
+      .rail.rail-enter .rail-ink {
+        animation: fade-in 0.5s 0.45s var(--ease-out) backwards;
+      }
+      .rail.rail-enter .logo::before {
+        animation: lantern 1.2s 0.3s var(--ease-out) backwards;
+      }
+      @keyframes rail-in {
+        from {
+          opacity: 0;
+          transform: translateX(var(--rail-dx, -16px));
+          filter: blur(3px);
+        }
+      }
+      [dir='rtl'] .rail {
+        --rail-dx: 16px;
+      }
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+      }
+      @keyframes lantern {
+        0% {
+          transform: scale(0);
+          box-shadow: 0 0 0 0 rgba(238, 75, 43, 0.6);
+        }
+        60% {
+          transform: scale(1.3);
+          box-shadow: 0 0 0 14px rgba(238, 75, 43, 0);
+        }
+      }
+      @keyframes ink-glint {
+        0% {
+          opacity: 1;
+          transform: translateX(-60%);
+        }
+        100% {
+          opacity: 0;
+          transform: translateX(60%);
+        }
+      }
+      @keyframes ink-bar {
+        0% {
+          transform: scaleY(0.2);
+        }
+        60% {
+          transform: scaleY(1.15);
+        }
+      }
+      @keyframes count-pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(245, 232, 170, 0.55);
+        }
+        70%,
+        100% {
+          box-shadow: 0 0 0 7px rgba(245, 232, 170, 0);
+        }
+      }
+
+      /* =============================================================
+         Top bar
+         ============================================================= */
+      .top {
+        position: relative;
+        z-index: 5;
+        gap: 14px;
+        padding: 0 20px;
+        background: var(--top-bg);
+        backdrop-filter: blur(14px) saturate(1.3);
+        -webkit-backdrop-filter: blur(14px) saturate(1.3);
+        border-bottom: 1px solid var(--line);
+        box-shadow: 0 12px 30px -26px rgba(1, 40, 77, 0.6);
+      }
+      .bizname b {
+        font-family: var(--title);
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+      }
+      .bizlogo {
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+      }
+      .switcher {
+        gap: 10px;
+        min-height: 46px;
+        padding: 4px 12px 4px 4px;
+        border: 1px solid var(--line-strong);
+        border-radius: 14px;
+        background: var(--surface);
+        color: var(--muted);
+        box-shadow: var(--shadow);
+        transition:
+          border-color 0.2s,
+          transform 0.25s var(--ease-out),
+          box-shadow 0.25s;
+      }
+      .switcher:not(.locked):hover {
+        border-color: color-mix(in srgb, var(--green) 45%, var(--line-strong));
+        transform: translateY(-1px);
+        box-shadow: var(--hover-lift);
+      }
+      .switcher.locked {
+        border-style: dashed;
+        box-shadow: none;
+      }
+      .switcher .pin {
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+        background: var(--grad);
+        box-shadow: var(--glow);
+      }
+      .switcher > svg {
+        transition: transform 0.3s var(--ease-out);
+      }
+      .switcher:hover > svg {
+        transform: translateY(2px);
+      }
+      .switcher small {
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .daychip {
+        position: relative;
+        padding: 6px 12px 6px 10px;
+        border: 1px solid transparent;
+        font-size: 12.5px;
+      }
+      .daychip.open {
+        border-color: color-mix(in srgb, var(--green) 25%, transparent);
+      }
+      .daychip.closed {
+        border-color: color-mix(in srgb, var(--chili) 30%, transparent);
+      }
+      .daychip.paused {
+        border-color: color-mix(in srgb, var(--saffron) 40%, transparent);
+      }
+      .clock {
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: var(--surface-2);
+        font-size: 13.5px;
+        font-variant-numeric: tabular-nums;
+      }
+      .top .icon-btn {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        transition:
+          transform 0.4s var(--ease-spring),
+          border-color 0.2s;
+      }
+      .top .icon-btn:hover {
+        border-color: var(--line-strong);
+      }
+      .top .icon-btn svg {
+        transition: transform 0.5s var(--ease-spring);
+      }
+      .top .icon-btn:hover svg {
+        transform: rotate(24deg) scale(1.08);
+      }
+      .who {
+        padding: 3px 12px 3px 3px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+      .avatar {
+        box-shadow: 0 0 0 2px var(--surface);
+      }
+
+      /* =============================================================
+         Canvas and page entrance
+         ============================================================= */
+      .main {
+        background-image:
+          radial-gradient(900px 420px at 85% -140px, var(--page-glow), transparent 70%),
+          radial-gradient(700px 380px at -10% 110%, var(--page-ember), transparent 70%),
+          radial-gradient(800px 300px at 20% -80px, var(--page-cream), transparent 70%),
+          radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 1.5px);
+        background-size:
+          auto,
+          auto,
+          auto,
+          24px 24px;
+      }
+      #main > .pg-in {
+        animation: page-in 0.55s var(--ease-out) backwards;
+      }
+      @keyframes page-in {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+      }
+      .page {
+        padding: 26px 28px 44px;
+      }
+
+      /* =============================================================
+         Surfaces
+         ============================================================= */
+      .panel {
+        border-radius: 18px;
+        border-color: var(--line);
+      }
+      .panel-head {
+        padding: 18px 20px 12px;
+      }
+      .kpi {
+        padding: 16px 18px;
+      }
+      .kpi small {
+        letter-spacing: 0.01em;
+      }
+      .stat {
+        border-radius: 18px;
+      }
+      .notice {
+        border-radius: 14px;
+      }
+      .badge {
+        padding: 3px 10px;
+        border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+      }
+      .b-solid,
+      .b-dark {
+        border-color: transparent;
+      }
+      .empty b {
+        font-family: var(--title);
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+
+      /* ---------- Buttons ---------- */
+      .btn {
+        border-radius: 12px;
+        letter-spacing: -0.005em;
+        transition:
+          transform 0.22s var(--ease-out),
+          box-shadow 0.22s,
+          background-color 0.2s,
+          border-color 0.2s,
+          color 0.2s,
+          filter 0.2s;
+      }
+      .btn:active:not(:disabled) {
+        transform: translateY(1px) scale(0.985);
+      }
+      .btn-primary {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .btn-primary::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          110deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.24) 50%,
+          transparent 70%
+        );
+        transform: translateX(-120%);
+        transition: transform 0.75s var(--ease-out);
+      }
+      .btn-primary:hover:not(:disabled)::after {
+        transform: translateX(120%);
+      }
+      .btn-primary:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 28px -12px rgba(1, 56, 106, 0.65);
+      }
+      .btn-ghost {
+        background: var(--surface);
+        border-color: var(--line-strong);
+        box-shadow: 0 1px 0 rgba(1, 40, 77, 0.04);
+      }
+      .btn-ghost:hover:not(:disabled) {
+        background: var(--surface);
+        border-color: color-mix(in srgb, var(--green) 40%, var(--line-strong));
+        box-shadow: var(--hover-lift);
+        transform: translateY(-1px);
+      }
+      .btn-danger:hover:not(:disabled) {
+        box-shadow: 0 12px 26px -12px rgba(224, 63, 32, 0.7);
+        transform: translateY(-1px);
+      }
+      .icon-btn {
+        border-radius: 12px;
+        transition:
+          background-color 0.2s,
+          color 0.2s,
+          transform 0.3s var(--ease-out);
+      }
+
+      /* ---------- Chips and tabs ---------- */
+      .chip {
+        transition:
+          background-color 0.2s,
+          border-color 0.2s,
+          color 0.2s,
+          transform 0.25s var(--ease-out),
+          box-shadow 0.25s;
+      }
+      .chip:hover:not(:disabled):not(.on) {
+        border-color: color-mix(in srgb, var(--green) 45%, var(--line-strong));
+        transform: translateY(-1px);
+      }
+      .chip.on {
+        background: var(--grad);
+        border-color: transparent;
+        color: #fff;
+        box-shadow: var(--glow);
+      }
+      .tabs {
+        gap: 2px;
+        border-bottom-color: var(--line);
+        margin-bottom: 20px;
+      }
+      .tabs button {
+        position: relative;
+        padding: 11px 16px;
+        border-bottom: 0;
+        border-radius: 10px 10px 0 0;
+        transition:
+          color 0.2s,
+          background-color 0.2s;
+      }
+      .tabs button:hover {
+        color: var(--ink);
+        background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+      }
+      .tabs button::after {
+        content: '';
+        position: absolute;
+        inset-inline: 12px;
+        bottom: -1px;
+        height: 3px;
+        border-radius: 3px 3px 0 0;
+        background: linear-gradient(90deg, var(--ember), var(--cream));
+        transform: scaleX(0);
+        transition: transform 0.35s var(--ease-out);
+      }
+      .tabs button.on {
+        color: var(--heading);
+      }
+      .tabs button.on::after {
+        transform: scaleX(1);
+      }
+
+      /* ---------- Fields ---------- */
+      .input,
+      .select,
+      .textarea {
+        border-radius: 12px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          background-color 0.2s;
+      }
+      .input:hover:not(:focus),
+      .select:hover:not(:focus),
+      .textarea:hover:not(:focus) {
+        border-color: color-mix(in srgb, var(--green) 35%, var(--line-strong));
+      }
+      .input:focus,
+      .select:focus,
+      .textarea:focus {
+        border-color: var(--ember);
+      }
+      .switch {
+        transition:
+          background-color 0.25s,
+          box-shadow 0.25s;
+      }
+      .switch::after {
+        transition: transform 0.35s var(--ease-spring);
+      }
+      .switch[aria-checked='true'] {
+        background: var(--grad);
+        box-shadow: var(--glow);
+      }
+
+      /* ---------- Tables ---------- */
+      .tbl th {
+        background: transparent;
+        color: var(--faint);
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .tbl th button {
+        text-transform: inherit;
+        letter-spacing: inherit;
+      }
+      .tbl td {
+        transition: background-color 0.15s;
+      }
+      .tbl tbody tr:hover td {
+        background: color-mix(in srgb, var(--surface-2) 75%, transparent);
+      }
+      .tbl tr.click:hover td:first-child {
+        box-shadow: inset 3px 0 0 var(--ember);
+      }
+      [dir='rtl'] .tbl tr.click:hover td:first-child {
+        box-shadow: inset -3px 0 0 var(--ember);
+      }
+      .pager {
+        border-top-color: var(--line);
+      }
+
+      /* =============================================================
+         Orders and order screen
+         ============================================================= */
+      .ocard {
+        background: linear-gradient(180deg, var(--surface), var(--surface-2));
+        transition:
+          transform 0.3s var(--ease-out),
+          border-color 0.2s;
+      }
+      .ocard:hover {
+        transform: translateY(-4px);
+      }
+      .ocard .tok {
+        color: var(--heading);
+      }
+      .ocard.k-late .tok {
+        color: var(--chili-ink);
+      }
+      .new-tile {
+        transition:
+          border-color 0.2s,
+          color 0.2s,
+          background-color 0.2s,
+          transform 0.3s var(--ease-out);
+      }
+      .new-tile:hover {
+        border-color: var(--ember);
+        color: var(--heading);
+        background: color-mix(in srgb, var(--surface) 60%, transparent);
+        transform: translateY(-3px);
+      }
+      .new-tile svg {
+        transition: transform 0.5s var(--ease-spring);
+      }
+      .new-tile:hover svg {
+        transform: rotate(90deg) scale(1.1);
+      }
+      .order-bar h2 {
+        font-family: var(--title);
+        letter-spacing: -0.015em;
+      }
+      .cat-divider {
+        font-family: var(--title);
+        letter-spacing: -0.01em;
+        color: var(--heading);
+      }
+      .item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 14px;
+        transition:
+          transform 0.25s var(--ease-out),
+          border-color 0.2s,
+          box-shadow 0.25s;
+      }
+      .item::before {
+        content: '';
+        position: absolute;
+        inset-inline-start: 0;
+        top: 12px;
+        bottom: 12px;
+        width: 3px;
+        border-radius: 3px;
+        background: var(--ember);
+        opacity: 0;
+        transform: scaleY(0.3);
+        transition:
+          opacity 0.2s,
+          transform 0.3s var(--ease-out);
+      }
+      .item:hover:not(:disabled) {
+        transform: translateY(-2px);
+        border-color: color-mix(in srgb, var(--green) 45%, var(--line));
+        box-shadow: var(--hover-lift);
+      }
+      .item:hover:not(:disabled)::before {
+        opacity: 1;
+        transform: none;
+      }
+      .item:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+      .ticket-head h3 {
+        color: var(--heading);
+      }
+      .slip {
+        box-shadow: 0 14px 30px -24px rgba(1, 40, 77, 0.5);
+      }
+      .ticket-dock {
+        box-shadow: 0 -12px 28px -24px rgba(1, 40, 77, 0.45);
+      }
+      .tool,
+      .mtile,
+      .size,
+      .type-pick button,
+      .plan-card,
+      .staff-card {
+        transition:
+          transform 0.25s var(--ease-out),
+          border-color 0.2s,
+          background-color 0.2s,
+          box-shadow 0.25s;
+      }
+      .tool:hover,
+      .mtile:hover,
+      .size:hover,
+      .type-pick button:hover:not(:disabled),
+      button.plan-card:hover,
+      .staff-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--hover-lift);
+      }
+      .mtile.on,
+      .size.on,
+      .type-pick button.on,
+      .plan-card.on {
+        box-shadow:
+          0 0 0 3px color-mix(in srgb, var(--green) 18%, transparent),
+          var(--hover-lift);
+      }
+      .plan-card {
+        border-radius: 18px;
+        padding: 18px;
+      }
+      .plan-card .price {
+        color: var(--heading);
+      }
+
+      /* =============================================================
+         Overlays
+         ============================================================= */
+      .scrim {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        animation: none;
+      }
+      .scrim.fresh {
+        animation: fade-in 0.2s ease-out;
+      }
+      .modal {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        animation: none;
+      }
+      .modal.fresh {
+        animation: modal-in 0.42s var(--ease-spring);
+      }
+      .modal-head {
+        padding: 22px 24px 10px;
+      }
+      .modal-body {
+        padding: 6px 24px 16px;
+      }
+      .modal-foot {
+        padding: 14px 24px;
+        background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+        border-radius: 0 0 22px 22px;
+      }
+      @keyframes modal-in {
+        from {
+          opacity: 0;
+          transform: translateY(16px) scale(0.97);
+        }
+      }
+      .menu-pop {
+        border-radius: 16px;
+        animation: modal-in 0.3s var(--ease-out);
+      }
+      .menu-pop button.opt {
+        transition:
+          background-color 0.15s,
+          transform 0.2s var(--ease-out);
+      }
+      .menu-pop button.opt:hover {
+        transform: translateX(2px);
+      }
+      .menu-pop button.opt.on {
+        box-shadow: inset 3px 0 0 var(--ember);
+      }
+      .toast {
+        position: relative;
+        overflow: hidden;
+        padding: 13px 18px 13px 20px;
+        border: 1px solid rgba(245, 232, 170, 0.12);
+        border-radius: 14px;
+        background: var(--night);
+        color: #f4ecd2;
+        animation: toast-in 0.45s var(--ease-spring);
+      }
+      .toast::before {
+        content: '';
+        position: absolute;
+        inset-inline-start: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, var(--ember), var(--cream));
+      }
+      .toast.bad {
+        background: var(--chili);
+        border-color: transparent;
+      }
+      .toast.bad::before {
+        background: #fff;
+        opacity: 0.6;
+      }
+      @keyframes toast-in {
+        from {
+          opacity: 0;
+          transform: translateY(14px) scale(0.96);
+        }
+      }
+      #tipbox {
+        border-radius: 12px;
+      }
+
+      /* =============================================================
+         Login, setup wizard, locked screens
+         ============================================================= */
+      .login-brand,
+      .wiz-side {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .login-brand::before,
+      .login-brand::after,
+      .wiz-side::before,
+      .wiz-side::after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        border-radius: 50%;
+        filter: blur(70px);
+        pointer-events: none;
+      }
+      .login-brand::before,
+      .wiz-side::before {
+        width: 440px;
+        height: 440px;
+        top: -140px;
+        left: -120px;
+        background: rgba(238, 75, 43, 0.38);
+        animation: orb-a 18s ease-in-out infinite alternate;
+      }
+      .login-brand::after,
+      .wiz-side::after {
+        width: 380px;
+        height: 380px;
+        right: -100px;
+        bottom: -120px;
+        background: rgba(245, 232, 170, 0.2);
+        animation: orb-b 22s ease-in-out infinite alternate;
+      }
+      @keyframes orb-a {
+        to {
+          transform: translate(140px, 110px) scale(1.2);
+        }
+      }
+      @keyframes orb-b {
+        to {
+          transform: translate(-120px, -90px) scale(0.85);
+        }
+      }
+      .login-brand .mark {
+        color: #fff;
+        text-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+      }
+      .login-brand .mark span {
+        font-weight: 600;
+      }
+      .scr-in .login-brand > div {
+        animation: page-in 0.8s var(--ease-out) backwards;
+      }
+      .scr-in .login-brand > div:nth-child(2) {
+        animation-delay: 0.12s;
+      }
+      .scr-in .login-brand > div:nth-child(3) {
+        animation-delay: 0.22s;
+      }
+      .scr-in .login-side {
+        animation: page-in 0.7s 0.1s var(--ease-out) backwards;
+      }
+      .staff-card {
+        border-radius: 16px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+      .staff-card:not(.admin):hover {
+        border-color: color-mix(in srgb, var(--green) 50%, var(--line-strong));
+      }
+      .pinpad button {
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        transition:
+          transform 0.15s var(--ease-out),
+          background-color 0.15s,
+          border-color 0.15s;
+      }
+      .pinpad button:hover {
+        border-color: var(--line-strong);
+      }
+      .pinpad button:active {
+        transform: scale(0.94);
+        background: var(--green-soft);
+      }
+      .pin-dots i {
+        transition:
+          background-color 0.2s,
+          border-color 0.2s,
+          transform 0.3s var(--ease-spring);
+      }
+      .pin-dots i.f {
+        background: var(--heading);
+        border-color: var(--heading);
+        transform: scale(1.1);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--ember) 20%, transparent);
+      }
+      .wiz-steps li {
+        transition:
+          background-color 0.3s,
+          opacity 0.3s;
+      }
+      .wiz-steps li.on .n {
+        border-color: var(--ember);
+        box-shadow: 0 0 0 4px rgba(238, 75, 43, 0.25);
+      }
+      .scr-in .wiz-main {
+        animation: page-in 0.5s var(--ease-out) backwards;
+      }
+
+      /* =============================================================
+         Phone layout: the sidebar becomes a bottom bar
+         ============================================================= */
+      @media (max-width: 760px) {
+        .app:not(.admin) .rail,
+        .app.admin .rail {
+          padding: 6px;
+          box-shadow: 0 -10px 30px -20px rgba(1, 26, 50, 0.7);
+        }
+        .rail .rail-btn,
+        .app.admin .rail .rail-btn {
+          gap: 3px;
+          min-height: 0;
+          padding: 6px 4px;
+          font-size: 11px;
+        }
+        .rail .rail-btn:hover,
+        [dir='rtl'] .rail .rail-btn:hover {
+          transform: none;
+        }
+        .rail-spacer,
+        .rail .logo,
+        .rail-group,
+        .app.admin .rail-group {
+          display: none;
+        }
+        .rail-ink::before,
+        [dir='rtl'] .rail-ink::before {
+          inset-inline: 22%;
+          top: -6px;
+          bottom: auto;
+          width: auto;
+          height: 3px;
+          border-radius: 0 0 3px 3px;
+        }
+        .rail.rail-enter .rail-btn {
+          --rail-dx: 0;
+        }
+        .top {
+          padding: 8px 12px;
+        }
+        .page {
+          padding: 16px 12px 28px;
+        }
+        .page-head h2 {
+          font-size: 24px;
+        }
+      }
+
+      /* looping animations resume where they were after a repaint */
+      .login-brand::before,
+      .login-brand::after,
+      .wiz-side::before,
+      .wiz-side::after,
+      .rail-count.warn,
+      #root .hero-aura i:nth-child(n),
+      .cv-dot::after,
+      .st-ping {
+        animation-delay: var(--phase, 0s);
+      }
+      .dash-hero::after {
+        animation-delay: calc(var(--phase, 0s) + 1.6s);
       }
     </style>
   </head>
@@ -10504,7 +11701,83 @@
         const first = navItems().find(([k]) => canScreen(k));
         return first ? first[0] : 'orders';
       }
-      function render() {
+      /* ---------- Motion: sidebar ink, sidebar entrance, page entrance ----------
+         Visual only. Runs after each render; never changes state. */
+      let inkPrev = null,
+        railKey = null;
+      function afterPaint(changed) {
+        const rail = $('.rail');
+        if (rail && rail.offsetParent !== null) {
+          const key = `${U.mode}|${U.user || U.admin}|${U.tenant || ''}`;
+          $$('.logo, .rail-group, .rail-btn', rail).forEach((el, i) =>
+            el.style.setProperty('--i', i),
+          );
+          if (key !== railKey) {
+            rail.classList.add('rail-enter');
+            inkPrev = null;
+          }
+          railKey = key;
+          const on = $('.rail-btn.on', rail);
+          if (on) {
+            const ink = document.createElement('span');
+            ink.className = 'rail-ink';
+            ink.setAttribute('aria-hidden', 'true');
+            rail.prepend(ink);
+            rail.classList.add('has-ink');
+            const box = {
+              t: on.offsetTop,
+              l: on.offsetLeft,
+              w: on.offsetWidth,
+              h: on.offsetHeight,
+            };
+            const put = (b) => {
+              ink.style.top = `${b.t}px`;
+              ink.style.left = `${b.l}px`;
+              ink.style.width = `${b.w}px`;
+              ink.style.height = `${b.h}px`;
+            };
+            if (inkPrev && (inkPrev.t !== box.t || inkPrev.l !== box.l)) {
+              ink.style.transition = 'none';
+              put(inkPrev);
+              void ink.offsetWidth;
+              ink.style.transition = '';
+              put(box);
+              ink.classList.add('move');
+            } else put(box);
+            inkPrev = box;
+          } else inkPrev = null;
+        } else {
+          railKey = null;
+          inkPrev = null;
+        }
+        if (changed) {
+          const first = $('#main') && $('#main').firstElementChild;
+          if (first) first.classList.add('pg-in');
+          const top = $('#root').firstElementChild;
+          if (top) top.classList.add('scr-in');
+        }
+      }
+      // A soft light in the sidebar follows the pointer.
+      document.addEventListener(
+        'pointermove',
+        (e) => {
+          const r = e.target.closest && e.target.closest('.rail');
+          if (!r) return;
+          const b = r.getBoundingClientRect();
+          r.style.setProperty('--mx', `${e.clientX - b.left}px`);
+          r.style.setProperty('--my', `${e.clientY - b.top + r.scrollTop}px`);
+        },
+        { passive: true },
+      );
+      let lastSig = '';
+      // soft = the 20-second live refresh: it repaints only when something
+      // on screen actually changed (the clock ticks on its own).
+      function render(soft) {
+        // infinite animations continue from where they were after a repaint
+        document.documentElement.style.setProperty(
+          '--phase',
+          `${-(performance.now() / 1000).toFixed(2)}s`,
+        );
         const de = document.documentElement;
         de.lang = DB.prefs.lang;
         de.dir = DB.prefs.lang === 'ur' ? 'rtl' : 'ltr';
@@ -10527,9 +11800,13 @@
             $('#main') && lastScreen === U.mode + U.adminScreen
               ? $('#main').scrollTop
               : 0;
+          const sigA = U.mode + U.adminScreen + html;
+          if (soft && sigA === lastSig) return;
+          lastSig = sigA;
           hideTip();
         $('#root').innerHTML = html;
           if ($('#main')) $('#main').scrollTop = keep;
+          afterPaint(lastScreen !== U.mode + U.adminScreen);
           lastScreen = U.mode + U.adminScreen;
           return;
         }
@@ -10578,6 +11855,9 @@
           console.error(e);
           html = `<div class="page">${emptyBox('This screen could not be shown', esc(e.message), `<button class="btn btn-primary" data-act="go" data-s="${homeScreen()}">Go back</button> <button class="btn btn-ghost" data-act="repair-demo">Reset demo data</button>`)}</div>`;
         }
+        const sig = U.screen + html.replace(/<span class="clock"[^>]*>[^<]*<\/span>/, '');
+        if (soft && sig === lastSig) return;
+        lastSig = sig;
         $('#root').innerHTML = html;
         // Keep screens short: help sentences are hidden, hints that hold a
         // figure (a count, money, a date) stay.
@@ -10601,6 +11881,7 @@
             }
           }
         }
+        afterPaint(lastScreen !== U.screen);
         if (lastScreen !== U.screen) playIntro();
         lastScreen = U.screen;
       }
@@ -13073,6 +14354,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
       let M = null;
       function openModal(m) {
         M = m;
+        M._fresh = true;
         renderModal();
       }
       function closeModal() {
@@ -13091,7 +14373,8 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
         ).forEach((el) => {
           if (el.id && !el.dataset.in) keep[el.id] = el.value;
         });
-        r.innerHTML = `<div class="scrim" data-act="scrim"><div class="modal ${M.wide ? 'wide' : ''}" role="dialog" aria-modal="true" aria-labelledby="mt">${M.render()}</div></div>`;
+        r.innerHTML = `<div class="scrim ${M._fresh ? 'fresh' : ''}" data-act="scrim"><div class="modal ${M.wide ? 'wide' : ''} ${M._fresh ? 'fresh' : ''}" role="dialog" aria-modal="true" aria-labelledby="mt">${M.render()}</div></div>`;
+        M._fresh = false;
         Object.entries(keep).forEach(([id, v]) => {
           const el = document.getElementById(id);
           if (el && M.keepInputs !== false) el.value = v;
@@ -15725,7 +17008,7 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
             document.activeElement.matches('input, select, textarea')
           )
         )
-          render();
+          render(true);
       }, 20000);
       window.addEventListener('storage', (e) => {
         if (e.key === LS_KEY && e.newValue) {
