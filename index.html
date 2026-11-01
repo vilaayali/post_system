@@ -4794,25 +4794,111 @@
       }
 
       /* =============================================================
-         Studio pass. Same palette (navy, ember, cream), refined surfaces,
-         an animated sidebar with a sliding ink marker, and calm motion.
-         Design only: no markup or behaviour changes.
+         Flat blue system. Navy, ember and cream with a scale of blues.
+         No gradients: depth comes from shades of blue, hairlines and
+         soft shadows. The button blue (--btn) is the main accent.
+         Every token here is listed on the Design system screen.
          ============================================================= */
       :root {
+        /* blue scale, the same in both themes */
+        --blue-50: #eef4fb;
+        --blue-100: #dce8f6;
+        --blue-200: #b9d0ec;
+        --blue-300: #8cb1de;
+        --blue-400: #5a8dcb;
+        --blue-500: #2f6db0;
+        --blue-600: #0b4f99;
+        --blue-700: #01386a;
+        --blue-800: #012c55;
+        --blue-900: #01203f;
+        --blue-950: #01162c;
+        /* type */
         --title: 'Bricolage Grotesque', 'Figtree', system-ui, sans-serif;
+        --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+        /* motion */
         --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
         --ease-spring: cubic-bezier(0.34, 1.45, 0.5, 1);
+        --dur-1: 0.15s;
+        --dur-2: 0.25s;
+        --dur-3: 0.45s;
+        --dur-4: 0.6s;
+        /* spacing */
+        --sp-1: 4px;
+        --sp-2: 8px;
+        --sp-3: 12px;
+        --sp-4: 16px;
+        --sp-5: 20px;
+        --sp-6: 24px;
+        --sp-7: 28px;
+        --sp-8: 32px;
+        --sp-10: 40px;
+        /* radius */
+        --r-xs: 6px;
+        --r-sm: 8px;
+        --r-md: 10px;
+        --r-lg: 12px;
+        --r-xl: 14px;
+        --r-2xl: 18px;
+        --r-3xl: 22px;
+        --r-pill: 999px;
+        /* layout and layers */
         --side: 236px;
+        --top-h: 62px;
+        --page-max: 1500px;
+        --z-top: 5;
+        --z-modal: 100;
+        --z-pop: 150;
+        --z-toast: 200;
+        --z-tip: 400;
       }
       :root:not([data-theme='dark']) {
+        --btn: #0b4f99;
+        --btn-hover: #01386a;
+        --btn-active: #012c55;
+        --btn-ink: #ffffff;
+        --btn-soft: #dce8f6;
+        --green: #0b4f99;
+        --green-hover: #01386a;
+        --green-soft: #dce8f6;
+        --green-ink: #01386a;
+        --indigo: #2f6db0;
+        --indigo-soft: #e3edf9;
+        --indigo-ink: #1f528a;
+        --hero: #01386a;
+        --hero-2: #0b4f99;
+        --rail-active: #0b4f99;
+        --tint: rgba(11, 79, 153, 0.06);
         --dot: rgba(1, 56, 106, 0.065);
-        --hover-lift: 0 14px 30px -18px rgba(1, 40, 77, 0.45);
-        --top-bg: rgba(255, 253, 246, 0.82);
+        --top-bg: #fffdf6;
+        --grad: linear-gradient(#0b4f99, #0b4f99);
+        --glow: 0 6px 16px -8px rgba(11, 79, 153, 0.6);
+        --btn-shadow:
+          0 1px 0 #012c55,
+          0 8px 18px -10px rgba(11, 79, 153, 0.7);
+        --hover-lift: 0 14px 30px -18px rgba(1, 40, 77, 0.42);
       }
       :root[data-theme='dark'] {
+        --btn: #2a6fc0;
+        --btn-hover: #3a80d2;
+        --btn-active: #1f5ea8;
+        --btn-ink: #ffffff;
+        --btn-soft: rgba(74, 140, 220, 0.18);
+        --green: #2a6fc0;
+        --green-hover: #3a80d2;
+        --green-soft: rgba(74, 140, 220, 0.18);
+        --green-ink: #a9caf2;
+        --hero: #0c3a6b;
+        --hero-2: #12508f;
+        --rail-active: #12407a;
+        --tint: rgba(110, 163, 230, 0.07);
         --dot: rgba(245, 232, 170, 0.035);
+        --top-bg: #0b1a2d;
+        --grad: linear-gradient(#2a6fc0, #2a6fc0);
+        --glow: 0 6px 18px -8px rgba(42, 111, 192, 0.6);
+        --btn-shadow:
+          0 1px 0 #123f78,
+          0 8px 18px -10px rgba(0, 0, 0, 0.8);
         --hover-lift: 0 16px 34px -18px rgba(0, 0, 0, 0.8);
-        --top-bg: rgba(11, 26, 45, 0.82);
       }
       @media (max-width: 1100px) and (min-width: 761px) {
         :root {
@@ -4832,13 +4918,53 @@
         letter-spacing: 0 !important;
       }
 
+      /* ---------- No gradients anywhere ---------- */
+      .main {
+        background-image: radial-gradient(
+          circle at 1px 1px,
+          var(--dot) 1px,
+          transparent 1.5px
+        );
+        background-size: 24px 24px;
+      }
+      .panel {
+        background: var(--surface);
+      }
+      .app:not(.admin) .rail,
+      .app.admin .rail,
+      .login-brand,
+      .wiz-side {
+        background-image: none;
+      }
+      .kpi.lead,
+      :root[data-theme='dark'] .kpi.lead {
+        background-image: none;
+        background-color: var(--hero);
+        border-color: var(--hero);
+      }
+      .dash-hero::after {
+        display: none;
+      }
+      .cv-area {
+        fill: rgba(255, 255, 255, 0.1);
+      }
+      .page-head > div:first-child::before {
+        background: var(--ember);
+      }
+      .dash-sec::after {
+        background: var(--line-strong);
+      }
+      .bar-row .tr i,
+      .ranked li:first-child .dl-rk {
+        background: var(--btn);
+      }
+
       /* ---------- Type ---------- */
       .page-head h2,
       .modal-head h3,
       .wiz-main h2,
       .login-side h2,
       .locked-screen h2,
-      .lockedfeat h2,
       .plan-card h3 {
         font-family: var(--title);
         font-weight: 700;
@@ -4852,14 +4978,10 @@
         font-size: 31px;
         line-height: 1.1;
       }
-      .page-head p {
-        font-size: 14.5px;
-      }
       .page-head > div:first-child::before {
         width: 4px;
         top: 2px;
         bottom: 2px;
-        box-shadow: 0 0 14px rgba(238, 75, 43, 0.45);
       }
       .panel-head h3,
       .sec-title,
@@ -4881,13 +5003,7 @@
         isolation: isolate;
         padding: 16px 12px 14px;
         gap: 2px;
-        background-image:
-          radial-gradient(130% 38% at 0% 0%, var(--aura-1), transparent 62%),
-          radial-gradient(120% 32% at 100% 100%, var(--aura-2), transparent 62%),
-          linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 26%);
-        box-shadow:
-          inset -1px 0 0 rgba(255, 255, 255, 0.06),
-          10px 0 34px -24px rgba(1, 26, 50, 0.7);
+        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.06);
         scrollbar-width: none;
       }
       .app:not(.admin) .rail {
@@ -4898,24 +5014,6 @@
       }
       .rail::-webkit-scrollbar {
         display: none;
-      }
-      /* soft lantern light that follows the pointer */
-      .rail::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        background: radial-gradient(
-          240px circle at var(--mx, 50%) var(--my, -200px),
-          rgba(245, 232, 170, 0.09),
-          transparent 65%
-        );
-        opacity: 0;
-        transition: opacity 0.4s;
-      }
-      .rail:hover::before {
-        opacity: 1;
       }
       .rail .logo {
         position: relative;
@@ -4939,9 +5037,7 @@
         height: 10px;
         border-radius: 50%;
         background: var(--ember);
-        box-shadow:
-          0 0 0 4px rgba(238, 75, 43, 0.18),
-          0 0 16px rgba(238, 75, 43, 0.75);
+        box-shadow: 0 0 0 4px rgba(238, 75, 43, 0.2);
       }
       .rail .logo::after {
         content: '';
@@ -4949,18 +5045,7 @@
         inset-inline: 10px;
         bottom: 0;
         height: 1px;
-        background: linear-gradient(
-          90deg,
-          rgba(245, 232, 170, 0.28),
-          rgba(255, 255, 255, 0.04)
-        );
-      }
-      [dir='rtl'] .rail .logo::after {
-        background: linear-gradient(
-          270deg,
-          rgba(245, 232, 170, 0.28),
-          rgba(255, 255, 255, 0.04)
-        );
+        background: rgba(245, 232, 170, 0.16);
       }
       .rail .logo small {
         margin-inline-start: auto;
@@ -4995,10 +5080,7 @@
         content: '';
         flex: 1;
         height: 1px;
-        background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent);
-      }
-      [dir='rtl'] .rail-group::after {
-        background: linear-gradient(270deg, rgba(255, 255, 255, 0.1), transparent);
+        background: rgba(255, 255, 255, 0.08);
       }
       .rail .rail-btn,
       .app.admin .rail .rail-btn {
@@ -5017,18 +5099,14 @@
           color 0.25s,
           transform 0.35s var(--ease-out);
       }
-      /* hover: a cream wash sweeps in from the edge */
+      /* hover: a flat blue wash sweeps in from the edge */
       .rail .rail-btn::after {
         content: '';
         position: absolute;
         inset: 0;
         z-index: -1;
         border-radius: inherit;
-        background: linear-gradient(
-          90deg,
-          rgba(245, 232, 170, 0.11),
-          rgba(245, 232, 170, 0.02)
-        );
+        background: rgba(255, 255, 255, 0.07);
         opacity: 0;
         transform: scaleX(0.2);
         transform-origin: left center;
@@ -5038,11 +5116,6 @@
       }
       [dir='rtl'] .rail .rail-btn::after {
         transform-origin: right center;
-        background: linear-gradient(
-          270deg,
-          rgba(245, 232, 170, 0.11),
-          rgba(245, 232, 170, 0.02)
-        );
       }
       .rail .rail-btn:hover,
       .app.admin .rail .rail-btn:hover {
@@ -5082,7 +5155,7 @@
         display: none;
       }
       .rail .rail-btn.on svg {
-        color: var(--cream);
+        color: #fff;
       }
       .rail .rail-btn:focus-visible {
         box-shadow: inset 0 0 0 2px var(--cream);
@@ -5110,8 +5183,7 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.07);
         margin: 0 6px 8px;
       }
-
-      /* the sliding ink: one marker that glides between pages */
+      /* the sliding ink: one solid blue marker that glides between pages */
       .rail-ink {
         position: absolute;
         top: 0;
@@ -5119,26 +5191,15 @@
         z-index: 0;
         pointer-events: none;
         border-radius: 12px;
-        background: linear-gradient(
-          90deg,
-          rgba(245, 232, 170, 0.15),
-          rgba(255, 255, 255, 0.05)
-        );
+        background: var(--rail-active);
         box-shadow:
-          inset 0 0 0 1px rgba(245, 232, 170, 0.14),
-          0 10px 26px -14px rgba(0, 0, 0, 0.7);
+          inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+          0 10px 22px -14px rgba(0, 0, 0, 0.8);
         transition:
           top 0.55s var(--ease-spring),
           left 0.55s var(--ease-spring),
           width 0.45s var(--ease-out),
           height 0.45s var(--ease-out);
-      }
-      [dir='rtl'] .rail-ink {
-        background: linear-gradient(
-          270deg,
-          rgba(245, 232, 170, 0.15),
-          rgba(255, 255, 255, 0.05)
-        );
       }
       .rail-ink::before {
         content: '';
@@ -5148,32 +5209,17 @@
         bottom: 9px;
         width: 4px;
         border-radius: 0 4px 4px 0;
-        background: linear-gradient(180deg, #ff7a52, var(--ember));
-        box-shadow: 0 0 14px rgba(238, 75, 43, 0.85);
+        background: var(--ember);
       }
       [dir='rtl'] .rail-ink::before {
         border-radius: 4px 0 0 4px;
       }
-      .rail-ink::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: linear-gradient(
-          100deg,
-          transparent 30%,
-          rgba(245, 232, 170, 0.22) 50%,
-          transparent 70%
-        );
-        opacity: 0;
-      }
-      .rail-ink.move::after {
-        animation: ink-glint 0.9s 0.25s var(--ease-out);
-      }
       .rail-ink.move::before {
         animation: ink-bar 0.55s var(--ease-out);
       }
-
+      .rail-ink.move {
+        animation: ink-land 0.6s var(--ease-out);
+      }
       /* entrance: the sidebar unfolds once per sign-in */
       .rail.rail-enter .logo,
       .rail.rail-enter .rail-group,
@@ -5187,15 +5233,14 @@
       .rail.rail-enter .logo::before {
         animation: lantern 1.2s 0.3s var(--ease-out) backwards;
       }
+      [dir='rtl'] .rail {
+        --rail-dx: 16px;
+      }
       @keyframes rail-in {
         from {
           opacity: 0;
           transform: translateX(var(--rail-dx, -16px));
-          filter: blur(3px);
         }
-      }
-      [dir='rtl'] .rail {
-        --rail-dx: 16px;
       }
       @keyframes fade-in {
         from {
@@ -5212,22 +5257,19 @@
           box-shadow: 0 0 0 14px rgba(238, 75, 43, 0);
         }
       }
-      @keyframes ink-glint {
-        0% {
-          opacity: 1;
-          transform: translateX(-60%);
-        }
-        100% {
-          opacity: 0;
-          transform: translateX(60%);
-        }
-      }
       @keyframes ink-bar {
         0% {
           transform: scaleY(0.2);
         }
         60% {
           transform: scaleY(1.15);
+        }
+      }
+      @keyframes ink-land {
+        40% {
+          box-shadow:
+            inset 0 0 0 1px rgba(245, 232, 170, 0.35),
+            0 10px 22px -14px rgba(0, 0, 0, 0.8);
         }
       }
       @keyframes count-pulse {
@@ -5245,14 +5287,12 @@
          ============================================================= */
       .top {
         position: relative;
-        z-index: 5;
+        z-index: var(--z-top);
         gap: 14px;
         padding: 0 20px;
         background: var(--top-bg);
-        backdrop-filter: blur(14px) saturate(1.3);
-        -webkit-backdrop-filter: blur(14px) saturate(1.3);
         border-bottom: 1px solid var(--line);
-        box-shadow: 0 12px 30px -26px rgba(1, 40, 77, 0.6);
+        box-shadow: 0 10px 24px -22px rgba(1, 40, 77, 0.6);
       }
       .bizname b {
         font-family: var(--title);
@@ -5279,7 +5319,7 @@
           box-shadow 0.25s;
       }
       .switcher:not(.locked):hover {
-        border-color: color-mix(in srgb, var(--green) 45%, var(--line-strong));
+        border-color: var(--btn);
         transform: translateY(-1px);
         box-shadow: var(--hover-lift);
       }
@@ -5291,8 +5331,8 @@
         width: 36px;
         height: 36px;
         border-radius: 11px;
-        background: var(--grad);
-        box-shadow: var(--glow);
+        background: var(--btn);
+        box-shadow: none;
       }
       .switcher > svg {
         transition: transform 0.3s var(--ease-out);
@@ -5305,13 +5345,12 @@
         font-weight: 600;
       }
       .daychip {
-        position: relative;
         padding: 6px 12px 6px 10px;
         border: 1px solid transparent;
         font-size: 12.5px;
       }
       .daychip.open {
-        border-color: color-mix(in srgb, var(--green) 25%, transparent);
+        border-color: color-mix(in srgb, var(--btn) 25%, transparent);
       }
       .daychip.closed {
         border-color: color-mix(in srgb, var(--chili) 30%, transparent);
@@ -5329,12 +5368,10 @@
       .top .icon-btn {
         border: 1px solid var(--line);
         background: var(--surface);
-        transition:
-          transform 0.4s var(--ease-spring),
-          border-color 0.2s;
+        transition: border-color 0.2s;
       }
       .top .icon-btn:hover {
-        border-color: var(--line-strong);
+        border-color: var(--btn);
       }
       .top .icon-btn svg {
         transition: transform 0.5s var(--ease-spring);
@@ -5351,21 +5388,7 @@
         box-shadow: 0 0 0 2px var(--surface);
       }
 
-      /* =============================================================
-         Canvas and page entrance
-         ============================================================= */
-      .main {
-        background-image:
-          radial-gradient(900px 420px at 85% -140px, var(--page-glow), transparent 70%),
-          radial-gradient(700px 380px at -10% 110%, var(--page-ember), transparent 70%),
-          radial-gradient(800px 300px at 20% -80px, var(--page-cream), transparent 70%),
-          radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 1.5px);
-        background-size:
-          auto,
-          auto,
-          auto,
-          24px 24px;
-      }
+      /* ---------- Page entrance ---------- */
       #main > .pg-in {
         animation: page-in 0.55s var(--ease-out) backwards;
       }
@@ -5392,9 +5415,6 @@
       .kpi {
         padding: 16px 18px;
       }
-      .kpi small {
-        letter-spacing: 0.01em;
-      }
       .stat {
         border-radius: 18px;
       }
@@ -5405,7 +5425,10 @@
         padding: 3px 10px;
         border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
       }
-      .b-solid,
+      .b-solid {
+        background: var(--btn);
+        border-color: transparent;
+      }
       .b-dark {
         border-color: transparent;
       }
@@ -5414,8 +5437,50 @@
         font-size: 17px;
         letter-spacing: -0.01em;
       }
+      .meter i {
+        background: var(--btn);
+      }
 
-      /* ---------- Buttons ---------- */
+      /* ---------- Dashboard hero: solid navy with flat shapes ---------- */
+      .dash-hero {
+        border: 0;
+        box-shadow: 0 18px 40px -26px rgba(1, 40, 77, 0.7);
+      }
+      #root .hero-aura i:nth-child(n) {
+        filter: none;
+        border-radius: 50%;
+      }
+      #root .hero-aura i:nth-child(1) {
+        width: 44%;
+        left: -12%;
+        top: -60%;
+        background: var(--hero-2);
+        opacity: 0.55;
+      }
+      #root .hero-aura i:nth-child(2) {
+        width: 30%;
+        right: -6%;
+        bottom: -70%;
+        background: transparent;
+        box-shadow: inset 0 0 0 1px rgba(245, 232, 170, 0.22);
+        opacity: 1;
+      }
+      #root .hero-aura i:nth-child(3) {
+        width: 1.6%;
+        left: 37%;
+        top: 14%;
+        background: var(--ember);
+        opacity: 0;
+      }
+      .trend {
+        background: rgba(255, 255, 255, 0.14);
+      }
+      .hero-split {
+        background: rgba(1, 22, 44, 0.25);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+      }
+
+      /* ---------- Buttons: the button blue leads ---------- */
       .btn {
         border-radius: 12px;
         letter-spacing: -0.005em;
@@ -5424,79 +5489,100 @@
           box-shadow 0.22s,
           background-color 0.2s,
           border-color 0.2s,
-          color 0.2s,
-          filter 0.2s;
+          color 0.2s;
       }
       .btn:active:not(:disabled) {
         transform: translateY(1px) scale(0.985);
       }
+      .btn-primary,
+      .btn-primary:hover:not(:disabled) {
+        filter: none;
+      }
       .btn-primary {
-        position: relative;
-        overflow: hidden;
-        isolation: isolate;
-      }
-      .btn-primary::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background: linear-gradient(
-          110deg,
-          transparent 30%,
-          rgba(255, 255, 255, 0.24) 50%,
-          transparent 70%
-        );
-        transform: translateX(-120%);
-        transition: transform 0.75s var(--ease-out);
-      }
-      .btn-primary:hover:not(:disabled)::after {
-        transform: translateX(120%);
+        background: var(--btn);
+        color: var(--btn-ink);
+        border-color: transparent;
+        box-shadow: var(--btn-shadow);
       }
       .btn-primary:hover:not(:disabled) {
+        background: var(--btn-hover);
         transform: translateY(-1px);
-        box-shadow: 0 14px 28px -12px rgba(1, 56, 106, 0.65);
+      }
+      .btn-primary:active:not(:disabled) {
+        background: var(--btn-active);
+      }
+      .btn-primary:disabled {
+        box-shadow: none;
+        filter: grayscale(0.3);
       }
       .btn-ghost {
         background: var(--surface);
         border-color: var(--line-strong);
-        box-shadow: 0 1px 0 rgba(1, 40, 77, 0.04);
+        color: var(--ink);
       }
       .btn-ghost:hover:not(:disabled) {
         background: var(--surface);
-        border-color: color-mix(in srgb, var(--green) 40%, var(--line-strong));
+        border-color: var(--btn);
+        color: var(--green-ink);
         box-shadow: var(--hover-lift);
         transform: translateY(-1px);
       }
-      .btn-danger:hover:not(:disabled) {
-        box-shadow: 0 12px 26px -12px rgba(224, 63, 32, 0.7);
+      .btn-dark {
+        background: var(--blue-900);
+        color: #fff;
+      }
+      :root[data-theme='dark'] .btn-dark {
+        background: var(--cream);
+        color: #01203f;
+      }
+      .btn-dark:hover:not(:disabled) {
         transform: translateY(-1px);
+        box-shadow: var(--hover-lift);
+      }
+      .btn-danger {
+        box-shadow: 0 1px 0 #9b241d;
+      }
+      .btn-danger:hover:not(:disabled) {
+        background: #c7341a;
+        transform: translateY(-1px);
+      }
+      .btn-quiet:hover:not(:disabled) {
+        background: var(--tint);
+        color: var(--green-ink);
       }
       .icon-btn {
         border-radius: 12px;
         transition:
           background-color 0.2s,
-          color 0.2s,
-          transform 0.3s var(--ease-out);
+          color 0.2s;
+      }
+      .icon-btn:hover {
+        background: var(--tint);
+        color: var(--green-ink);
       }
 
-      /* ---------- Chips and tabs ---------- */
+      /* ---------- Chips, tabs, segmented ---------- */
       .chip {
         transition:
           background-color 0.2s,
           border-color 0.2s,
           color 0.2s,
-          transform 0.25s var(--ease-out),
-          box-shadow 0.25s;
+          transform 0.25s var(--ease-out);
       }
       .chip:hover:not(:disabled):not(.on) {
-        border-color: color-mix(in srgb, var(--green) 45%, var(--line-strong));
+        border-color: var(--btn);
+        background: var(--tint);
         transform: translateY(-1px);
       }
       .chip.on {
-        background: var(--grad);
-        border-color: transparent;
-        color: #fff;
-        box-shadow: var(--glow);
+        background: var(--btn);
+        border-color: var(--btn);
+        color: var(--btn-ink);
+        box-shadow: none;
+      }
+      .seg button.on {
+        background: var(--btn);
+        color: var(--btn-ink);
       }
       .tabs {
         gap: 2px;
@@ -5514,7 +5600,7 @@
       }
       .tabs button:hover {
         color: var(--ink);
-        background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+        background: var(--tint);
       }
       .tabs button::after {
         content: '';
@@ -5523,7 +5609,7 @@
         bottom: -1px;
         height: 3px;
         border-radius: 3px 3px 0 0;
-        background: linear-gradient(90deg, var(--ember), var(--cream));
+        background: var(--btn);
         transform: scaleX(0);
         transition: transform 0.35s var(--ease-out);
       }
@@ -5541,30 +5627,28 @@
         border-radius: 12px;
         transition:
           border-color 0.2s,
-          box-shadow 0.2s,
-          background-color 0.2s;
+          box-shadow 0.2s;
       }
       .input:hover:not(:focus),
       .select:hover:not(:focus),
       .textarea:hover:not(:focus) {
-        border-color: color-mix(in srgb, var(--green) 35%, var(--line-strong));
+        border-color: var(--blue-300);
       }
       .input:focus,
       .select:focus,
       .textarea:focus {
-        border-color: var(--ember);
+        border-color: var(--btn);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--btn) 22%, transparent);
       }
       .switch {
-        transition:
-          background-color 0.25s,
-          box-shadow 0.25s;
+        transition: background-color 0.25s;
       }
       .switch::after {
         transition: transform 0.35s var(--ease-spring);
       }
       .switch[aria-checked='true'] {
-        background: var(--grad);
-        box-shadow: var(--glow);
+        background: var(--btn);
+        box-shadow: none;
       }
 
       /* ---------- Tables ---------- */
@@ -5584,23 +5668,20 @@
         transition: background-color 0.15s;
       }
       .tbl tbody tr:hover td {
-        background: color-mix(in srgb, var(--surface-2) 75%, transparent);
+        background: var(--tint);
       }
       .tbl tr.click:hover td:first-child {
-        box-shadow: inset 3px 0 0 var(--ember);
+        box-shadow: inset 3px 0 0 var(--btn);
       }
       [dir='rtl'] .tbl tr.click:hover td:first-child {
-        box-shadow: inset -3px 0 0 var(--ember);
-      }
-      .pager {
-        border-top-color: var(--line);
+        box-shadow: inset -3px 0 0 var(--btn);
       }
 
       /* =============================================================
          Orders and order screen
          ============================================================= */
       .ocard {
-        background: linear-gradient(180deg, var(--surface), var(--surface-2));
+        background: var(--surface);
         transition:
           transform 0.3s var(--ease-out),
           border-color 0.2s;
@@ -5610,6 +5691,9 @@
       }
       .ocard .tok {
         color: var(--heading);
+      }
+      .ocard.k-ready {
+        --k: var(--btn);
       }
       .ocard.k-late .tok {
         color: var(--chili-ink);
@@ -5622,9 +5706,9 @@
           transform 0.3s var(--ease-out);
       }
       .new-tile:hover {
-        border-color: var(--ember);
+        border-color: var(--btn);
         color: var(--heading);
-        background: color-mix(in srgb, var(--surface) 60%, transparent);
+        background: var(--tint);
         transform: translateY(-3px);
       }
       .new-tile svg {
@@ -5659,7 +5743,7 @@
         bottom: 12px;
         width: 3px;
         border-radius: 3px;
-        background: var(--ember);
+        background: var(--btn);
         opacity: 0;
         transform: scaleY(0.3);
         transition:
@@ -5668,7 +5752,7 @@
       }
       .item:hover:not(:disabled) {
         transform: translateY(-2px);
-        border-color: color-mix(in srgb, var(--green) 45%, var(--line));
+        border-color: var(--blue-300);
         box-shadow: var(--hover-lift);
       }
       .item:hover:not(:disabled)::before {
@@ -5712,9 +5796,8 @@
       .size.on,
       .type-pick button.on,
       .plan-card.on {
-        box-shadow:
-          0 0 0 3px color-mix(in srgb, var(--green) 18%, transparent),
-          var(--hover-lift);
+        border-color: var(--btn);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--btn) 18%, transparent);
       }
       .plan-card {
         border-radius: 18px;
@@ -5728,8 +5811,8 @@
          Overlays
          ============================================================= */
       .scrim {
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
         animation: none;
       }
       .scrim.fresh {
@@ -5751,7 +5834,7 @@
       }
       .modal-foot {
         padding: 14px 24px;
-        background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+        background: var(--surface-2);
         border-radius: 0 0 22px 22px;
       }
       @keyframes modal-in {
@@ -5770,10 +5853,11 @@
           transform 0.2s var(--ease-out);
       }
       .menu-pop button.opt:hover {
+        background: var(--tint);
         transform: translateX(2px);
       }
       .menu-pop button.opt.on {
-        box-shadow: inset 3px 0 0 var(--ember);
+        box-shadow: inset 3px 0 0 var(--btn);
       }
       .toast {
         position: relative;
@@ -5792,7 +5876,7 @@
         top: 0;
         bottom: 0;
         width: 4px;
-        background: linear-gradient(180deg, var(--ember), var(--cream));
+        background: var(--ember);
       }
       .toast.bad {
         background: var(--chili);
@@ -5809,17 +5893,19 @@
         }
       }
       #tipbox {
+        z-index: var(--z-tip);
         border-radius: 12px;
       }
 
       /* =============================================================
-         Login, setup wizard, locked screens
+         Login, setup wizard
          ============================================================= */
       .login-brand,
       .wiz-side {
         position: relative;
         overflow: hidden;
         isolation: isolate;
+        background-color: var(--night);
       }
       .login-brand::before,
       .login-brand::after,
@@ -5829,40 +5915,39 @@
         position: absolute;
         z-index: -1;
         border-radius: 50%;
-        filter: blur(70px);
         pointer-events: none;
       }
       .login-brand::before,
       .wiz-side::before {
-        width: 440px;
-        height: 440px;
-        top: -140px;
-        left: -120px;
-        background: rgba(238, 75, 43, 0.38);
-        animation: orb-a 18s ease-in-out infinite alternate;
+        width: 460px;
+        height: 460px;
+        top: -170px;
+        right: -150px;
+        background: var(--blue-700);
+        opacity: 0.7;
+        animation: orb-a 24s ease-in-out infinite alternate;
       }
       .login-brand::after,
       .wiz-side::after {
-        width: 380px;
-        height: 380px;
-        right: -100px;
-        bottom: -120px;
-        background: rgba(245, 232, 170, 0.2);
-        animation: orb-b 22s ease-in-out infinite alternate;
+        width: 300px;
+        height: 300px;
+        left: -90px;
+        bottom: -110px;
+        border: 1px solid rgba(245, 232, 170, 0.2);
+        animation: orb-b 28s ease-in-out infinite alternate;
       }
       @keyframes orb-a {
         to {
-          transform: translate(140px, 110px) scale(1.2);
+          transform: translate(-60px, 50px) scale(1.08);
         }
       }
       @keyframes orb-b {
         to {
-          transform: translate(-120px, -90px) scale(0.85);
+          transform: translate(50px, -40px) scale(0.92);
         }
       }
       .login-brand .mark {
         color: #fff;
-        text-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
       }
       .login-brand .mark span {
         font-weight: 600;
@@ -5879,13 +5964,16 @@
       .scr-in .login-side {
         animation: page-in 0.7s 0.1s var(--ease-out) backwards;
       }
+      .login-stores span {
+        background: rgba(255, 255, 255, 0.05);
+      }
       .staff-card {
         border-radius: 16px;
         background: var(--surface);
         box-shadow: var(--shadow);
       }
       .staff-card:not(.admin):hover {
-        border-color: color-mix(in srgb, var(--green) 50%, var(--line-strong));
+        border-color: var(--btn);
       }
       .pinpad button {
         border-radius: 16px;
@@ -5896,11 +5984,11 @@
           border-color 0.15s;
       }
       .pinpad button:hover {
-        border-color: var(--line-strong);
+        border-color: var(--blue-300);
       }
       .pinpad button:active {
         transform: scale(0.94);
-        background: var(--green-soft);
+        background: var(--btn-soft);
       }
       .pin-dots i {
         transition:
@@ -5909,15 +5997,18 @@
           transform 0.3s var(--ease-spring);
       }
       .pin-dots i.f {
-        background: var(--heading);
-        border-color: var(--heading);
+        background: var(--btn);
+        border-color: var(--btn);
         transform: scale(1.1);
-        box-shadow: 0 0 0 4px color-mix(in srgb, var(--ember) 20%, transparent);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--btn) 20%, transparent);
       }
       .wiz-steps li {
         transition:
           background-color 0.3s,
           opacity 0.3s;
+      }
+      .wiz-steps li.on {
+        background: var(--rail-active);
       }
       .wiz-steps li.on .n {
         border-color: var(--ember);
@@ -5925,6 +6016,345 @@
       }
       .scr-in .wiz-main {
         animation: page-in 0.5s var(--ease-out) backwards;
+      }
+
+      /* looping animations resume where they were after a repaint */
+      .login-brand::before,
+      .login-brand::after,
+      .wiz-side::before,
+      .wiz-side::after,
+      .rail-count.warn,
+      #root .hero-aura i:nth-child(n),
+      .cv-dot::after,
+      .st-ping {
+        animation-delay: var(--phase, 0s);
+      }
+
+      /* =============================================================
+         Design system screen
+         ============================================================= */
+      .ds-intro {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+      .ds-sec {
+        margin-top: 34px;
+        scroll-margin-top: 70px;
+      }
+      .ds-sec > h3 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+        color: var(--heading);
+        font-family: var(--title);
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .ds-sec > h3 small {
+        color: var(--faint);
+        font-family: var(--mono);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0;
+      }
+      .ds-note {
+        max-width: 78ch;
+        margin-bottom: 14px;
+        color: var(--muted);
+        font-size: 14.5px;
+      }
+      .ds-note b {
+        color: var(--ink);
+      }
+      .ds-code,
+      .ds-sec code {
+        padding: 1px 6px;
+        border-radius: 6px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        color: var(--heading);
+        font-family: var(--mono);
+        font-size: 12.5px;
+        white-space: nowrap;
+      }
+      .ds-pre {
+        margin: 8px 0 0;
+        padding: 14px 16px;
+        overflow-x: auto;
+        border-radius: 12px;
+        background: var(--blue-950);
+        color: #dfe8f3;
+        font-family: var(--mono);
+        font-size: 12.5px;
+        line-height: 1.65;
+        white-space: pre;
+      }
+      .ds-demo .ds-pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .ds-sub {
+        margin: 18px 0 8px;
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .ds-tok {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13.5px;
+      }
+      .ds-tok th {
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--line);
+        color: var(--faint);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-align: start;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .ds-tok td {
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: middle;
+      }
+      .ds-tok tr:last-child td {
+        border-bottom: 0;
+      }
+      .ds-tok tbody tr {
+        cursor: copy;
+      }
+      .ds-tok tbody tr:hover td {
+        background: var(--tint);
+      }
+      .ds-val {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--muted);
+        word-break: break-all;
+      }
+      .ds-sw {
+        flex: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        box-shadow: inset 0 0 0 1px rgba(1, 40, 77, 0.18);
+      }
+      .ds-sw.lg {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+      }
+      .ds-usage {
+        color: var(--muted);
+        font-size: 13px;
+        min-width: 180px;
+      }
+      .ds-scale {
+        display: grid;
+        grid-template-columns: repeat(11, minmax(0, 1fr));
+        overflow: hidden;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+      }
+      .ds-scale button {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 2px;
+        min-height: 120px;
+        padding: 10px;
+        border: 0;
+        color: #01203f;
+        font-family: var(--mono);
+        font-size: 11.5px;
+        text-align: start;
+        transition: transform 0.25s var(--ease-out);
+      }
+      .ds-scale button:hover {
+        transform: translateY(-4px);
+      }
+      .ds-scale button.dk {
+        color: #fff;
+      }
+      .ds-scale b {
+        font-family: var(--body);
+        font-size: 15px;
+      }
+      .ds-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+      }
+      .ds-demo {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+      }
+      .ds-demo > .lbl {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .ds-demo > .lbl code {
+        font-weight: 500;
+      }
+      .ds-stage {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        padding: 16px;
+        border-radius: 12px;
+        background: var(--bg);
+        border: 1px dashed var(--line-strong);
+      }
+      .ds-stage.col {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .ds-type td:first-child {
+        width: 34%;
+      }
+      .ds-box {
+        display: grid;
+        place-items: center;
+        width: 88px;
+        height: 64px;
+        background: var(--surface);
+        border: 1px solid var(--line-strong);
+        color: var(--muted);
+        font-family: var(--mono);
+        font-size: 11.5px;
+      }
+      .ds-bar {
+        height: 14px;
+        border-radius: 4px;
+        background: var(--btn);
+      }
+      .ds-ease {
+        position: relative;
+        height: 44px;
+        border-radius: 12px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        cursor: pointer;
+      }
+      .ds-ease i {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: var(--btn);
+        transition-property: left;
+      }
+      .ds-ease:hover i {
+        left: calc(100% - 36px);
+      }
+      .ds-icons {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+        gap: 8px;
+      }
+      .ds-icons button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface);
+        color: var(--ink);
+        font-family: var(--mono);
+        font-size: 11.5px;
+        transition:
+          border-color 0.2s,
+          transform 0.25s var(--ease-out),
+          color 0.2s;
+      }
+      .ds-icons button:hover {
+        border-color: var(--btn);
+        color: var(--green-ink);
+        transform: translateY(-2px);
+      }
+      .ds-anat {
+        display: grid;
+        grid-template-columns: 236px minmax(0, 1fr);
+        gap: 18px;
+        align-items: start;
+      }
+      .ds-railmock {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 14px 12px;
+        border-radius: 18px;
+        background: var(--night);
+        color: var(--night-ink);
+      }
+      .ds-railmock span {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        font-size: 14.5px;
+        font-weight: 600;
+      }
+      .ds-railmock span.on {
+        position: relative;
+        background: var(--rail-active);
+        color: #fff;
+      }
+      .ds-railmock span.on::before {
+        content: '';
+        position: absolute;
+        inset-inline-start: -12px;
+        top: 9px;
+        bottom: 9px;
+        width: 4px;
+        border-radius: 0 4px 4px 0;
+        background: var(--ember);
+      }
+      .ds-railmock em {
+        padding: 12px 12px 4px;
+        color: rgba(188, 203, 220, 0.6);
+        font-size: 10.5px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .ds-ocard {
+        pointer-events: none;
+        max-width: 260px;
+      }
+      @media (max-width: 1100px) {
+        .ds-intro,
+        .ds-anat {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .ds-scale {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
       }
 
       /* =============================================================
@@ -5974,21 +6404,12 @@
         .page-head h2 {
           font-size: 24px;
         }
-      }
-
-      /* looping animations resume where they were after a repaint */
-      .login-brand::before,
-      .login-brand::after,
-      .wiz-side::before,
-      .wiz-side::after,
-      .rail-count.warn,
-      #root .hero-aura i:nth-child(n),
-      .cv-dot::after,
-      .st-ping {
-        animation-delay: var(--phase, 0s);
-      }
-      .dash-hero::after {
-        animation-delay: calc(var(--phase, 0s) + 1.6s);
+        .ds-scale {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .ds-usage {
+          min-width: 140px;
+        }
       }
     </style>
   </head>
@@ -8088,6 +8509,8 @@
         up: '<path d="m6 15 6-6 6 6"/>',
         pause: '<path d="M9 5v14M15 5v14"/>',
         play: '<path d="M7 4v16l13-8Z"/>',
+        palette:
+          '<path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.6-1.6 0-.9-.7-1.3-.7-2.1 0-.9.7-1.5 1.6-1.5H17a4 4 0 0 0 4-4c0-4.9-4-8.8-9-8.8Z"/><circle cx="7.5" cy="10.5" r="1.2"/><circle cx="11.5" cy="7" r="1.2"/><circle cx="16" cy="9.5" r="1.2"/>',
         archive:
           '<rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v11h14V9M10 13h4"/>',
       };
@@ -8317,6 +8740,7 @@
       const canScreen = (s) => {
         const u = user();
         if (!u) return false;
+        if (s === 'design') return true;
         if (!userScreens(u).includes(s)) return false;
         return s === 'allstores' ? canAll() || !planHas('allstores') : true;
       };
@@ -11745,6 +12169,11 @@
               ink.classList.add('move');
             } else put(box);
             inkPrev = box;
+            // phone bottom bar: keep the active tab in view
+            if (rail.scrollWidth > rail.clientWidth + 4) {
+              const want = box.l - (rail.clientWidth - box.w) / 2;
+              rail.scrollLeft = Math.max(0, want);
+            }
           } else inkPrev = null;
         } else {
           railKey = null;
@@ -11757,18 +12186,27 @@
           if (top) top.classList.add('scr-in');
         }
       }
-      // A soft light in the sidebar follows the pointer.
-      document.addEventListener(
-        'pointermove',
-        (e) => {
-          const r = e.target.closest && e.target.closest('.rail');
-          if (!r) return;
-          const b = r.getBoundingClientRect();
-          r.style.setProperty('--mx', `${e.clientX - b.left}px`);
-          r.style.setProperty('--my', `${e.clientY - b.top + r.scrollTop}px`);
-        },
-        { passive: true },
-      );
+      // Re-seat the sidebar marker when the window changes size.
+      addEventListener('resize', () => {
+        const rail = $('.rail'),
+          ink = rail && $('.rail-ink', rail),
+          on = rail && $('.rail-btn.on', rail);
+        if (!ink || !on) return;
+        ink.style.transition = 'none';
+        inkPrev = {
+          t: on.offsetTop,
+          l: on.offsetLeft,
+          w: on.offsetWidth,
+          h: on.offsetHeight,
+        };
+        Object.assign(ink.style, {
+          top: `${inkPrev.t}px`,
+          left: `${inkPrev.l}px`,
+          width: `${inkPrev.w}px`,
+          height: `${inkPrev.h}px`,
+        });
+        requestAnimationFrame(() => (ink.style.transition = ''));
+      });
       let lastSig = '';
       // soft = the 20-second live refresh: it repaints only when something
       // on screen actually changed (the clock ticks on its own).
@@ -11972,6 +12410,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
           ['business', 'Business', 'biz', 'Business'],
           ['audit', 'Audit log', 'audit', 'Business'],
           ['roadmap', 'Roadmap', 'road', 'Business'],
+          ['design', 'Design system', 'palette', 'Developer'],
         ];
         return list.filter(
           ([k]) =>
@@ -12091,6 +12530,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
         if (U.screen === 'billing') return billingView();
         if (U.screen === 'business') return businessView();
         if (U.screen === 'roadmap') return roadmapView();
+        if (U.screen === 'design') return designView();
         if (!U.store)
           return `<div class="page">${emptyBox(t('No branch to work in'), t('Your branches were archived or you have not been given a branch yet. Ask the owner.'))}</div>`;
         if (needsStore(U.screen) && U.store === 'all')
@@ -13578,6 +14018,770 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
     ${shown.map((a) => `<tr><td class="hint" style="white-space:nowrap">${fmtDT(a.at)}</td><td><b>${esc(uname(a.user))}</b><div class="hint">${a.role === 'system' ? '' : roleName(a.role)}</div></td><td>${a.store === 'all' ? t('Business') : store(a.store) ? esc(t(store(a.store).name)) : `<span class="hint">${t('Deleted branch')}</span>`}</td><td>${t(AUDIT_ACTIONS[a.action] || a.action)}</td><td>${esc(a.details)}${a.ref ? ` <span class="hint">${esc(a.ref)}</span>` : ''}</td></tr>`).join('') || `<tr><td colspan="5">${emptyBox(t('No records match these filters'), '')}</td></tr>`}
     </tbody></table></div>${pg.html}</div><div class="soon-list">${soon('export')}</div></div>`;
       }
+      /* =============================================================
+   Design system screen: a live reference for developers.
+   Token values are read from the stylesheet itself, so this page
+   always matches the real design.
+   ============================================================= */
+      // Every --custom-property set on :root, for light and dark.
+      function dsTokens() {
+        const base = {},
+          light = {},
+          dark = {},
+          order = [];
+        for (const sh of document.styleSheets) {
+          let rules;
+          try {
+            rules = sh.cssRules;
+          } catch (e) {
+            continue;
+          }
+          for (const r of rules) {
+            if (!r.selectorText || !r.style) continue;
+            const sel = r.selectorText.replace(/"/g, "'").replace(/\s+/g, '');
+            const tgt =
+              sel === ':root'
+                ? base
+                : sel === ":root:not([data-theme='dark'])"
+                  ? light
+                  : sel === ":root[data-theme='dark']"
+                    ? dark
+                    : null;
+            if (!tgt) continue;
+            for (let i = 0; i < r.style.length; i++) {
+              const k = r.style[i];
+              if (!k.startsWith('--')) continue;
+              if (!order.includes(k)) order.push(k);
+              tgt[k] = r.style.getPropertyValue(k).trim().replace(/\s+/g, ' ');
+            }
+          }
+        }
+        return {
+          order,
+          light: { ...base, ...light },
+          dark: { ...base, ...dark },
+          shared: (k) => !(k in light) && !(k in dark),
+        };
+      }
+      const DS_DESC = {
+        '--bg': 'Page background behind every screen',
+        '--surface': 'Cards, panels, inputs, modals',
+        '--surface-2': 'Raised rows, table hover, soft fills, modal footer',
+        '--ink': 'Main text',
+        '--muted': 'Secondary text, labels',
+        '--faint': 'Hints, table headers, placeholders',
+        '--line': 'Hairline borders and dividers',
+        '--line-strong': 'Input and button borders, dashed outlines',
+        '--heading': 'Page, panel and section titles, token numbers',
+        '--navy': 'Brand navy',
+        '--ember': 'Brand accent: active markers, alerts, focus ring',
+        '--cream': 'Brand warmth: badges on dark, selection, logo pill',
+        '--accent': 'Cream used on dark surfaces',
+        '--btn': 'Main action colour: primary buttons, active chips, switches, tabs',
+        '--btn-hover': 'Primary button on hover',
+        '--btn-active': 'Primary button while pressed, its bottom edge',
+        '--btn-ink': 'Text on primary buttons',
+        '--btn-soft': 'Soft blue fill for selected options',
+        '--btn-shadow': 'Depth under primary buttons',
+        '--green': 'Legacy name for the main action colour (same as --btn)',
+        '--green-hover': 'Legacy: main action hover',
+        '--green-soft': 'Selected tiles, soft action backgrounds',
+        '--green-ink': 'Text on soft action backgrounds, links',
+        '--indigo': 'Information',
+        '--indigo-soft': 'Information background',
+        '--indigo-ink': 'Information text',
+        '--saffron': 'Attention, low stock, pending',
+        '--saffron-soft': 'Attention background',
+        '--saffron-ink': 'Attention text',
+        '--chili': 'Danger, late, delete',
+        '--chili-soft': 'Danger background',
+        '--chili-ink': 'Danger text',
+        '--night': 'Sidebar, toasts, login panel',
+        '--night-2': 'Raised surface on night',
+        '--night-ink': 'Text on night',
+        '--rail-active': 'Active sidebar item (the sliding ink)',
+        '--hero': 'Dashboard sales banner',
+        '--hero-2': 'Flat shape inside the banner',
+        '--tint': 'Hover wash on rows, chips, tabs and quiet buttons',
+        '--dot': 'Dot grid on the page background',
+        '--top-bg': 'Top bar',
+        '--scrim': 'Backdrop behind modals',
+        '--shadow': 'Small resting shadow',
+        '--shadow-lg': 'Modals and pop-overs',
+        '--lift': 'Panels at rest',
+        '--hover-lift': 'Cards and buttons on hover',
+        '--glow': 'Blue lift for selected items',
+        '--ring': 'Keyboard focus ring',
+        '--title': 'Titles: pages, panels, modals',
+        '--body': 'All reading text and numbers',
+        '--display': 'Alias of --body (kept for old rules)',
+        '--signage': 'Token numbers and the Dera mark only',
+        '--urdu': 'Urdu text (right to left)',
+        '--mono': 'Code, token names, values',
+        '--ease-out': 'Default easing: entrances, hovers, slides',
+        '--ease-spring': 'Playful overshoot: sidebar ink, switches, modals',
+        '--side': 'Sidebar width (200px on tablets, bottom bar on phones)',
+        '--top-h': 'Top bar height',
+        '--page-max': 'Widest a page gets',
+        '--grad': 'Solid action fill for old rules that expect an image',
+        '--jaali': 'Retired lattice pattern, now transparent',
+        '--blue-50': 'Lightest wash',
+        '--blue-100': 'Selected fill (light theme --btn-soft)',
+        '--blue-200': 'Soft borders on blue fills',
+        '--blue-300': 'Hover border on inputs and cards',
+        '--blue-400': 'Charts, secondary lines',
+        '--blue-500': 'Information (light theme --indigo)',
+        '--blue-600': 'Button blue (light theme --btn)',
+        '--blue-700': 'Brand navy, headings, sales banner',
+        '--blue-800': 'Pressed buttons',
+        '--blue-900': 'Dark button (.btn-dark)',
+        '--blue-950': 'Code blocks',
+        '--dur-1': 'Colour and border changes',
+        '--dur-2': 'Button lift, chips',
+        '--dur-3': 'Sidebar hover sweep, tab underline',
+        '--dur-4': 'Entrances',
+        '--r-xs': 'Inline code, small tags',
+        '--r-sm': 'Extra small buttons',
+        '--r-md': 'Small buttons, clock',
+        '--r-lg': 'Buttons, inputs, sidebar items',
+        '--r-xl': 'Dish cards, notices, tiles',
+        '--r-2xl': 'Panels, stat tiles',
+        '--r-3xl': 'Modals, sales banner',
+        '--r-pill': 'Chips, badges, avatars',
+        '--sp-1': 'Icon to text in badges',
+        '--sp-2': 'Gap between chips and small controls',
+        '--sp-3': 'Gap inside controls, list rows',
+        '--sp-4': 'Gap between cards',
+        '--sp-5': 'Panel padding',
+        '--sp-6': 'Gap between page sections',
+        '--sp-7': 'Page side padding',
+        '--sp-8': 'Large section spacing',
+        '--sp-10': 'Login and setup panels',
+        '--z-top': 'Top bar',
+        '--z-modal': 'Modal and backdrop',
+        '--z-pop': 'Branch switcher pop-over',
+        '--z-toast': 'Toasts',
+        '--z-tip': 'Tooltips',
+      };
+      const DS_GROUPS = [
+        'Brand',
+        'Action',
+        'Blue scale',
+        'Surfaces',
+        'Text',
+        'Status',
+        'Sidebar and dark surfaces',
+        'Elevation and focus',
+        'Type families',
+        'Motion',
+        'Spacing',
+        'Radius',
+        'Layout and layers',
+        'Fills',
+        'Other',
+      ];
+      function dsGroup(k) {
+        if (/^--blue-/.test(k)) return 'Blue scale';
+        if (/^--(btn|green)/.test(k) && !/shadow/.test(k)) return 'Action';
+        if (/^--(navy|ember|cream|accent|heading)$/.test(k)) return 'Brand';
+        if (/^--(night|aura|hero|rail)/.test(k))
+          return 'Sidebar and dark surfaces';
+        if (/^--(bg|surface|surface-2|line|line-strong|dot|tint|top-bg|scrim|page-)/.test(k))
+          return 'Surfaces';
+        if (/^--(ink|muted|faint)$/.test(k)) return 'Text';
+        if (/^--(indigo|saffron|chili)/.test(k)) return 'Status';
+        if (/(shadow|lift|glow|ring)/.test(k)) return 'Elevation and focus';
+        if (/^--(title|body|display|signage|urdu|mono)$/.test(k))
+          return 'Type families';
+        if (/^--(ease|dur)/.test(k)) return 'Motion';
+        if (/^--sp-/.test(k)) return 'Spacing';
+        if (/^--r-/.test(k)) return 'Radius';
+        if (/^--(side|z-|top-h|page-max)/.test(k)) return 'Layout and layers';
+        if (/^--(grad|jaali)$/.test(k)) return 'Fills';
+        return 'Other';
+      }
+      const dsIsColor = (v) =>
+        /^(#|rgb|hsl|color-mix|transparent)/.test(v || '');
+      // A small visual for one token value.
+      function dsPreview(k, v, g) {
+        if (!v) return '';
+        const s = esc(v);
+        if (g === 'Elevation and focus')
+          return `<span class="ds-sw" style="background:var(--surface);box-shadow:${s}"></span>`;
+        if (g === 'Type families')
+          return `<span style="font-family:${s};font-size:20px;font-weight:700">Aa</span>`;
+        if (g === 'Spacing')
+          return `<span class="ds-bar" style="width:${s}"></span>`;
+        if (g === 'Radius')
+          return `<span class="ds-sw" style="background:var(--btn-soft);border-radius:${/999/.test(v) ? '999px' : s}"></span>`;
+        if (g === 'Fills')
+          return `<span class="ds-sw" style="background:${s}"></span>`;
+        if (dsIsColor(v))
+          return `<span class="ds-sw" style="background:${s}"></span>`;
+        return '';
+      }
+      function dsTokenTables(T) {
+        const by = {};
+        T.order.forEach((k) => {
+          const g = dsGroup(k);
+          (by[g] = by[g] || []).push(k);
+        });
+        return DS_GROUPS.filter((g) => by[g])
+          .map((g) => {
+            const keys = by[g];
+            const rows = keys
+              .map((k) => {
+                const lv = T.light[k],
+                  dv = T.dark[k],
+                  same = lv === dv;
+                const cell = (v) =>
+                  `<span class="ds-val">${dsPreview(k, v, g)}<span>${esc(v || '—')}</span></span>`;
+                return `<tr data-act="ds-copy" data-v="var(${k})" title="${esc(t('Click to copy'))}"><td><code>${k}</code></td><td>${cell(lv)}</td><td>${same ? `<span class="ds-val" style="opacity:.6">${t('Same as light')}</span>` : cell(dv)}</td><td class="ds-usage">${esc(DS_DESC[k] || '')}</td></tr>`;
+              })
+              .join('');
+            return `<div class="ds-sub">${t(g)} · ${keys.length}</div><div class="panel"><div class="table-wrap"><table class="ds-tok"><thead><tr><th>${t('Token')}</th><th>${t('Light')}</th><th>${t('Dark')}</th><th>${t('Use for')}</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+          })
+          .join('');
+      }
+      const dsSec = (id, title, tag, note, body) =>
+        `<section class="ds-sec" id="ds-${id}"><h3>${title}${tag ? ` <small>${tag}</small>` : ''}</h3>${note ? `<p class="ds-note">${note}</p>` : ''}${body}</section>`;
+      const dsDemo = (label, code, stage, col) =>
+        `<div class="panel ds-demo"><div class="lbl"><span>${label}</span></div>${stage ? `<div class="ds-stage ${col ? 'col' : ''}">${stage}</div>` : ''}${code ? `<pre class="ds-pre">${esc(code)}</pre>` : ''}</div>`;
+      const DS_SECTIONS = [
+        ['principles', 'Principles'],
+        ['colors', 'Colour'],
+        ['blues', 'Blue scale'],
+        ['tokens', 'All tokens'],
+        ['type', 'Typography'],
+        ['spacing', 'Spacing & radius'],
+        ['elevation', 'Elevation'],
+        ['motion', 'Motion'],
+        ['layout', 'Layout'],
+        ['sidebar', 'Sidebar'],
+        ['icons', 'Icons'],
+        ['components', 'Components'],
+        ['patterns', 'Patterns & states'],
+        ['a11y', 'Accessibility'],
+        ['code', 'Code guide'],
+      ];
+      const DS_KEYFRAMES = [
+        ['rail-in', 'Sidebar items slide in once per sign-in, 32ms apart'],
+        ['ink-bar', 'Ember bar stretches when the active marker lands'],
+        ['ink-land', 'Active marker edge brightens as it lands'],
+        ['lantern', 'Ember dot in the logo lights up on sign-in'],
+        ['count-pulse', 'Sidebar count badges breathe while work is waiting'],
+        ['page-in', 'A screen fades up 12px when you open it'],
+        ['modal-in', 'Modals, pop-overs and the lock screen spring in'],
+        ['fade-in', 'Backdrop behind a modal'],
+        ['toast-in', 'Toasts rise in at the bottom corner'],
+        ['orb-a / orb-b', 'Flat circles drift slowly on the login and setup panels'],
+        ['aura-a / b / c', 'Flat shapes drift inside the dashboard sales banner'],
+        ['cv-draw', 'Sales curve draws from left to right on the dashboard'],
+        ['ring', 'The live dot at the end of the sales curve'],
+        ['ping-soft', 'Dot on a stat tile that needs attention'],
+        ['rise', 'Dashboard cards rise in when the dashboard opens'],
+        ['slide-in', 'Dashboard list rows slide in, 50ms apart'],
+        ['wobble', 'Stat tile icon wiggles on hover'],
+        ['pop', 'Small pop for the sales curve dot'],
+        ['shake', 'PIN dots shake on a wrong PIN'],
+      ];
+      function designView() {
+        const T = dsTokens(),
+          live = getComputedStyle(document.documentElement),
+          cv = (k) => live.getPropertyValue(k).trim();
+        const nTok = T.order.length,
+          nIc = Object.keys(IC).length;
+        const jump = `<nav class="board-jump" aria-label="${t('Sections')}">${DS_SECTIONS.map(([k, l]) => `<button class="chip" data-act="ds-jump" data-v="${k}">${t(l)}</button>`).join('')}</nav>`;
+
+        /* ---- principles ---- */
+        const intro = `<div class="ds-intro"><div class="panel panel-pad"><p class="ds-note" style="margin:0"><b>${t('Dera POS design system.')}</b> ${t('Flat and calm so staff can work fast at a busy counter. Navy brand, a single button blue for every main action, ember for markers and alerts, cream for warmth. No gradients: depth comes from shades of blue, hairline borders and soft shadows. One loud element per screen (token numbers, the sales banner). Everything here is read live from the stylesheet, so it never goes out of date. Click any token, colour or icon to copy it.')}</p></div>
+<div class="panel panel-pad" style="display:flex;flex-direction:column;gap:10px"><b>${t('Quick facts')}</b><span class="ds-note" style="margin:0">${nTok} ${t('tokens')} · 11 ${t('blues')} · ${nIc} ${t('icons')} · 2 ${t('themes')} · ${t('English and Urdu (RTL)')}</span><div class="row"><button class="btn btn-primary btn-sm" data-act="ds-copy-all">${ic('board', 16)} ${t('Copy all tokens as CSS')}</button><button class="btn btn-ghost btn-sm" data-act="theme">${ic(DB.prefs.theme === 'dark' ? 'sun' : 'moon', 16)} ${t('Preview other theme')}</button></div></div></div>`;
+        const principles = dsSec(
+          'principles',
+          t('Principles'),
+          '',
+          '',
+          `<div class="ds-grid">${[
+            ['Flat, never glossy', 'Solid fills only. Use a darker blue for depth, never a gradient or glass.'],
+            ['One main colour for action', 'Everything you can press to move forward is button blue (--btn). Ember is never a button.'],
+            ['Ember marks, it does not decorate', 'Ember is for the active item, alerts and focus. At most one ember accent per area.'],
+            ['Readable first', 'Figtree for reading at 15px, tabular numbers for money, Bricolage only for titles.'],
+            ['Big targets', 'Buttons are 44px tall (36px small, 30px extra small). Order screen buttons go up to 60px.'],
+            ['Motion explains, then gets out of the way', 'Animate on arrival or on change, never on the 20-second live refresh.'],
+          ]
+            .map(
+              ([h, d]) =>
+                `<div class="panel panel-pad"><b>${t(h)}</b><p class="ds-note" style="margin:6px 0 0">${t(d)}</p></div>`,
+            )
+            .join('')}</div>`,
+        );
+
+        /* ---- colour ---- */
+        const swatch = (k, label) =>
+          `<button class="panel" style="padding:0;overflow:hidden;text-align:start;cursor:copy" data-act="ds-copy" data-v="var(${k})"><span style="display:block;height:76px;background:var(${k})"></span><span style="display:block;padding:10px 12px"><b style="display:block">${t(label)}</b><code>${k}</code> <span class="ds-val">${esc(cv(k))}</span></span></button>`;
+        const colors = dsSec(
+          'colors',
+          t('Colour'),
+          '',
+          t('Semantic colours. Use these names in code, never raw hex. Each one has a light and a dark value; the swatches below show the theme you are in now.'),
+          `<div class="ds-sub">${t('Brand')}</div><div class="ds-grid">${swatch('--navy', 'Navy')}${swatch('--ember', 'Ember')}${swatch('--cream', 'Cream')}${swatch('--heading', 'Heading')}</div>
+<div class="ds-sub">${t('Action')}</div><div class="ds-grid">${swatch('--btn', 'Button')}${swatch('--btn-hover', 'Button hover')}${swatch('--btn-active', 'Button pressed')}${swatch('--btn-soft', 'Button soft')}</div>
+<div class="ds-sub">${t('Surfaces and text')}</div><div class="ds-grid">${swatch('--bg', 'Page')}${swatch('--surface', 'Surface')}${swatch('--surface-2', 'Surface 2')}${swatch('--line', 'Line')}${swatch('--line-strong', 'Line strong')}${swatch('--ink', 'Ink')}${swatch('--muted', 'Muted')}${swatch('--faint', 'Faint')}</div>
+<div class="ds-sub">${t('Status')} <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--muted)">— ${t('base for icons and bars, soft for backgrounds, ink for text on soft')}</span></div>
+<div class="ds-grid">${[
+            ['indigo', 'Info'],
+            ['saffron', 'Attention'],
+            ['chili', 'Danger'],
+          ]
+            .map(
+              ([k, l]) =>
+                `<div class="panel" style="overflow:hidden"><div style="display:grid;grid-template-columns:repeat(3,1fr);height:76px"><span style="background:var(--${k})"></span><span style="background:var(--${k}-soft)"></span><span style="background:var(--${k}-ink)"></span></div><div style="padding:10px 12px"><b>${t(l)}</b> <code>--${k}</code> <code>--${k}-soft</code> <code>--${k}-ink</code></div></div>`,
+            )
+            .join('')}</div>
+<div class="ds-sub">${t('Sidebar and dark surfaces')}</div><div class="ds-grid">${swatch('--night', 'Night')}${swatch('--night-2', 'Night 2')}${swatch('--rail-active', 'Sidebar active')}${swatch('--hero', 'Sales banner')}</div>
+<div class="ds-sub">${t('Contrast pairs that pass WCAG AA')}</div>
+<div class="panel"><div class="table-wrap"><table class="ds-tok"><thead><tr><th>${t('Text')}</th><th>${t('On')}</th><th>${t('Use')}</th></tr></thead><tbody>${[
+            ['--ink', '--bg', 'All body text'],
+            ['--muted', '--surface', 'Secondary text'],
+            ['--btn-ink', '--btn', 'Primary buttons'],
+            ['--heading', '--surface', 'Titles'],
+            ['--green-ink', '--green-soft', 'Selected options'],
+            ['--chili-ink', '--chili-soft', 'Danger notices'],
+            ['--saffron-ink', '--saffron-soft', 'Attention notices'],
+            ['--indigo-ink', '--indigo-soft', 'Info notices'],
+            ['--night-ink', '--night', 'Sidebar items'],
+          ]
+            .map(
+              ([a, b, u]) =>
+                `<tr><td><span style="display:inline-block;padding:4px 12px;border-radius:8px;background:var(${b});color:var(${a});font-weight:700">Aa ${t('Sample')}</span> <code>${a}</code></td><td><code>${b}</code></td><td class="ds-usage">${t(u)}</td></tr>`,
+            )
+            .join('')}</tbody></table></div></div>`,
+        );
+
+        /* ---- blue scale ---- */
+        const steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+        const role = {
+          50: 'Lightest wash',
+          100: 'Selected fill',
+          200: 'Soft border',
+          300: 'Hover border',
+          400: 'Chart line',
+          500: 'Info',
+          600: 'Button',
+          700: 'Brand navy',
+          800: 'Pressed',
+          900: 'Dark button',
+          950: 'Code blocks',
+        };
+        const blues = dsSec(
+          'blues',
+          t('Blue scale'),
+          '--blue-50 … --blue-950',
+          t('Eleven fixed blues, the same in both themes. Build depth with these instead of gradients: lighter for fills and borders, darker for pressed states and dark panels. 600 is the button, 700 is the brand navy.'),
+          `<div class="ds-scale">${steps
+            .map(
+              (n) =>
+                `<button class="${n >= 400 ? 'dk' : ''}" style="background:var(--blue-${n})" data-act="ds-copy" data-v="var(--blue-${n})"><b>${n}</b><span>${esc(cv(`--blue-${n}`))}</span><span style="opacity:.8">${t(role[n])}</span></button>`,
+            )
+            .join('')}</div>`,
+        );
+
+        /* ---- all tokens ---- */
+        const tokens = dsSec(
+          'tokens',
+          t('All tokens'),
+          `${nTok} ${t('custom properties')}`,
+          t('Every custom property on :root, read live from the stylesheet. Light values come from :root and :root:not([data-theme=dark]); dark values from :root and :root[data-theme=dark]. Click a row to copy it.'),
+          dsTokenTables(T),
+        );
+
+        /* ---- typography ---- */
+        const TYPE = [
+          ['Page title', '.page-head h2', 'var(--title)', '31px', '700', '1.1', '-0.025em'],
+          ['Modal title', '.modal-head h3', 'var(--title)', '24px', '700', '1.15', '-0.025em'],
+          ['Section title', '.ds-sec h3, .dash-sec h3', 'var(--title)', '17–22px', '700', '1.15', '-0.02em'],
+          ['Panel title', '.panel-head h3', 'var(--title)', '17px', '700', '1.15', '-0.015em'],
+          ['Hero number', '.dash-hero .v', 'var(--body)', '48px', '700', '1.05', '-0.02em'],
+          ['KPI value', '.kpi .v, .stat .v', 'var(--body)', '28px', '700–800', '1.15', '-0.01em'],
+          ['Token number', '.ocard .tok', 'var(--signage)', '64px', '900', '0.82', '-0.01em'],
+          ['Ticket token', '.ticket-head h3', 'var(--signage)', '36px', '900', '1.15', '0'],
+          ['Body', 'body', 'var(--body)', '15px', '400–600', '1.5', '0'],
+          ['Button', '.btn', 'var(--body)', '15px', '600', '1', '-0.005em'],
+          ['Label', '.label, .field label', 'var(--body)', '13.5px', '600', '1.45', '0'],
+          ['Hint', '.hint', 'var(--body)', '13px', '400', '1.45', '0'],
+          ['Badge', '.badge', 'var(--body)', '12.5px', '600', '1.45', '0'],
+          ['Table header', '.tbl th', 'var(--body)', '11.5px', '700', '1.45', '0.08em, uppercase'],
+          ['Sidebar item', '.rail-btn', 'var(--body)', '14.5px', '600', '1.25', '0'],
+          ['Sidebar group', '.rail-group', 'var(--body)', '10.5px', '700', '1.45', '0.14em, uppercase'],
+          ['Code', '.ds-code, code', 'var(--mono)', '12.5px', '400–500', '1.65', '0'],
+          ['Urdu', 'html[lang=ur]', 'var(--urdu)', '15px', '400–600', '1.9', '0 (always)'],
+        ];
+        const type = dsSec(
+          'type',
+          t('Typography'),
+          '',
+          t('Four families. Bricolage Grotesque for titles, Figtree for everything you read, Big Shoulders only for token numbers and the Dera mark, Noto Nastaliq for Urdu. Money and counts use tabular numbers (.num) so columns line up. Urdu never gets letter spacing; it breaks the joined letters.'),
+          `<div class="ds-grid" style="margin-bottom:14px">${[
+            ['--title', 'Bricolage Grotesque', 'Titles', 'Orders today'],
+            ['--body', 'Figtree', 'Reading text, numbers', 'Rs. 12,450 · 3 orders'],
+            ['--signage', 'Big Shoulders Display', 'Token numbers only', '42'],
+            ['--urdu', 'Noto Nastaliq Urdu', 'Urdu', 'آرڈرز'],
+          ]
+            .map(
+              ([k, n, u, s]) =>
+                `<div class="panel panel-pad" data-act="ds-copy" data-v="var(${k})" style="cursor:copy"><div style="font-family:var(${k});font-size:${k === '--signage' ? 56 : k === '--urdu' ? 26 : 26}px;font-weight:${k === '--signage' ? 900 : 700};line-height:${k === '--urdu' ? 1.9 : 1.1};color:var(--heading)" ${k === '--urdu' ? 'lang="ur" dir="rtl"' : ''}>${s}</div><b style="display:block;margin-top:8px">${n}</b><span class="ds-note" style="margin:0"><code>${k}</code> · ${t(u)}</span></div>`,
+            )
+            .join('')}</div>
+<div class="panel"><div class="table-wrap"><table class="ds-tok ds-type"><thead><tr><th>${t('Sample')}</th><th>${t('Role')}</th><th>${t('Selector')}</th><th>${t('Family')}</th><th>${t('Size')}</th><th>${t('Weight')}</th><th>${t('Line')}</th><th>${t('Tracking')}</th></tr></thead><tbody>${TYPE.map(
+            ([r, sel, f, sz, w, lh, tr]) =>
+              `<tr><td><span style="font-family:${f};font-size:${parseFloat(sz) > 40 ? 40 : parseFloat(sz)}px;font-weight:${parseInt(w)};letter-spacing:${tr.split(',')[0]};${/uppercase/.test(tr) ? 'text-transform:uppercase;' : ''}line-height:1.2;color:var(--heading)" ${f === 'var(--urdu)' ? 'lang="ur"' : ''}>${f === 'var(--urdu)' ? 'آرڈرز' : f === 'var(--signage)' ? '42' : /number|KPI/i.test(r) ? 'Rs. 8,479' : t(r)}</span></td><td><b>${t(r)}</b></td><td><code>${esc(sel)}</code></td><td><code>${esc(f)}</code></td><td>${sz}</td><td>${w}</td><td>${lh}</td><td>${tr}</td></tr>`,
+          ).join('')}</tbody></table></div></div>`,
+        );
+
+        /* ---- spacing & radius ---- */
+        const sp = ['--sp-1', '--sp-2', '--sp-3', '--sp-4', '--sp-5', '--sp-6', '--sp-7', '--sp-8', '--sp-10'];
+        const rad = [
+          ['--r-xs', 'Inline code, small tags'],
+          ['--r-sm', 'Extra small buttons, quantity squares'],
+          ['--r-md', 'Small buttons, clock, icon tiles'],
+          ['--r-lg', 'Buttons, inputs, sidebar items, tabs'],
+          ['--r-xl', 'Dish cards, notices, payment tiles'],
+          ['--r-2xl', 'Panels, stat tiles, plan cards'],
+          ['--r-3xl', 'Modals, dashboard banner'],
+          ['--r-pill', 'Chips, badges, counts, avatars'],
+        ];
+        const spacing = dsSec(
+          'spacing',
+          t('Spacing & radius'),
+          '',
+          t('A 4px base. Gaps inside a control are 6–10px, between controls 8–16px, inside panels 16–20px, page padding 26–28px (12px on phones), gap between sections 24–34px.'),
+          `<div class="ds-anat"><div class="panel panel-pad">${sp
+            .map(
+              (k) =>
+                `<div style="display:grid;grid-template-columns:70px 1fr 44px;align-items:center;gap:10px;padding:5px 0;cursor:copy" data-act="ds-copy" data-v="var(${k})"><code>${k}</code><span class="ds-bar" style="width:var(${k})"></span><span class="ds-val">${cv(k)}</span></div>`,
+            )
+            .join('')}</div><div class="ds-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">${rad
+            .map(
+              ([k, u]) =>
+                `<div class="panel panel-pad" style="cursor:copy" data-act="ds-copy" data-v="var(${k})"><span class="ds-box" style="border-radius:var(${k})">${cv(k)}</span><code style="display:inline-block;margin-top:8px">${k}</code><p class="ds-note" style="margin:4px 0 0;font-size:12.5px">${t(u)}</p></div>`,
+            )
+            .join('')}</div></div>`,
+        );
+
+        /* ---- elevation ---- */
+        const elev = [
+          ['--shadow', 'Small resting things: switcher, staff cards, pin pad'],
+          ['--lift', 'Panels at rest'],
+          ['--hover-lift', 'Cards and buttons on hover'],
+          ['--btn-shadow', 'Under primary buttons'],
+          ['--glow', 'Blue halo for selected items'],
+          ['--shadow-lg', 'Modals, pop-overs, toasts'],
+          ['--ring', 'Keyboard focus'],
+        ];
+        const elevation = dsSec(
+          'elevation',
+          t('Elevation'),
+          '',
+          t('Shadows are soft and tinted navy, never black in the light theme. Raise on hover by 1–4px with --hover-lift; never stack two shadows of your own.'),
+          `<div class="ds-grid" style="grid-template-columns:repeat(auto-fill,minmax(190px,1fr))">${elev
+            .map(
+              ([k, u]) =>
+                `<div class="panel panel-pad" style="cursor:copy" data-act="ds-copy" data-v="var(${k})"><div style="height:70px;border-radius:14px;background:var(--surface);box-shadow:var(${k});margin-bottom:12px;border:1px solid var(--line)"></div><code>${k}</code><p class="ds-note" style="margin:4px 0 0;font-size:12.5px">${t(u)}</p></div>`,
+            )
+            .join('')}</div>`,
+        );
+
+        /* ---- motion ---- */
+        const motion = dsSec(
+          'motion',
+          t('Motion'),
+          '',
+          t('Hover a track to feel each curve. Entrances play only when a screen opens. The 20-second live refresh repaints only when data changed, and looping animations resume from --phase so nothing jumps. Everything stops for people who turn on reduced motion.'),
+          `<div class="ds-grid">${[
+            ['--ease-out', 'cubic-bezier(.22,1,.36,1)', 'Default: entrances, hovers, slides'],
+            ['--ease-spring', 'cubic-bezier(.34,1.45,.5,1)', 'Sidebar ink, switches, modals'],
+            ['ease-in-out', 'browser', 'Slow loops: drifting shapes'],
+            ['linear', 'browser', 'Never for movement'],
+          ]
+            .map(
+              ([k, v, u]) =>
+                `<div class="panel ds-demo"><div class="lbl"><code>${k}</code><span class="ds-val">${v}</span></div><div class="ds-ease"><i style="transition-duration:.7s;transition-timing-function:${k.startsWith('--') ? `var(${k})` : k}"></i></div><span class="ds-note" style="margin:0">${t(u)}</span></div>`,
+            )
+            .join('')}</div>
+<div class="ds-sub">${t('Durations')}</div>
+<div class="panel"><div class="table-wrap"><table class="ds-tok"><tbody>${[
+            ['--dur-1', 'Colour and border changes, row hover'],
+            ['--dur-2', 'Button lift, chips, small slides'],
+            ['--dur-3', 'Hover sweep in the sidebar, tab underline'],
+            ['--dur-4', 'Entrances: page, sidebar items, sidebar ink'],
+          ]
+            .map(
+              ([k, u]) =>
+                `<tr data-act="ds-copy" data-v="var(${k})"><td><code>${k}</code></td><td>${cv(k)}</td><td class="ds-usage">${t(u)}</td></tr>`,
+            )
+            .join('')}</tbody></table></div></div>
+<div class="ds-sub">${t('Keyframes')} · ${DS_KEYFRAMES.length}</div>
+<div class="panel"><div class="table-wrap"><table class="ds-tok"><tbody>${DS_KEYFRAMES.map(([k, u]) => `<tr><td><code>${k}</code></td><td class="ds-usage">${t(u)}</td></tr>`).join('')}</tbody></table></div></div>
+<pre class="ds-pre">${esc(`/* rules every animation follows */
+.thing { animation: page-in .55s var(--ease-out) backwards; } /* backwards, not both: hover still works */
+.loop  { animation-delay: var(--phase, 0s); }                  /* continue after a repaint */
+@media (prefers-reduced-motion: reduce) { /* all motion is cut to 0.01ms */ }`)}</pre>`,
+        );
+
+        /* ---- layout ---- */
+        const layout = dsSec(
+          'layout',
+          t('Layout'),
+          '',
+          t('A two-column app grid: the sidebar and everything else. The top bar is 62px. Pages are centred up to 1500px. Screens are built from .grid with g2–g5 columns and .panel cards.'),
+          `<div class="panel"><div class="table-wrap"><table class="ds-tok"><thead><tr><th>${t('Breakpoint')}</th><th>${t('What changes')}</th></tr></thead><tbody>${[
+            ['≥ 1400px', 'Order screen ticket widens to 440px'],
+            ['≤ 1200px', 'Five-column grids become three'],
+            ['≤ 1180px', 'Dashboard lists become two columns'],
+            ['≤ 1100px', 'Sidebar 200px, four-column grids become two, payment and menu editor stack, clock hides'],
+            ['≤ 900px', 'Login and setup panels stack'],
+            ['≤ 760px', 'Phone: sidebar becomes a bottom tab bar, one column everywhere, order buttons stick to the bottom'],
+          ]
+            .map(([b, w]) => `<tr><td><code>${b}</code></td><td>${t(w)}</td></tr>`)
+            .join('')}</tbody></table></div></div>
+<div class="ds-sub">${t('Layers')} (z-index)</div>
+<div class="panel"><div class="table-wrap"><table class="ds-tok"><tbody>${[
+            ['--z-top', 'Top bar'],
+            ['--z-modal', 'Modal and its backdrop'],
+            ['--z-pop', 'Branch switcher pop-over'],
+            ['--z-toast', 'Toasts'],
+            ['--z-tip', 'Tooltip from the "i" buttons'],
+          ]
+            .map(
+              ([k, u]) =>
+                `<tr data-act="ds-copy" data-v="var(${k})"><td><code>${k}</code></td><td>${cv(k)}</td><td class="ds-usage">${t(u)}</td></tr>`,
+            )
+            .join('')}</tbody></table></div></div>
+<pre class="ds-pre">${esc(`<div class="app">                 grid: var(--side) | 1fr
+  <div class="banners"/>           trial, overdue, impersonation bars
+  <nav class="rail"/>              sidebar
+  <header class="top"/>            62px top bar
+  <main class="main" id="main">    scrolls
+    <div class="page">             padding 26px 28px, max-width 1500px
+      pageHead(title, sub, actions)
+      <div class="grid g3">…</div> panels
+`)}</pre>`,
+        );
+
+        /* ---- sidebar ---- */
+        const sidebar = dsSec(
+          'sidebar',
+          t('Sidebar'),
+          '.rail',
+          t('Night background, items grouped under small capital labels. One solid blue marker (.rail-ink) slides to the active item with a spring; its ember edge stretches as it lands. On hover a flat wash sweeps in, the item nudges 3px and the icon tilts. Items unfold one by one once per sign-in. On phones it becomes a bottom tab bar and the ember edge moves to the top.'),
+          `<div class="ds-anat"><div class="ds-railmock"><div class="logo" style="font-family:var(--signage);font-size:28px;font-weight:900;color:#fff;padding:2px 10px 12px;display:flex;align-items:center;gap:10px"><i style="width:10px;height:10px;border-radius:50%;background:var(--ember)"></i>Dera</div><em>${t('Every day')}</em><span class="on">${ic('orders', 20)} ${t('Orders')}</span><span>${ic('board', 20)} ${t('Full menu')}</span><em>${t('Set up')}</em><span>${ic('box', 20)} ${t('Stock')}</span></div>
+<div class="panel"><div class="table-wrap"><table class="ds-tok"><tbody>${[
+            ['Width', 'var(--side): 236px · 200px on tablets · full-width bar on phones'],
+            ['Background', 'var(--night); platform admin uses #0a1024'],
+            ['Logo', 'Big Shoulders 31px/900, ember dot, plan name in a cream pill'],
+            ['Group label', '10.5px/700, uppercase, 0.14em tracking, hairline after it'],
+            ['Item', '42px tall, 10px 12px padding, radius 12px, 14.5px/600, icon 20–22px'],
+            ['Item text', 'var(--night-ink); white on hover and when active'],
+            ['Active marker', '.rail-ink: var(--rail-active) fill, 4px ember edge, slides 0.55s var(--ease-spring)'],
+            ['Hover', 'Flat wash scales in 0.45s, item moves 3px, icon scales 1.14 and tilts −7°'],
+            ['Counts', '.rail-count.warn: cream pill, pulses every 2.6s'],
+            ['Locked item', '55% opacity with a lock badge; opens an upgrade prompt'],
+            ['Entrance', 'rail-in, 0.6s, each item 32ms after the last, once per sign-in'],
+          ]
+            .map(([a, b]) => `<tr><td><b>${t(a)}</b></td><td>${esc(b)}</td></tr>`)
+            .join('')}</tbody></table></div></div></div>`,
+        );
+
+        /* ---- icons ---- */
+        const icons = dsSec(
+          'icons',
+          t('Icons'),
+          `${nIc} · ic(name, size)`,
+          t('Line icons on a 24px grid, 2px stroke, round caps and joins, drawn in currentColor so they take the text colour. Sizes: 14–16px inside badges and small buttons, 18px in buttons, 20px in the top bar and lists, 22px in the sidebar, 28–34px for empty states. Click one to copy its call.'),
+          `<div class="ds-icons">${Object.keys(IC)
+            .map(
+              (k) =>
+                `<button data-act="ds-copy" data-v="ic('${k}', 20)">${ic(k, 24)}<span>${k}</span></button>`,
+            )
+            .join('')}</div>`,
+        );
+
+        /* ---- components ---- */
+        const B = (cls, label, icon) =>
+          `<button class="btn ${cls}">${icon ? ic(icon, 18) : ''}${label}</button>`;
+        const sampleTok = `<div class="ocard k-ready ds-ocard"><div class="head"><span class="tok"><small>${t('Token')}</small>12</span><span class="badge b-indigo">${ic('bike')} ${t('Delivery')}</span></div><div><div class="who2">Hamza Sheikh</div><div class="meta">House 14, Street 3, Model Town</div></div><div class="lines2">2× Chicken Karahi (Full)<br>4× Butter Naan</div><div class="st"><span class="badge b-green">${ic('kitchen')} ${t('In kitchen')}</span><span class="badge b-grey">${t('Pay on delivery')}</span></div><div class="foot"><span class="meta">GUL-1094<br>8:12 pm, Sana</span><b class="num">Rs. 5,520</b></div></div>`;
+        const components = dsSec(
+          'components',
+          t('Components'),
+          '',
+          t('Real components with the same classes the app uses. Under each one is the markup or helper call to copy.'),
+          `<div class="ds-sub">${t('Buttons')}</div><div class="ds-grid">
+${dsDemo(t('Variants'), `<button class="btn btn-primary">Save</button>\n<button class="btn btn-ghost">Cancel</button>\n<button class="btn btn-dark">Upgrade</button>\n<button class="btn btn-danger">Delete</button>\n<button class="btn btn-quiet">Hide</button>`, B('btn-primary', t('Save'), 'check') + B('btn-ghost', t('Cancel')) + B('btn-dark', t('Upgrade'), 'up') + B('btn-danger', t('Delete'), 'trash') + B('btn-quiet', t('Hide')))}
+${dsDemo(t('Sizes'), `.btn-lg  56px   .btn  44px\n.btn-sm  36px   .btn-xs  30px\n.btn-block  full width`, B('btn-primary btn-lg', t('Large')) + B('btn-primary', t('Default')) + B('btn-primary btn-sm', t('Small')) + B('btn-primary btn-xs', t('Extra small')))}
+${dsDemo(t('States'), `hover: var(--btn-hover), lifts 1px\npressed: var(--btn-active), sinks 1px\ndisabled: 45% opacity, no shadow`, B('btn-primary', t('Default')) + `<button class="btn btn-primary" disabled>${t('Disabled')}</button>` + B('btn-ghost', t('Ghost')) + `<button class="btn btn-ghost" disabled>${t('Disabled')}</button>`)}
+${dsDemo(t('Icon button'), `<button class="icon-btn" aria-label="Close">\${ic('x')}</button>`, `<button class="icon-btn" aria-label="${t('Close')}">${ic('x')}</button><button class="icon-btn" aria-label="${t('Print')}">${ic('print')}</button><button class="icon-btn" aria-label="${t('Theme')}">${ic('moon')}</button>`)}
+${dsDemo(t('Order screen buttons'), `.co-main  56–60px main checkout\n.co-alt   44–52px secondary\n.tool     40–60px tools under the slip\n.btn-void  delete order`, `<button class="btn btn-primary co-main btn-block">${ic('print', 22)} ${t('Send to kitchen')}</button><div class="dock-alts" style="width:100%"><button class="btn btn-ghost co-alt">${ic('cash', 18)} ${t('Take payment')}</button></div><button class="tool">${ic('ticket', 20)}<span>${t('Reprint token')}</span></button><button class="tool tool-del">${ic('trash', 20)}<span>${t('Delete order')}</span></button>`, true)}
+</div>
+<div class="ds-sub">${t('Selection')}</div><div class="ds-grid">
+${dsDemo(t('Chips (filters)'), `chip('ofilter', 'open', 'All open', true, 5)`, chip('ds-demo', 'a', t('All open'), true, 5) + chip('ds-demo', 'b', t('Dine-in'), false, 2) + chip('ds-demo', 'c', t('Delivery'), false, 1) + `<button class="chip" disabled>${t('Disabled')}</button>`)}
+${dsDemo(t('Tabs'), `<div class="tabs" role="tablist">\n  <button role="tab" class="on">Overview</button>\n</div>`, `<div class="tabs" role="tablist" style="margin:0;width:100%"><button role="tab" class="on">${t('Overview')}</button><button role="tab">${t('Transfers')}</button><button role="tab">${t('Wastage')}</button></div>`, true)}
+${dsDemo(t('Segmented'), `<div class="seg"><button class="on">Pay now</button><button>Pay later</button></div>`, `<div class="seg" style="width:100%"><button class="on">${t('Pay now')}</button><button>${t('Pay later')}</button></div>`, true)}
+${dsDemo(t('Switch'), `sw(on, 'act', 'data-id="x"', 'Label')`, sw(true, 'ds-demo', '', 'On') + sw(false, 'ds-demo', '', 'Off') + sw(true, 'ds-demo', '', 'Disabled', true))}
+${dsDemo(t('Option tiles'), `.mtile (payment) · .size (dish size) · .type-pick (order type) · .plan-card`, `<div class="mtiles" style="width:100%"><button class="mtile on">${ic('cash', 24)}<b>${t('Cash')}</b></button><button class="mtile">${ic('card', 24)}<b>${t('Card machine')}</b></button><button class="mtile">${ic('phone', 24)}<b>JazzCash</b></button></div>`, true)}
+${dsDemo(t('Stepper'), `<span class="stepper big">…</span>`, `<span class="stepper"><button>−</button><span>2</span><button>+</button></span><span class="stepper big"><button>−</button><span>3</span><button>+</button></span>`)}
+</div>
+<div class="ds-sub">${t('Forms')}</div><div class="ds-grid">
+${dsDemo(t('Text field'), `field('id', 'Customer name', value, { optional: true, hint: 'Shown on the bill' })`, field('ds-f1', t('Customer name'), 'Hamza Sheikh', { hint: t('Shown on the bill') }) + field('ds-f2', t('Phone number'), '', { optional: true, attrs: 'placeholder="0300-1234567"' }), true)}
+${dsDemo(t('Select and search'), `selectBox('id', [[value, label]], selected)\nsearchInput('id', value, 'Search dishes', 'item-q')`, `<div class="field" style="margin:0"><label for="ds-s">${t('City')}</label>${selectBox('ds-s', CITIES.map((c) => [c, t(c)]), 'Lahore')}</div>` + searchInput('ds-q', '', t('Search dishes'), 'ds-none'), true)}
+${dsDemo(t('Textarea and error'), `<textarea class="textarea"></textarea>\n<p class="err">Enter the customer name.</p>`, `<textarea class="textarea" placeholder="${t('Calls, promises, special terms')}"></textarea><p class="err">${t('Enter the customer name.')}</p>`, true)}
+</div>
+<div class="ds-sub">${t('Status')}</div><div class="ds-grid">
+${dsDemo(t('Badges'), `<span class="badge b-green">…</span>  b-green b-saffron b-indigo b-chili b-grey b-solid b-dark`, ['b-green', 'b-saffron', 'b-indigo', 'b-chili', 'b-grey', 'b-solid', 'b-dark'].map((c) => `<span class="badge ${c}">${c.slice(2)}</span>`).join(''))}
+${dsDemo(t('Notices'), `<div class="notice ok|info|warn|bad">…</div>`, ['ok', 'info', 'warn', 'bad'].map((c) => `<div class="notice ${c}">${t({ ok: 'Saved for Gulberg only.', info: 'Your trial ends in 5 days.', warn: 'Payment has started, so the bill is locked.', bad: 'This business day is closed.' }[c])}</div>`).join(''), true)}
+${dsDemo(t('Day chips and counts'), `<span class="daychip open|closed|paused">…</span>\n<span class="rail-count warn">3</span>`, `<span class="daychip open">${ic('check', 14)} Mon, 2 Nov, ${t('Open')}</span><span class="daychip closed">${ic('lock', 14)} ${t('Closed')}</span><span class="daychip paused">${ic('pause', 14)} ${t('Paused')}</span><span class="rail-count warn" style="position:static">3</span>`)}
+${dsDemo(t('Meters'), `<div class="meter [low|out]"><i style="width:60%"></i></div>`, `<div class="meter lg"><i style="width:72%"></i></div><div class="meter lg low"><i style="width:34%"></i></div><div class="meter lg out"><i style="width:8%"></i></div>`, true)}
+</div>
+<div class="ds-sub">${t('Data display')}</div><div class="ds-grid">
+${dsDemo(t('KPI cards'), `<div class="panel kpi [lead|dark]"><small>…</small><div class="v">…</div><div class="s">…</div></div>`, `<div class="panel kpi lead" style="width:100%"><small>${t('Total sales')}</small><div class="v">Rs. 32,144</div><div class="s">15 bills</div></div><div class="panel kpi" style="width:100%"><small>${t('Orders')}</small><div class="v">48</div><div class="s">12 ${t('today')}</div></div>`, true)}
+${dsDemo(t('Stat tile'), `statTile(tone, screen, label, note, value, sub, icon, count, busy)`, statTile('saffron', '', t('Deliveries pending'), t('Delivery orders not delivered yet.'), '3', '2 out', 'bike', null, true), true)}
+${dsDemo(t('Order token card'), `.ocard + k-ready | k-late | k-done  (scalloped thermal-paper edge)`, sampleTok)}
+${dsDemo(t('Dish card'), `<button class="item"><span><b>Name</b></span><span class="price">Rs. 450</span></button>`, `<div class="items" style="padding:0;width:100%;grid-template-columns:1fr 1fr"><button class="item"><span><b>Chicken Tikka</b></span><span><span class="price num">Rs. 450</span></span></button><button class="item off" disabled><span><b>Mint Margarita</b></span><span><span class="price">${t('Sold out')}</span></span></button></div>`, true)}
+${dsDemo(t('Table'), `<table class="tbl"> · tr.click for rows that open something · td.r for numbers`, `<div class="panel" style="width:100%"><table class="tbl"><thead><tr><th>${t('Store')}</th><th class="r">${t('Sales')}</th></tr></thead><tbody><tr class="click"><td><b>Gulberg</b></td><td class="r">Rs. 14,761</td></tr><tr class="click"><td><b>DHA</b></td><td class="r">Rs. 11,603</td></tr></tbody></table></div>`, true)}
+${dsDemo(t('Avatar and person'), `avatar(user, 'sm' | '' | 'lg')`, avatar({ name: 'Sana Javed', color: '#B7791F' }, 'sm') + avatar({ name: 'Ahmed Raza', color: '#0E7C66' }) + avatar({ name: 'Bilal Qureshi', color: '#7A4FB0' }, 'lg') + `<span class="who">${avatar({ name: 'Ahmed Raza', color: '#0E7C66' }, 'sm')}<span><b>Ahmed</b> <span class="muted">${t('Owner')}</span></span></span>`)}
+</div>
+<div class="ds-sub">${t('Feedback and overlays')}</div><div class="ds-grid">
+${dsDemo(t('Toast'), `toast('Saved for Gulberg only.', '' | 'bad', 'Title')`, `<div class="toast" style="pointer-events:none;animation:none"><b>${t('Paid in full')}</b>${t('Change to return')}: Rs. 150</div><div class="toast bad" style="animation:none">${t('Not enough stock.')}</div><button class="btn btn-ghost btn-sm" data-act="ds-toast">${t('Show a toast')}</button>`, true)}
+${dsDemo(t('Modal'), `openModal({ render() { return mHead(title, sub) + body + mFoot('Save', 'act'); } })`, `<button class="btn btn-primary" data-act="ds-modal">${ic('plus', 18)} ${t('Open a sample modal')}</button>`)}
+${dsDemo(t('Tooltip'), `tip('Explains the number beside it.')`, `<span class="row"><b>${t('Total sales')}</b>${tip(t('Total of bills paid and closed today.'))}</span>`)}
+${dsDemo(t('Empty state'), `emptyBox('No orders here', 'Try another filter.', buttonHtml)`, `<div style="width:100%">${emptyBox(t('No orders here'), t('Try another filter.'))}</div>`, true)}
+${dsDemo(t('PIN entry'), `.pin-dots > i.f (filled) · .pinpad buttons 60px`, `<div class="pin-dots"><i class="f"></i><i class="f"></i><i></i><i></i></div><div class="pinpad" style="width:100%;max-width:220px"><button>1</button><button>2</button><button>3</button></div>`, true)}
+${dsDemo(t('Receipt (80mm print)'), `.receipt · .rh header · .rr row · .rt totals · .rg grand total · .rf footer · .receipt.kot kitchen copy`, `<div class="receipt" style="max-width:240px"><div class="rh"><b>Dera — Gulberg</b>MM Alam Road, Lahore</div><div class="rr"><span>2 × Chicken Tikka</span><span>900</span></div><div class="rr"><span>4 × Butter Naan</span><span>320</span></div><div class="rt"><div class="rr rg"><span>Total</span><span>Rs. 1,220</span></div></div><div class="rf">Shukriya! Please visit again.</div></div>`)}
+</div>`,
+        );
+
+        /* ---- patterns & states ---- */
+        const patterns = dsSec(
+          'patterns',
+          t('Patterns & states'),
+          '',
+          '',
+          `<div class="panel"><div class="table-wrap"><table class="ds-tok"><thead><tr><th>${t('State')}</th><th>${t('How it looks')}</th><th>${t('Classes')}</th></tr></thead><tbody>${[
+            ['Hover', 'Blue tint wash (--tint), border turns --btn, cards lift 1–4px', ':hover'],
+            ['Pressed', 'Sinks 1px and scales to 0.97–0.985; primary uses --btn-active', ':active'],
+            ['Selected', 'Solid --btn with white text (chips, tabs line, switch) or --btn-soft fill with a --btn border (tiles)', '.on, [aria-pressed=true], [aria-checked=true]'],
+            ['Focus', 'Inputs: --btn border + 3px soft blue ring. Everything else: 3px ember ring (--ring)', ':focus-visible'],
+            ['Disabled', '45% opacity, not-allowed cursor, no shadow, no hover', ':disabled'],
+            ['Locked by plan', '55% opacity + lock badge, opens the upgrade prompt', '.locked, .rail-lock'],
+            ['Late order', 'Chili top edge and tinted card, red token number', '.ocard.k-late'],
+            ['Ready / in kitchen', 'Button-blue top edge', '.ocard.k-ready'],
+            ['Done', 'Grey top edge', '.ocard.k-done'],
+            ['Sold out', '45% opacity, price replaced by "Sold out"', '.item.off'],
+            ['Not sent to kitchen', 'Saffron quantity square', '.line.unsent .qty'],
+            ['Sent', 'Grey quantity square', '.line.sent .qty'],
+            ['Deleted line', 'Struck through, faint', '.line.void'],
+            ['Loading / empty', 'Centred title and one line, optional button', '.empty'],
+            ['Error', 'Chili text, bold, under the field or in the modal', '.err'],
+          ]
+            .map(([s, h, c]) => `<tr><td><b>${t(s)}</b></td><td>${t(h)}</td><td><code>${esc(c)}</code></td></tr>`)
+            .join('')}</tbody></table></div></div>`,
+        );
+
+        /* ---- accessibility ---- */
+        const a11y = dsSec(
+          'a11y',
+          t('Accessibility'),
+          '',
+          '',
+          `<div class="ds-grid">${[
+            ['Contrast', 'Text pairs above pass WCAG AA (4.5:1). Never put --muted or --faint on --surface-2 for important text.'],
+            ['Targets', 'At least 44px for anything a cashier taps. Small buttons (36px, 30px) are for desktop tables only.'],
+            ['Keyboard', 'Every action is a real button. Rows that open things get tabindex="0" and work with Enter. "/" focuses search, Esc closes the top layer.'],
+            ['Focus', 'Never remove the focus ring. Use :focus-visible so mouse clicks stay clean.'],
+            ['Labels', 'Icon buttons need aria-label. Switches use role="switch" and aria-checked. Filters use aria-pressed.'],
+            ['Right to left', 'Use logical properties (inset-inline-start, margin-inline-end, padding-inline). Mirror arrows and slide directions under [dir=rtl].'],
+            ['Urdu', 'Line height 1.9, no letter spacing, no uppercase. Dish names show in Urdu first when Urdu is on.'],
+            ['Motion', 'All animation stops under prefers-reduced-motion. Nothing flashes more than once a second.'],
+            ['Colour is never alone', 'Every status colour comes with a word or an icon (Late, Paid, In kitchen).'],
+          ]
+            .map(
+              ([h, d]) =>
+                `<div class="panel panel-pad"><b>${t(h)}</b><p class="ds-note" style="margin:6px 0 0">${t(d)}</p></div>`,
+            )
+            .join('')}</div>`,
+        );
+
+        /* ---- code guide ---- */
+        const code = dsSec(
+          'code',
+          t('Code guide'),
+          '',
+          t('How the file is put together, so new screens match the rest.'),
+          `<div class="ds-grid" style="grid-template-columns:repeat(auto-fill,minmax(360px,1fr))">
+${dsDemo(t('CSS layers, in order'), `1. Base tokens and components (:root, .btn, .panel …)
+2. Design pass: night sidebar, token stubs
+3. Simple pass: Figtree, grouped sidebar
+4. Lantern night palette: navy, ember, cream
+5. Dashboard: hero, stat tiles, lists
+6. Flat blue system (this one): blue scale,
+   flat surfaces, sidebar motion, design system
+Later rules win. Add new styles to layer 6
+using tokens, never raw hex.`, '')}
+${dsDemo(t('Theming'), `<html data-theme="light|dark" lang="en|ur" dir="ltr|rtl">
+:root { shared tokens }
+:root:not([data-theme='dark']) { light values }
+:root[data-theme='dark']       { dark values }
+/* switch: DB.prefs.theme = 'dark'; save(); render(); */`, '')}
+${dsDemo(t('Events'), `<button data-act="save-x">   click  → A['save-x'](el, e)
+<input data-in="item-q">      input  → IN['item-q'](el)
+<select data-ch="audit-f">    change → CH['audit-f'](el)
+One listener per event on document; never
+attach listeners to elements you render.`, '')}
+${dsDemo(t('Rendering'), `render()        rebuilds #root from state U and data D
+render(true)    live refresh: skipped if nothing changed
+renderModal()   rebuilds #modal-root from M
+afterPaint()    sidebar ink, entrances (visual only)
+All data changes go through R.* (business rules)
+inside run(() => …) so errors become toasts.`, '')}
+${dsDemo(t('Add a screen'), `1. navItems(): ['key', 'Label', 'icon', 'Group']
+2. ROLES[role].screens: add 'key'
+3. screenView(): case 'key': return keyView();
+4. keyView(): \`<div class="page">\${pageHead(…)}…</div>\`
+5. Words go through t('…'); add Urdu to UR`, '')}
+${dsDemo(t('Helpers'), `pageHead(title, sub, actionsHtml, featureId)
+chip(act, value, label, on, count)
+sw(on, act, attrs, label, disabled)
+field(id, label, value, { optional, hint, attrs })
+selectBox(id, [[v, label]], selected, attrs)
+searchInput(id, value, placeholder, inAct)
+emptyBox(title, text, buttonHtml)
+statTile(tone, screen, label, note, v, sub, icon)
+tip(text)   ic(name, size)   avatar(user, size)
+toast(msg, 'bad'?, title)   rs(n) → "Rs. 1,234"`, '')}
+${dsDemo(t('Print'), `@page 80mm (or 58mm from Settings → Printers)
+doPrint(customerBillHTML(o)) · kitchenTokenHTML(o)
+Receipts are always paper-white (#fff on #111),
+whatever the theme.`, '')}
+${dsDemo(t('Language'), `t('Orders') → 'آرڈرز' when Urdu is on
+t('{n} open orders', { n: 5 }) for numbers
+Keep words in the UR dictionary; never build
+sentences by joining translated pieces.`, '')}
+</div>`,
+        );
+
+        return `<div class="page ds">${pageHead(t('Design system'), `${nTok} ${t('tokens')}, ${nIc} ${t('icons')}, ${t('every component')}`, `<button class="btn btn-ghost" data-act="ds-copy-all">${ic('board', 18)} ${t('Copy tokens')}</button>`)}
+${jump}${intro}${principles}${colors}${blues}${tokens}${type}${spacing}${elevation}${motion}${layout}${sidebar}${icons}${components}${patterns}${a11y}${code}</div>`;
+      }
+      // Design system actions (visual only, no data changes).
+      function dsClip(text, msg) {
+        const ok = () => toast(msg || text, '', t('Copied'));
+        try {
+          navigator.clipboard.writeText(text).then(ok, () =>
+            toast(text, '', t('Copy this')),
+          );
+        } catch (e) {
+          toast(text, '', t('Copy this'));
+        }
+      }
       function roadmapView() {
         const group = (status, title, sub) => {
           const list = FEATURES.filter((f) => f.status === status);
@@ -13997,6 +15201,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
           ['businesses', 'Businesses', 'biz'],
           ['plans', 'Plans', 'bill'],
           ['roadmap', 'Roadmap', 'road'],
+          ['design', 'Design system', 'palette'],
         ];
         const cur = U.adminScreen === 'detail' ? 'businesses' : U.adminScreen;
         const body =
@@ -14006,6 +15211,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
             detail: adminDetail,
             plans: adminPlans,
             roadmap: roadmapView,
+            design: designView,
           }[U.adminScreen] || adminOverview;
         return `<div class="app admin"><div class="banners"></div><nav class="rail" aria-label="Admin"><div class="logo">Dera<small>${t('Platform')}</small></div>${nav.map(([k, l, i]) => `<button class="rail-btn ${cur === k ? 'on' : ''}" data-act="admin-go" data-v="${k}">${ic(i, 22)}<span>${t(l)}</span></button>`).join('')}<div class="rail-spacer"></div><button class="rail-btn" data-act="lock">${ic('lock', 22)}<span>${t('Sign out')}</span></button></nav>
     <header class="top"><div class="bizname"><b>${t('Platform admin')}</b><small>${t('Dera POS · all businesses')}</small></div><div class="top-right">${langBtn()}<button class="icon-btn" data-act="theme" aria-label="${DB.prefs.theme === 'dark' ? 'Use light theme' : 'Use dark theme'}">${ic(DB.prefs.theme === 'dark' ? 'sun' : 'moon')}</button><span class="who"><span class="avatar" style="background:#1B2230">${ic('shield', 15)}</span><span class="nm"><b>${esc(a.name.split(' ')[0])}</b> <span class="muted">${t('Admin')}</span></span></span></div></header>
@@ -16857,6 +18063,47 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
             toast(t('{p} saved.', { p: planById(id).name }));
           }
         },
+      });
+      Object.assign(A, {
+        'ds-jump': (el) => {
+          const sec = document.getElementById('ds-' + el.dataset.v);
+          if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        },
+        'ds-copy': (el) => dsClip(el.dataset.v),
+        'ds-copy-all': () => {
+          const T = dsTokens(),
+            has = (o, k) => o[k] != null && o[k] !== '',
+            line = (o, k) => `  ${k}: ${o[k]};`;
+          const shared = T.order.filter((k) => T.light[k] === T.dark[k]),
+            diff = T.order.filter((k) => T.light[k] !== T.dark[k]);
+          const css = `:root {\n${shared.map((k) => line(T.light, k)).join('\n')}\n}\n:root:not([data-theme='dark']) {\n${diff
+            .filter((k) => has(T.light, k))
+            .map((k) => line(T.light, k))
+            .join('\n')}\n}\n:root[data-theme='dark'] {\n${diff
+            .filter((k) => has(T.dark, k))
+            .map((k) => line(T.dark, k))
+            .join('\n')}\n}\n`;
+          dsClip(css, t('{n} tokens copied as CSS.', { n: T.order.length }));
+        },
+        'ds-demo': (el) => {
+          if (el.getAttribute('role') === 'switch')
+            el.setAttribute(
+              'aria-checked',
+              String(el.getAttribute('aria-checked') !== 'true'),
+            );
+          else {
+            el.classList.toggle('on');
+            el.setAttribute('aria-pressed', String(el.classList.contains('on')));
+          }
+        },
+        'ds-toast': () => toast(t('Saved for Gulberg only.'), '', t('Saved')),
+        'ds-modal': () =>
+          openModal({
+            err: '',
+            render() {
+              return `${mHead(t('Edit customer'), t('One profile per phone number, shared by every branch.'))}<div class="modal-body">${field('dm-name', t('Customer name'), 'Hamza Sheikh', { attrs: 'autofocus' })}${field('dm-phone', t('Phone number'), '0300-1234567')}</div>${mFoot(t('Save'), 'close-modal')}`;
+            },
+          }),
       });
       Object.assign(CH, {
         'login-biz': (el) => {
