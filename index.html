@@ -6018,6 +6018,500 @@
         animation: page-in 0.5s var(--ease-out) backwards;
       }
 
+      /* ---------- Order screen: two cards side by side, menu | bill ---------- */
+      .order {
+        gap: 16px;
+        padding: 16px;
+        height: 100%;
+        align-items: stretch;
+      }
+      .order-left,
+      .ticket {
+        min-height: 0;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: var(--surface);
+        box-shadow: var(--lift);
+        overflow: hidden;
+      }
+      .ticket {
+        margin: 0;
+        border-inline-start: 1px solid var(--line);
+      }
+      /* menu card: a header strip, then the dish grid scrolls inside */
+      .order-left .order-bar {
+        padding: 14px 18px 12px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+      }
+      .order-left .order-tools {
+        padding: 14px 18px 10px;
+      }
+      .order-left .cats {
+        padding: 0 18px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+      .order-left .items {
+        padding: 6px 18px 20px;
+        background: var(--surface-2);
+      }
+      .order-left .notice {
+        margin-top: 12px !important;
+      }
+      .order-left .item {
+        background: var(--surface);
+        border-color: var(--line);
+        box-shadow: 0 1px 2px rgba(1, 40, 77, 0.05);
+      }
+      /* bill card */
+      .ticket-scroll {
+        padding: 16px 16px 4px;
+        background: var(--surface-2);
+      }
+      .slip {
+        border: 1px solid var(--line);
+        border-top: 6px solid var(--btn);
+        border-bottom: 0;
+        border-radius: 14px 14px 0 0;
+        background: var(--surface);
+        box-shadow: none;
+      }
+      .ticket-head {
+        padding-top: 14px;
+      }
+      .ticket-scroll .ticket-tools {
+        padding: 14px 0 12px;
+      }
+      .ticket-scroll .tool {
+        border-radius: 12px;
+        background: var(--surface);
+      }
+      .ticket-dock {
+        margin: 0;
+        padding: 14px 16px 16px;
+        border-top: 1px solid var(--line);
+        background: var(--surface);
+        box-shadow: none;
+      }
+      .ticket-dock .co-main {
+        border-radius: 14px;
+      }
+      .dock-top .dock-total b {
+        color: var(--heading);
+      }
+      /* the two cards arrive one after the other when an order opens */
+      #main > .order.pg-in {
+        animation: none;
+      }
+      #main > .order.pg-in .order-left {
+        animation: page-in 0.5s var(--ease-out) backwards;
+      }
+      #main > .order.pg-in .ticket {
+        animation: ticket-in 0.6s 0.08s var(--ease-out) backwards;
+      }
+      @keyframes ticket-in {
+        from {
+          opacity: 0;
+          transform: translateX(28px) scale(0.985);
+        }
+      }
+      [dir='rtl'] #main > .order.pg-in .ticket {
+        animation-name: ticket-in-rtl;
+      }
+      @keyframes ticket-in-rtl {
+        from {
+          opacity: 0;
+          transform: translateX(-28px) scale(0.985);
+        }
+      }
+      @media (max-width: 1100px) and (min-width: 761px) {
+        .order {
+          gap: 12px;
+          padding: 12px;
+        }
+      }
+      @media (max-width: 760px) {
+        .order {
+          gap: 12px;
+          padding: 12px;
+          height: auto;
+        }
+        .order-left,
+        .ticket {
+          border-radius: 18px;
+        }
+        .order-left .items {
+          overflow: visible;
+        }
+        .ticket {
+          overflow: visible;
+          border-top: 1px solid var(--line);
+        }
+        .ticket-scroll {
+          border-radius: 18px 18px 0 0;
+        }
+        .ticket-dock {
+          border-radius: 0 0 18px 18px;
+        }
+      }
+
+      /* ---------- Order screen refinement: calmer, cleaner cards ---------- */
+      .order-left {
+        position: relative;
+      }
+      /* header: back, title and search on one line */
+      .order-left .order-bar {
+        min-height: 64px;
+        padding: 12px 18px;
+        padding-inline-end: 340px;
+      }
+      .order-left .order-bar h2 {
+        font-size: 18px;
+      }
+      .order-left .order-tools {
+        position: absolute;
+        top: 12px;
+        inset-inline-end: 18px;
+        width: 306px;
+        padding: 0;
+      }
+      .order-left .order-tools .search {
+        max-width: none;
+        min-width: 0;
+      }
+      .order-left .order-tools .input {
+        min-height: 40px;
+        background: var(--surface-2);
+        border-color: var(--line);
+      }
+      /* categories wrap instead of being cut off */
+      .order-left .cats {
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 12px 18px;
+        overflow: visible;
+        background: var(--surface);
+      }
+      .order-left .cats .chip {
+        min-height: 34px;
+        padding: 5px 12px;
+        font-size: 13.5px;
+      }
+      /* dish grid */
+      .order-left .items {
+        grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+        gap: 10px;
+        padding: 4px 18px 22px;
+      }
+      .order-left .cat-divider {
+        margin: 14px 0 2px;
+        font-size: 15px;
+        gap: 12px;
+      }
+      .order-left .cat-divider::after {
+        background: var(--line);
+      }
+      .order-left .item {
+        min-height: 88px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        box-shadow: none;
+      }
+      .order-left .item b {
+        font-size: 15px;
+      }
+      .order-left .item .price {
+        font-size: 15.5px;
+        color: var(--heading);
+      }
+      .order-left .item .opts {
+        margin-top: 1px;
+        color: var(--faint);
+      }
+      .order-left .item:hover:not(:disabled) {
+        border-color: var(--btn);
+        box-shadow: 0 8px 18px -14px rgba(1, 40, 77, 0.5);
+      }
+
+      /* bill card: one clean surface, blue top edge like the token cards */
+      .ticket,
+      :root[data-theme='dark'] .ticket {
+        border: 1.5px solid var(--line-strong);
+      }
+      .ticket-scroll {
+        padding: 0;
+        background: var(--surface);
+      }
+      .slip {
+        -webkit-mask: none;
+        mask: none;
+        border: 0;
+        border-radius: 0;
+        padding-bottom: 6px;
+        background: transparent;
+      }
+      .ticket-head {
+        padding: 18px 18px 6px;
+        align-items: flex-start;
+      }
+      .ticket-head h3 {
+        font-size: 34px;
+        line-height: 1;
+      }
+      .ticket-head h3.new-ord {
+        font-size: 24px;
+      }
+      .slip .ticket-sub {
+        margin: 0;
+        padding: 0 18px 14px;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+      }
+      .slip .lines {
+        padding: 4px 0;
+      }
+      .slip .line {
+        margin: 0 18px;
+        padding: 11px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .slip .line:last-child {
+        border-bottom: 0;
+      }
+      .qty {
+        min-width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        font-size: 13.5px;
+      }
+      .line .nm {
+        font-size: 15px;
+      }
+      .ldel {
+        color: var(--faint);
+        transition:
+          color 0.15s,
+          background-color 0.15s;
+      }
+      .ldel:hover {
+        color: var(--chili-ink);
+      }
+      .sent-fold {
+        width: calc(100% - 36px);
+        margin: 10px 18px 2px;
+      }
+      .r-sums {
+        margin: 0 18px;
+        padding: 12px 0 4px;
+        border-top: 1px solid var(--line);
+      }
+      .r-empty {
+        padding: 40px 18px 28px;
+      }
+      /* tools: three equal buttons in a row */
+      .ticket-scroll .ticket-tools {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+        gap: 8px;
+        padding: 12px 18px 16px;
+        border-top: 1px solid var(--line);
+        background: var(--surface);
+      }
+      .ticket-scroll .tool {
+        min-height: 40px;
+        padding: 6px 8px;
+        border: 1px solid var(--line-strong);
+        border-radius: 10px;
+        font-size: 13px;
+      }
+      .ticket-scroll .tool svg {
+        width: 17px;
+        height: 17px;
+      }
+      .ticket-scroll .tool-del {
+        border-color: color-mix(in srgb, var(--chili) 35%, transparent);
+      }
+      /* dock: total on one line, then the main button */
+      .ticket-dock {
+        gap: 10px;
+        padding: 14px 18px 18px;
+        background: var(--surface-2);
+      }
+      .dock-top .dock-total {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 10px;
+        font-size: 13.5px;
+      }
+      .dock-top .dock-total b {
+        font-size: 24px;
+      }
+      .ticket-dock .co-main {
+        min-height: 54px;
+      }
+      .dock-alts .co-alt {
+        min-height: 44px;
+        background: var(--surface);
+      }
+      @media (max-width: 760px) {
+        .ticket-scroll .tool-del:nth-child(3) {
+          grid-column: 1 / -1;
+        }
+      }
+      @media (max-width: 1100px) {
+        .order-left .order-bar {
+          padding-inline-end: 18px;
+        }
+        .order-left .order-tools {
+          position: static;
+          width: auto;
+          padding: 12px 18px 0;
+        }
+      }
+
+      /* ---------- Order tags: one colour per meaning ----------
+         type:     dine-in teal · takeaway amber · delivery violet
+         kitchen:  not sent slate · in kitchen orange · late red
+         delivery: out for delivery blue · delivered/served/collected green
+         payment:  paid solid green · part paid amber · pay now rose ·
+                   pay later dashed slate · deleted red outline */
+      :root:not([data-theme='dark']) {
+        --tag-dine: #0b6b5c;
+        --tag-dine-bg: #dcf2ec;
+        --tag-take: #7a4b00;
+        --tag-take-bg: #fbecc8;
+        --tag-delivery: #5b3cc4;
+        --tag-delivery-bg: #ebe5fb;
+        --tag-notsent: #475467;
+        --tag-notsent-bg: #eaedf2;
+        --tag-kitchen: #9a3d0a;
+        --tag-kitchen-bg: #ffe6d3;
+        --tag-late: #b42318;
+        --tag-late-bg: #fde3df;
+        --tag-out: #0b4f99;
+        --tag-out-bg: #dce8f6;
+        --tag-done: #17663a;
+        --tag-done-bg: #dcf2e3;
+        --tag-paid: #17803f;
+        --tag-now: #a3174f;
+        --tag-now-bg: #fde2ec;
+      }
+      :root[data-theme='dark'] {
+        --tag-dine: #6fe0c8;
+        --tag-dine-bg: rgba(45, 190, 160, 0.16);
+        --tag-take: #f6cd7a;
+        --tag-take-bg: rgba(240, 180, 58, 0.16);
+        --tag-delivery: #c4b3ff;
+        --tag-delivery-bg: rgba(150, 120, 255, 0.18);
+        --tag-notsent: #c3cbd6;
+        --tag-notsent-bg: rgba(160, 175, 195, 0.14);
+        --tag-kitchen: #ffb98a;
+        --tag-kitchen-bg: rgba(255, 140, 70, 0.16);
+        --tag-late: #ffa48f;
+        --tag-late-bg: rgba(255, 98, 66, 0.18);
+        --tag-out: #a9caf2;
+        --tag-out-bg: rgba(74, 140, 220, 0.2);
+        --tag-done: #86e0a8;
+        --tag-done-bg: rgba(60, 190, 110, 0.16);
+        --tag-paid: #2a9d57;
+        --tag-now: #ff9cc2;
+        --tag-now-bg: rgba(240, 80, 140, 0.18);
+      }
+      .badge.tag {
+        gap: 5px;
+        padding: 3px 10px 3px 8px;
+        border: 1px solid color-mix(in srgb, var(--tg) 28%, transparent);
+        background: var(--tg-bg);
+        color: var(--tg);
+        font-weight: 700;
+      }
+      .badge.tag svg {
+        width: 13px;
+        height: 13px;
+      }
+      .tag.ty-dine {
+        --tg: var(--tag-dine);
+        --tg-bg: var(--tag-dine-bg);
+      }
+      .tag.ty-take {
+        --tg: var(--tag-take);
+        --tg-bg: var(--tag-take-bg);
+      }
+      .tag.ty-delivery {
+        --tg: var(--tag-delivery);
+        --tg-bg: var(--tag-delivery-bg);
+      }
+      .tag.st-notsent,
+      .tag.st-empty {
+        --tg: var(--tag-notsent);
+        --tg-bg: var(--tag-notsent-bg);
+      }
+      .tag.st-ready {
+        --tg: var(--tag-kitchen);
+        --tg-bg: var(--tag-kitchen-bg);
+      }
+      .tag.st-late {
+        --tg: var(--tag-late);
+        --tg-bg: var(--tag-late-bg);
+      }
+      .tag.st-out {
+        --tg: var(--tag-out);
+        --tg-bg: var(--tag-out-bg);
+      }
+      .tag.st-delivered,
+      .tag.st-served,
+      .tag.st-collected {
+        --tg: var(--tag-done);
+        --tg-bg: var(--tag-done-bg);
+      }
+      .tag.pay-part {
+        --tg: var(--tag-take);
+        --tg-bg: var(--tag-take-bg);
+      }
+      .tag.pay-now {
+        --tg: var(--tag-now);
+        --tg-bg: var(--tag-now-bg);
+      }
+      .badge.tag.pay-paid {
+        border-color: transparent;
+        background: var(--tag-paid);
+        color: #fff;
+      }
+      .badge.tag.pay-later {
+        border: 1px dashed var(--line-strong);
+        background: transparent;
+        color: var(--muted);
+      }
+      .badge.tag.st-void {
+        border-color: var(--tag-late);
+        background: transparent;
+        color: var(--tag-late);
+      }
+      /* dashboard list: in kitchen / out for delivery / low stock */
+      .dl-tag {
+        background: var(--tag-kitchen-bg);
+        color: var(--tag-kitchen);
+      }
+      .dl-tag.go {
+        background: var(--tag-out-bg);
+        color: var(--tag-out);
+      }
+      .dl-tag.low {
+        background: var(--tag-late-bg);
+        color: var(--tag-late);
+      }
+      /* bill card has the border; the menu card sits on its shadow alone */
+      .order-left {
+        border-color: transparent;
+      }
+      .ticket,
+      :root[data-theme='dark'] .ticket {
+        border: 4px solid var(--blue-500);
+      }
+      :root[data-theme='dark'] .ticket {
+        border-color: #2f5689;
+      }
+
       /* looping animations resume where they were after a repaint */
       .login-brand::before,
       .login-brand::after,
@@ -12082,25 +12576,25 @@
       };
       function statusBadges(o) {
         if (o.state === 'void')
-          return `<span class="badge b-chili">${t('Deleted')}</span>`;
+          return `<span class="badge tag st-void">${ic('trash')} ${t('Deleted')}</span>`;
         const ks = kState(o),
           ps = payState(o),
           out = [];
         out.push(
           o.fulfil
-            ? `<span class="badge b-grey">${ic('check')} ${t(FULFIL_NAME[o.fulfil])}</span>`
-            : `<span class="badge ${isLate(o) ? 'b-chili' : K_CLASS[ks]}">${ic('kitchen')} ${t(isLate(o) ? 'Late' : K_LABEL[ks])}</span>`,
+            ? `<span class="badge tag st-${o.fulfil}">${ic(o.fulfil === 'out' ? 'bike' : 'check')} ${t(FULFIL_NAME[o.fulfil])}</span>`
+            : `<span class="badge tag ${isLate(o) ? 'st-late' : 'st-' + ks}">${ic(isLate(o) ? 'kitchen' : ks === 'ready' ? 'kitchen' : 'ticket')} ${t(isLate(o) ? 'Late' : K_LABEL[ks])}</span>`,
         );
         if (ks !== 'notsent' && unsentLines(o).length && !o.fulfil)
-          out.push(`<span class="badge b-saffron">${t('Not sent')}</span>`);
+          out.push(`<span class="badge tag st-notsent">${ic('ticket')} ${t('Not sent')}</span>`);
         out.push(
           ps === 'paid'
-            ? `<span class="badge b-solid">${ic('check')} ${t('Paid')}</span>`
+            ? `<span class="badge tag pay-paid">${ic('check')} ${t('Paid')}</span>`
             : ps === 'part'
-              ? `<span class="badge b-saffron">${t('Part paid')}</span>`
+              ? `<span class="badge tag pay-part">${ic('cash')} ${t('Part paid')}</span>`
               : o.payWhen === 'now' && o.state === 'open'
-                ? `<span class="badge b-chili">${ic('cash')} ${t('Pay now')}</span>`
-                : `<span class="badge b-grey">${t(o.state === 'open' ? (o.type === 'delivery' ? 'Pay on delivery' : 'Pay later') : 'Unpaid')}</span>`,
+                ? `<span class="badge tag pay-now">${ic('cash')} ${t('Pay now')}</span>`
+                : `<span class="badge tag pay-later">${ic('cash')} ${t(o.state === 'open' ? (o.type === 'delivery' ? 'Pay on delivery' : 'Pay later') : 'Unpaid')}</span>`,
         );
         return out.join('');
       }
@@ -12627,7 +13121,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
               : t('Walk-in')
             : esc(custLabel(o) || t('Walk-in'));
         return `<button class="ocard ${cls}" data-act="open-order" data-id="${o.id}" aria-label="${esc(o.no)}">
-    <div class="head"><span class="tok">${o.token ? `<small>${t('Token')}</small>${o.token}` : `<small>${t('Not sent')}</small>${esc(o.no.split('-')[1])}`}</span><span class="badge ${o.type === 'delivery' ? 'b-indigo' : o.type === 'take' ? 'b-saffron' : 'b-grey'}">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}</span></div>
+    <div class="head"><span class="tok">${o.token ? `<small>${t('Token')}</small>${o.token}` : `<small>${t('Not sent')}</small>${esc(o.no.split('-')[1])}`}</span><span class="badge tag ty-${o.type}">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}</span></div>
     <div><div class="who2">${who}${o.type === 'dine' && custLabel(o) ? `, ${esc(custLabel(o))}` : ''}</div>${o.type === 'delivery' && o.cust.address ? `<div class="meta">${esc(o.cust.address)}</div>` : ''}</div>
     <div class="lines2">${linesSummary(o) || `<span class="muted">${t('No items yet')}</span>`}</div>
     <div class="st">${statusBadges(o)}</div>
@@ -12774,21 +13268,21 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
       // Only what the buttons below do not already say: late, served, paid.
       function ticketStatus(o) {
         if (o.state === 'void')
-          return `<span class="badge b-chili">${t('Deleted')}</span>`;
+          return `<span class="badge tag st-void">${ic('trash')} ${t('Deleted')}</span>`;
         const ps = payState(o),
           out = [];
         if (o.fulfil)
           out.push(
-            `<span class="badge b-grey">${ic('check')} ${t(FULFIL_NAME[o.fulfil])}</span>`,
+            `<span class="badge tag st-${o.fulfil}">${ic(o.fulfil === 'out' ? 'bike' : 'check')} ${t(FULFIL_NAME[o.fulfil])}</span>`,
           );
         else if (isLate(o))
-          out.push(`<span class="badge b-chili">${t('Late')}</span>`);
+          out.push(`<span class="badge tag st-late">${ic('kitchen')} ${t('Late')}</span>`);
         if (ps === 'paid')
           out.push(
-            `<span class="badge b-solid">${ic('check')} ${t('Paid')}</span>`,
+            `<span class="badge tag pay-paid">${ic('check')} ${t('Paid')}</span>`,
           );
         else if (ps === 'part')
-          out.push(`<span class="badge b-saffron">${t('Part paid')}</span>`);
+          out.push(`<span class="badge tag pay-part">${ic('cash')} ${t('Part paid')}</span>`);
         return out.join('');
       }
       function fulfilButton(o) {
@@ -12911,7 +13405,7 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
     ${lockedItems && o.state === 'open' ? `<div class="notice warn" style="margin:0 18px 10px">${!dayIsOpen ? t('This business day is closed. Start the next business day first.') : o.payments.length ? t('Payment has started, so the bill is locked. Start a new order for extra items.') : t('You can view this order but not change it.')}</div>` : ''}
     <div class="items">${itemsGrid(st, lockedItems)}</div></section>
     <aside class="ticket" aria-label="${esc(o.no)}"><div class="ticket-scroll">
-    <div class="slip"><div class="ticket-head">${o.token ? `<h3>${t('Token')} ${o.token}</h3>` : `<h3 class="new-ord">${t('New order')}</h3>`}<div class="head-tags"><span class="badge type-badge">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span>${ticketStatus(o)}</div></div>
+    <div class="slip"><div class="ticket-head">${o.token ? `<h3>${t('Token')} ${o.token}</h3>` : `<h3 class="new-ord">${t('New order')}</h3>`}<div class="head-tags"><span class="badge type-badge tag ty-${o.type}">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span>${ticketStatus(o)}</div></div>
     <div class="ticket-sub"><span>${esc(o.no)}, ${fmtTime(o.createdAt)}, ${esc(uname(o.by))}</span>${custRow}</div>
     <div class="lines${lockedItems ? ' ro' : ''}">${o.lines.length ? sentFold + shownLines.map((l) => lineView(o, l, lockedItems)).join('') :`<div class="r-empty">${ic('plus', 28)}<b>${t('No items yet')}</b><span>${t('Tap a dish to add it.')}</span></div>`}</div>
     ${o.lines.length && (sumsExtra || !dockTotal) ? `<div class="r-sums">${sumsExtra ? billRows(o) : ''}${dockTotal ? '' : `<div class="sumrow total"><span>${t('Total')}</span><span>${rs(b.total)}</span></div>`}</div>` : ''}</div>
@@ -14170,6 +14664,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
         'Surfaces',
         'Text',
         'Status',
+        'Order tags',
         'Sidebar and dark surfaces',
         'Elevation and focus',
         'Type families',
@@ -14190,6 +14685,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
           return 'Surfaces';
         if (/^--(ink|muted|faint)$/.test(k)) return 'Text';
         if (/^--(indigo|saffron|chili)/.test(k)) return 'Status';
+        if (/^--tag-/.test(k)) return 'Order tags';
         if (/(shadow|lift|glow|ring)/.test(k)) return 'Elevation and focus';
         if (/^--(title|body|display|signage|urdu|mono)$/.test(k))
           return 'Type families';
@@ -14284,6 +14780,24 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
         ['wobble', 'Stat tile icon wiggles on hover'],
         ['pop', 'Small pop for the sales curve dot'],
         ['shake', 'PIN dots shake on a wrong PIN'],
+      ];
+      // Every order tag, for the design system legend.
+      const DS_TAGS = [
+        ['ty-dine', 'dine', 'Dine-in'],
+        ['ty-take', 'bag', 'Takeaway'],
+        ['ty-delivery', 'bike', 'Delivery'],
+        ['st-notsent', 'ticket', 'Not sent'],
+        ['st-ready', 'kitchen', 'In kitchen'],
+        ['st-late', 'kitchen', 'Late'],
+        ['st-out', 'bike', 'Out for delivery'],
+        ['st-delivered', 'check', 'Delivered'],
+        ['st-served', 'check', 'Served'],
+        ['st-collected', 'check', 'Collected'],
+        ['pay-paid', 'check', 'Paid'],
+        ['pay-part', 'cash', 'Part paid'],
+        ['pay-now', 'cash', 'Pay now'],
+        ['pay-later', 'cash', 'Pay later'],
+        ['st-void', 'trash', 'Deleted'],
       ];
       function designView() {
         const T = dsTokens(),
@@ -14609,7 +15123,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
         /* ---- components ---- */
         const B = (cls, label, icon) =>
           `<button class="btn ${cls}">${icon ? ic(icon, 18) : ''}${label}</button>`;
-        const sampleTok = `<div class="ocard k-ready ds-ocard"><div class="head"><span class="tok"><small>${t('Token')}</small>12</span><span class="badge b-indigo">${ic('bike')} ${t('Delivery')}</span></div><div><div class="who2">Hamza Sheikh</div><div class="meta">House 14, Street 3, Model Town</div></div><div class="lines2">2× Chicken Karahi (Full)<br>4× Butter Naan</div><div class="st"><span class="badge b-green">${ic('kitchen')} ${t('In kitchen')}</span><span class="badge b-grey">${t('Pay on delivery')}</span></div><div class="foot"><span class="meta">GUL-1094<br>8:12 pm, Sana</span><b class="num">Rs. 5,520</b></div></div>`;
+        const sampleTok = `<div class="ocard k-ready ds-ocard"><div class="head"><span class="tok"><small>${t('Token')}</small>12</span><span class="badge tag ty-delivery">${ic('bike')} ${t('Delivery')}</span></div><div><div class="who2">Hamza Sheikh</div><div class="meta">House 14, Street 3, Model Town</div></div><div class="lines2">2× Chicken Karahi (Full)<br>4× Butter Naan</div><div class="st"><span class="badge tag st-ready">${ic('kitchen')} ${t('In kitchen')}</span><span class="badge tag pay-later">${ic('cash')} ${t('Pay on delivery')}</span></div><div class="foot"><span class="meta">GUL-1094<br>8:12 pm, Sana</span><b class="num">Rs. 5,520</b></div></div>`;
         const components = dsSec(
           'components',
           t('Components'),
@@ -14636,6 +15150,9 @@ ${dsDemo(t('Select and search'), `selectBox('id', [[value, label]], selected)\ns
 ${dsDemo(t('Textarea and error'), `<textarea class="textarea"></textarea>\n<p class="err">Enter the customer name.</p>`, `<textarea class="textarea" placeholder="${t('Calls, promises, special terms')}"></textarea><p class="err">${t('Enter the customer name.')}</p>`, true)}
 </div>
 <div class="ds-sub">${t('Status')}</div><div class="ds-grid">
+${dsDemo(t('Order tags'), `<span class="badge tag ty-dine|ty-take|ty-delivery">  order type
+<span class="badge tag st-notsent|st-ready|st-late|st-out|st-delivered|st-served|st-collected|st-void">  kitchen and delivery
+<span class="badge tag pay-paid|pay-part|pay-now|pay-later">  payment`, DS_TAGS.map(([c, i, l]) => `<span class="badge tag ${c}">${ic(i)} ${t(l)}</span>`).join(''), false)}
 ${dsDemo(t('Badges'), `<span class="badge b-green">…</span>  b-green b-saffron b-indigo b-chili b-grey b-solid b-dark`, ['b-green', 'b-saffron', 'b-indigo', 'b-chili', 'b-grey', 'b-solid', 'b-dark'].map((c) => `<span class="badge ${c}">${c.slice(2)}</span>`).join(''))}
 ${dsDemo(t('Notices'), `<div class="notice ok|info|warn|bad">…</div>`, ['ok', 'info', 'warn', 'bad'].map((c) => `<div class="notice ${c}">${t({ ok: 'Saved for Gulberg only.', info: 'Your trial ends in 5 days.', warn: 'Payment has started, so the bill is locked.', bad: 'This business day is closed.' }[c])}</div>`).join(''), true)}
 ${dsDemo(t('Day chips and counts'), `<span class="daychip open|closed|paused">…</span>\n<span class="rail-count warn">3</span>`, `<span class="daychip open">${ic('check', 14)} Mon, 2 Nov, ${t('Open')}</span><span class="daychip closed">${ic('lock', 14)} ${t('Closed')}</span><span class="daychip paused">${ic('pause', 14)} ${t('Paused')}</span><span class="rail-count warn" style="position:static">3</span>`)}
