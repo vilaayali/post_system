@@ -7350,6 +7350,108 @@
         }
       }
 
+      /* ---------- Sidebar connection card ---------- */
+      .rail-sync {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        margin: 0 2px 8px;
+        padding: 8px 8px 8px 10px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+      .rs-main {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        text-align: start;
+      }
+      .rs-main b {
+        display: block;
+        font-size: 13.5px;
+      }
+      .rs-main small {
+        display: block;
+        overflow: hidden;
+        color: var(--night-ink);
+        font-size: 11.5px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .rs-dot {
+        flex: none;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #3ccf7a;
+        box-shadow: 0 0 0 4px rgba(60, 207, 122, 0.18);
+      }
+      .rail-sync.off {
+        background: rgba(243, 196, 79, 0.16);
+        border-color: rgba(243, 196, 79, 0.4);
+      }
+      .rail-sync.off .rs-dot {
+        background: #f3c44f;
+        box-shadow: 0 0 0 4px rgba(243, 196, 79, 0.25);
+        animation: count-pulse 2s ease-out infinite;
+        animation-delay: var(--phase, 0s);
+      }
+      .rail-sync.wait .rs-dot,
+      .rail-sync.busy .rs-dot {
+        background: #5aa2ff;
+        box-shadow: 0 0 0 4px rgba(90, 162, 255, 0.25);
+      }
+      .rs-btn {
+        flex: none;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        min-height: 30px;
+        padding: 0 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        background: transparent;
+        color: #fff;
+        font-size: 11.5px;
+        font-weight: 700;
+        white-space: nowrap;
+        transition:
+          background-color 0.2s,
+          border-color 0.2s;
+      }
+      .rs-btn:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .rs-btn:disabled {
+        opacity: 0.5;
+      }
+      .rs-btn.strong {
+        border-color: transparent;
+        background: var(--btn);
+      }
+      .rail-sync.off .rs-btn {
+        border-color: transparent;
+        background: #f3c44f;
+        color: #3d2a00;
+      }
+      @media (max-width: 760px) {
+        .rail-sync {
+          display: none;
+        }
+      }
+
       /* looping animations resume where they were after a repaint */
       .login-brand::before,
       .login-brand::after,
@@ -7762,6 +7864,9 @@
       }
       .rail-spacer {
         margin-inline-end: 18px;
+      }
+      .rail-sync {
+        margin-inline-end: 14px;
       }
       .rail .rail-btn,
       .app.admin .rail .rail-btn {
@@ -13741,7 +13846,7 @@
     <div class="row" style="margin-top:14px"><button class="btn btn-sm" style="background:#fff;color:var(--green-ink)" data-act="signup">${ic('plus', 16)} ${t('Start a free 14-day trial')}</button><button class="btn btn-sm" style="background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.4)" data-act="reset-demo">${ic('reset', 16)} ${t('Reset demo')}</button></div></div></div>
     <div class="login-side">${
       !sel
-        ? `<div class="row" style="justify-content:space-between"><h2>${t('Who is working?')}</h2>${langBtn()}</div>
+        ? `<div class="row" style="justify-content:space-between"><h2>${t('Who is working?')}</h2><span class="row" style="gap:8px">${syncChip()}${langBtn()}</span></div>
 <div class="field" style="margin:0"><label for="login-biz">${t('Business')}</label>${selectBox(
             'login-biz',
             P().tenants.map((x) => [
@@ -13837,6 +13942,28 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
         const d = dayOf(U.store);
         return `<span class="daychip ${d.status}">${ic(d.status === 'open' ? 'check' : 'lock', 14)} ${dayLabel(d.date)}, ${t(d.status === 'open' ? 'Open' : 'Closed')}</span>`;
       }
+      // Connection card at the bottom of the sidebar: status, waiting count,
+      // and one tap to go offline, come back online or sync.
+      function railSync() {
+        const sy = SYNC(),
+          on = isOnline(),
+          n = sy.pending;
+        const [cls, title, sub] = syncBusy
+          ? ['busy', t('Syncing…'), t('Sending {n} changes', { n })]
+          : !on
+            ? ['off', t('Offline'), n ? t('{n} changes saved here', { n }) : t('Saving on this device')]
+            : n
+              ? ['wait', t('Online'), t('{n} changes to sync', { n })]
+              : ['ok', t('Online'), `${t('Synced')} ${fmtTime(sy.lastAt)}`];
+        const btn = syncBusy
+          ? ''
+          : !on
+            ? `<button class="rs-btn" data-act="sync-offline" ${navigator.onLine === false ? 'disabled title="' + esc(t('No internet on this device')) + '"' : ''}>${t('Go online')}</button>`
+            : n
+              ? `<button class="rs-btn strong" data-act="sync-now">${ic('repeat', 14)} ${t('Sync')}</button>`
+              : `<button class="rs-btn" data-act="sync-offline">${t('Work offline')}</button>`;
+        return `<div class="rail-sync ${cls}"><button class="rs-main" data-act="sync-open" aria-label="${esc(t('Connection and sync'))}"><i class="rs-dot"></i><span><b>${title}</b><small>${sub}</small></span></button>${btn}</div>`;
+      }
       // Connection status in the top bar: synced, offline, waiting, syncing.
       function syncChip() {
         const sy = SYNC(),
@@ -13847,7 +13974,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
             ? ['off', 'pause', sy.pending ? t('Offline · {n} saved', { n: sy.pending }) : t('Offline')]
             : sy.pending
               ? ['wait', 'repeat', t('{n} to sync', { n: sy.pending })]
-              : ['ok', 'check', t('Synced')];
+              : ['ok', 'check', t('Online · synced')];
         return `<button class="syncchip ${cls}" data-act="sync-open" title="${esc(t('Connection and sync'))}">${ic(icon, 15)}<span>${label}</span></button>`;
       }
       // Status banners: offline, impersonation, trial countdown, overdue invoice.
@@ -13907,7 +14034,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
         return `${cap}<button class="rail-btn ${cur === k ? 'on' : ''} ${lockd ? 'locked' : ''}" data-act="go" data-s="${k}" ${cur === k ? 'aria-current="page"' : ''} ${lockd ? `title="${esc(t('Not in your plan'))}"` : ''}>${ic(i, 22)}<span>${t(l)}</span>${lockd ? `<span class="rail-lock">${ic('lock', 11)}</span>` : railCount(k)}</button>`;
       })
       .join('')}
-<div class="rail-spacer"></div><button class="rail-btn" data-act="lock">${ic(U.impersonating ? 'back' : 'lock', 22)}<span>${t(U.impersonating ? 'Admin' : 'Lock')}</span></button></nav>
+<div class="rail-spacer"></div>${railSync()}<button class="rail-btn" data-act="lock">${ic(U.impersonating ? 'back' : 'lock', 22)}<span>${t(U.impersonating ? 'Admin' : 'Lock')}</span></button></nav>
     <header class="top">${logo ? `<img class="bizlogo" src="${esc(logo)}" alt="">` : ''}<div class="bizname"><b title="${esc(tn.name)}">${esc(D.business.name)}</b><small>${esc(planOf(tn).name)} · ${t(TENANT_STATUS[tn.status][1])}</small></div>${switcherHTML()}${dayChip()}
 <div class="top-right">${syncChip()}${langBtn()}<button class="icon-btn" data-act="theme" aria-label="${DB.prefs.theme === 'dark' ? 'Use light theme' : 'Use dark theme'}">${ic(DB.prefs.theme === 'dark' ? 'sun' : 'moon')}</button><span class="clock" id="clock">${fmtTime(Date.now())}</span>
 <span class="who">${avatar(u, 'sm')}<span class="nm"><b>${esc(u.name.split(' ')[0])}</b> <span class="muted">${roleName(u.role)}</span></span></span></div></header>
@@ -15805,6 +15932,7 @@ ${R0.stillOpen.length ? `${sec(`STILL OPEN (${R0.stillOpen.length})`)}${R0.still
     ${ft('delivery', 'Delivery', 'Off: new delivery orders cannot be created here.')}</div>
   <div class="panel panel-pad"><h3 style="font-family:var(--display);font-size:22px;margin-bottom:8px">${t('This device')}</h3>
     <span class="label">${t('Language')}</span><div class="chips" style="margin:6px 0 12px">${chip('set-lang', 'en', 'English', DB.prefs.lang === 'en')}${chip('set-lang', 'ur', 'اردو', DB.prefs.lang === 'ur')}</div>
+    <div class="toggle-row" style="padding-top:0"><div><b>${t('Work offline')}</b><small>${t('For a power cut or no internet. Orders keep saving on this device and sync when you switch back.')}</small></div>${sw(SYNC().offline, 'sync-offline', '', t('Work offline'))}</div>
     <span class="label">${t('Theme')}</span><div class="chips" style="margin:6px 0 12px">${chip('set-theme', 'light', t('Light'), DB.prefs.theme === 'light')}${chip('set-theme', 'dark', t('Dark'), DB.prefs.theme === 'dark')}</div>
     <button class="btn btn-ghost" data-act="reset-demo">${ic('reset', 16)} ${t('Reset demo')}</button></div>
 </div></div></div>`;
@@ -20044,7 +20172,7 @@ ${!on ? `<p class="hint" style="margin-top:12px">${t('Sync will be ready as soon
           const sy = SYNC();
           sy.offline = !sy.offline;
           save();
-          closeModal();
+          if (M) closeModal();
           if (sy.offline) goneOffline();
           else if (navigator.onLine !== false) goneOnline();
           else render();
