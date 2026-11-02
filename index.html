@@ -6460,6 +6460,308 @@
         border-color: #2f5689;
       }
 
+      /* ---------- Order menu: dish cards with food icons ----------
+         Pill tabs with an icon per category, then cards laid out as
+         icon tile | name, sizes, price | add button. */
+      .order-left .cats {
+        flex-wrap: nowrap;
+        gap: 8px;
+        padding: 12px 18px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+      }
+      .order-left .cats::-webkit-scrollbar {
+        display: none;
+      }
+      .order-left .cats .chip {
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 38px;
+        padding: 0 14px 0 11px;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--ink);
+        font-size: 13.5px;
+        font-weight: 600;
+      }
+      .order-left .cats .chip svg {
+        color: var(--blue-500);
+        transition: transform 0.35s var(--ease-spring);
+      }
+      .order-left .cats .chip:hover:not(.on) svg {
+        transform: scale(1.15) rotate(-8deg);
+      }
+      .order-left .cats .chip.on {
+        background: var(--btn);
+        border-color: var(--btn);
+        color: #fff;
+        box-shadow: 0 6px 14px -8px rgba(11, 79, 153, 0.7);
+      }
+      .order-left .cats .chip.on svg {
+        color: #fff;
+      }
+      .order-left .items {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-auto-rows: max-content;
+        gap: 10px;
+        padding: 4px 18px 24px;
+        background: var(--surface-2);
+        align-content: start;
+      }
+      .order-left .cat-divider {
+        margin: 16px 0 2px;
+        gap: 10px;
+        color: var(--heading);
+        font-family: var(--title);
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .cd-ic {
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 9px;
+        background: var(--btn-soft);
+        color: var(--green-ink);
+      }
+      .order-left .cat-divider small {
+        padding: 1px 8px;
+        border-radius: 999px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        color: var(--faint);
+        font-family: var(--body);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .order-left .cat-divider::after {
+        background: var(--line);
+      }
+      /* the card */
+      .order-left .item.mcard {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+        min-height: 84px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+        box-shadow: 0 1px 2px rgba(1, 40, 77, 0.05);
+        text-align: start;
+      }
+      .order-left .item.mcard::before {
+        display: none;
+      }
+      .mc-ic {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        background: var(--blue-50);
+        color: var(--blue-600);
+        transition:
+          background-color 0.25s,
+          color 0.25s,
+          transform 0.4s var(--ease-spring);
+      }
+      :root[data-theme='dark'] .mc-ic {
+        background: rgba(74, 140, 220, 0.14);
+        color: #a9caf2;
+      }
+      .mc-q {
+        font-size: 17px;
+        font-weight: 800;
+      }
+      .mc-body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .order-left .item.mcard .mc-body b {
+        display: block;
+        color: var(--ink);
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .order-left .item.mcard .opts {
+        display: block;
+        color: var(--faint);
+        font-size: 12px;
+      }
+      .order-left .item.mcard .price {
+        display: block;
+        margin-top: 4px;
+        color: var(--heading);
+        font-size: 14.5px;
+        font-weight: 800;
+      }
+      .mc-add {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1.5px solid var(--blue-300);
+        color: var(--blue-600);
+        transition:
+          background-color 0.2s,
+          border-color 0.2s,
+          color 0.2s,
+          transform 0.45s var(--ease-spring);
+      }
+      :root[data-theme='dark'] .mc-add {
+        border-color: #2f5689;
+        color: #a9caf2;
+      }
+      .order-left .item.mcard:hover:not(:disabled) {
+        transform: translateY(-2px);
+        border-color: var(--blue-300);
+        box-shadow: var(--hover-lift);
+      }
+      .order-left .item.mcard:hover:not(:disabled) .mc-ic {
+        transform: rotate(-6deg) scale(1.05);
+      }
+      .order-left .item.mcard:hover:not(:disabled) .mc-add {
+        background: var(--btn);
+        border-color: var(--btn);
+        color: #fff;
+        transform: rotate(90deg);
+      }
+      .order-left .item.mcard:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+      /* already on this order: the icon tile turns solid blue with the count */
+      .order-left .item.mcard.has {
+        border-color: var(--btn);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--btn) 12%, transparent);
+      }
+      .order-left .item.mcard.has .mc-ic,
+      :root[data-theme='dark'] .order-left .item.mcard.has .mc-ic {
+        background: var(--btn);
+        color: #fff;
+      }
+      .order-left .item.mcard.off {
+        opacity: 0.5;
+      }
+      .order-left .item.mcard.off .price {
+        color: var(--chili-ink);
+        font-size: 13px;
+      }
+      @media (max-width: 1280px) {
+        .order-left .order-bar {
+          padding-inline-end: 18px;
+        }
+        .order-left .order-tools {
+          position: static;
+          width: auto;
+          padding: 12px 18px 0;
+        }
+        .order-left .cats {
+          border-bottom: 1px solid var(--line);
+        }
+      }
+      @media (max-width: 760px) {
+        .order-left .items {
+          grid-template-columns: minmax(0, 1fr);
+          padding: 4px 14px 20px;
+        }
+        .order-left .cats {
+          padding: 12px 14px;
+        }
+      }
+
+      /* ---------- Category colours ----------
+         Eight flat colours, one per menu category in menu order. The tab
+         icon, the selected tab, the section icon, each dish's edge and its
+         icon tile all take their category's colour. */
+      :root {
+        --hue-0: #e0532d;
+        --hue-1: #c98a12;
+        --hue-2: #0f8f78;
+        --hue-3: #b5651d;
+        --hue-4: #2e8f4e;
+        --hue-5: #c43c74;
+        --hue-6: #2f6db0;
+        --hue-7: #7a52cc;
+      }
+      .order-left .cats .chip,
+      .order-left .cat-divider,
+      .order-left .item.mcard {
+        --hue-ink: color-mix(in srgb, var(--hue, var(--btn)) 78%, #1a1a1a);
+        --hue-soft: color-mix(in srgb, var(--hue, var(--btn)) 13%, var(--surface));
+        --hue-line: color-mix(in srgb, var(--hue, var(--btn)) 40%, var(--line));
+      }
+      :root[data-theme='dark'] .order-left .cats .chip,
+      :root[data-theme='dark'] .order-left .cat-divider,
+      :root[data-theme='dark'] .order-left .item.mcard {
+        --hue-ink: color-mix(in srgb, var(--hue, var(--btn)) 65%, #fff);
+        --hue-soft: color-mix(in srgb, var(--hue, var(--btn)) 20%, var(--surface));
+      }
+      .order-left .cats .chip[style] svg {
+        color: var(--hue);
+      }
+      .order-left .cats .chip[style].on {
+        background: var(--hue);
+        border-color: var(--hue);
+        color: #fff;
+        box-shadow: 0 6px 14px -8px color-mix(in srgb, var(--hue) 80%, transparent);
+      }
+      .order-left .cats .chip[style].on svg {
+        color: #fff;
+      }
+      .order-left .cats .chip[style]:hover:not(.on) {
+        border-color: var(--hue-line);
+        background: var(--hue-soft);
+      }
+      .order-left .cat-divider[style] {
+        color: var(--hue-ink);
+      }
+      .order-left .cat-divider[style] .cd-ic {
+        background: var(--hue);
+        color: #fff;
+      }
+      .order-left .cat-divider[style] small {
+        border-color: var(--hue-line);
+        color: var(--hue-ink);
+      }
+      .order-left .item.mcard[style] {
+        border-inline-start: 4px solid var(--hue);
+      }
+      .order-left .item.mcard[style] .mc-ic,
+      :root[data-theme='dark'] .order-left .item.mcard[style] .mc-ic {
+        background: var(--hue-soft);
+        color: var(--hue-ink);
+      }
+      .order-left .item.mcard[style]:hover:not(:disabled) {
+        border-color: var(--hue-line);
+        border-inline-start-color: var(--hue);
+      }
+      .order-left .item.mcard[style].has {
+        border-color: var(--btn);
+        border-inline-start-color: var(--hue);
+      }
+      .order-left .item.mcard[style].has .mc-ic,
+      :root[data-theme='dark'] .order-left .item.mcard[style].has .mc-ic {
+        background: var(--hue);
+        color: #fff;
+      }
+
       /* looping animations resume where they were after a repaint */
       .login-brand::before,
       .login-brand::after,
@@ -9092,6 +9394,15 @@
         repeat:
           '<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>',
         dine: '<path d="M4 3v8a3 3 0 0 0 6 0V3M7 3v18M17 3c-2 0-3 3-3 7h3v11"/>',
+        flame:
+          '<path d="M12 3c.8 3.2 5 5.2 5 10a5 5 0 0 1-10 0c0-2.3 1.2-3.8 2.5-4.8.2 1.8 1 2.8 2.2 3.2C11 9 10.6 6 12 3Z"/>',
+        pot: '<path d="M4 11h16v2a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6v-2Z"/><path d="M2 11h20M9 7.5c0-1.2 1-1.6 1-3M14 7.5c0-1.2 1-1.6 1-3"/>',
+        bowl: '<path d="M3 11h18a9 9 0 0 1-18 0Z"/><path d="M7 7.5c1.6-1.3 3.4-1.3 5 0s3.4 1.3 5 0"/>',
+        roti: '<circle cx="12" cy="12" r="9"/><path d="M8.5 9.5h.01M14.5 8h.01M15.5 14h.01M9.5 15h.01M12 12h.01"/>',
+        salad: '<path d="M3 12h18a9 9 0 0 1-18 0Z"/><path d="M7.5 12c0-3 2-5.5 5-5.5M13 12c0-2 1.6-4 3.8-4"/>',
+        burger: '<path d="M4 10a8 6 0 0 1 16 0Z"/><path d="M3 14h18M4 17h16v.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5V17Z"/>',
+        cup: '<path d="M6 8h12l-1.4 12.2a1 1 0 0 1-1 .8H8.4a1 1 0 0 1-1-.8Z"/><path d="M10 8l1-5h3"/>',
+        cake: '<path d="M4 21v-8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8Z"/><path d="M4 15.5c2.7 1.5 5.3 1.5 8 0s5.3-1.5 8 0M12 11V7.5M12 4.5v.01"/>',
         bag: '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/>',
         bike: '<circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 11.5M5.5 17.5 9 10h7l-3 7.5"/>',
         truck:
@@ -12767,7 +13078,13 @@
               ink.style.transition = '';
               put(box);
               ink.classList.add('move');
-            } else put(box);
+            } else {
+              // same item after a repaint: sit in place, no slide from the top
+              ink.style.transition = 'none';
+              put(box);
+              void ink.offsetWidth;
+              ink.style.transition = '';
+            }
             inkPrev = box;
             // phone bottom bar: keep the active tab in view
             if (rail.scrollWidth > rail.clientWidth + 4) {
@@ -13280,7 +13597,34 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
       /* =============================================================
    Order screen
    ============================================================= */
-      function itemCard(st, it, locked) {
+      // A food icon for each category (by id, then by name for custom ones).
+      // A fixed colour for each category: by its place in the menu order.
+      function catHue(c) {
+        if (!c || !D) return 0;
+        const sorted = D.cats.slice().sort((a, b) => a.sort - b.sort);
+        return Math.max(0, sorted.findIndex((x) => x.id === c.id)) % 8;
+      }
+      function catIcon(c) {
+        const k = `${(c && c.id) || ''} ${(c && c.name) || ''}`.toLowerCase();
+        return /bbq|grill|tikka|kebab|barbe/.test(k)
+          ? 'flame'
+          : /karahi|handi|curr|qorma|nihari/.test(k)
+            ? 'pot'
+            : /rice|biryani|pulao/.test(k)
+              ? 'bowl'
+              : /bread|naan|roti|paratha/.test(k)
+                ? 'roti'
+                : /side|salad|raita/.test(k)
+                  ? 'salad'
+                  : /fast|burger|pizza|roll|sandwich|fries/.test(k)
+                    ? 'burger'
+                    : /drink|tea|chai|coffee|juice|shake|bever/.test(k)
+                      ? 'cup'
+                      : /dessert|sweet|kheer|cake|ice/.test(k)
+                        ? 'cake'
+                        : 'menu';
+      }
+      function itemCard(st, it, locked, inQty) {
         const ok = availableAt(st, it);
         const price = !ok
           ? t('Sold out')
@@ -13297,11 +13641,18 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
           DB.prefs.lang === 'ur'
             ? `<span><b style="font-family:var(--urdu);line-height:1.9">${esc(it.ur)}</b><span class="opts">${esc(it.name)}</span></span>`
             : `<span><b>${esc(it.name)}</b><span class="ur" lang="ur" dir="rtl">${esc(it.ur)}</span></span>`;
-        return `<button class="item ${ok ? '' : 'off'}" data-act="add-item" data-id="${it.id}" ${ok && !locked ? '' : 'disabled'}>${names}<span><span class="price num">${ok ? 'Rs. ' : ''}${price}</span>${opts && ok ? `<span class="opts">${esc(opts)}</span>` : ''}</span></button>`;
+        return `<button class="item mcard ${ok ? '' : 'off'} ${inQty ? 'has' : ''}" style="--hue:var(--hue-${catHue(cat(it.cat))})" data-act="add-item" data-id="${it.id}" ${ok && !locked ? '' : 'disabled'}><span class="mc-ic" aria-hidden="true">${inQty ? `<b class="mc-q">${inQty}×</b>` : ic(catIcon(cat(it.cat)), 24)}</span><span class="mc-body">${names}${opts && ok ? `<span class="opts">${esc(opts)}</span>` : ''}<span class="price num">${ok ? 'Rs. ' : ''}${price}</span></span>${ok && !locked ? `<span class="mc-add" aria-hidden="true">${ic('plus', 18)}</span>` : ''}</button>`;
       }
       function itemsGrid(st, locked) {
         const q = U.itemQ.trim().toLowerCase(),
           grouped = q || U.cat === 'all';
+        // how many of each dish is already on this order
+        const o = orderById(U.orderId),
+          inQ = {};
+        if (o)
+          liveLines(o).forEach((l) => {
+            inQ[l.itemId] = (inQ[l.itemId] || 0) + l.qty;
+          });
         const cats = D.cats
           .slice()
           .sort((a, b) => a.sort - b.sort)
@@ -13315,7 +13666,7 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
                 (!q || `${i.name} ${i.ur}`.toLowerCase().includes(q)),
             );
             return ms.length
-              ? `${grouped ? `<div class="cat-divider">${esc(DB.prefs.lang === 'ur' ? c.ur : c.name)} <small>${ms.length}</small></div>` : ''}${ms.map((i) => itemCard(st, i, locked)).join('')}`
+              ? `${grouped ? `<div class="cat-divider" style="--hue:var(--hue-${catHue(c)})"><span class="cd-ic">${ic(catIcon(c), 16)}</span>${esc(DB.prefs.lang === 'ur' ? c.ur : c.name)} <small>${ms.length}</small></div>` : ''}${ms.map((i) => itemCard(st, i, locked, inQ[i.id])).join('')}`
               : '';
           })
           .join('');
@@ -13507,7 +13858,7 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
         return `<div class="order"><section class="order-left">
     <div class="order-bar"><button class="btn btn-ghost btn-sm" data-act="go" data-s="orders">${ic('back', 18)} ${t('Orders')}</button><h2>${lockedItems ? t('Dishes') : t('Tap a dish to add it')}</h2></div>
     <div class="order-tools">${searchInput('item-q', U.itemQ, t('Search dishes'), 'item-q')}</div>
-    <div class="cats" role="group" aria-label="${t('Category')}">${chip('cat', 'all', t('All'), U.cat === 'all' && !U.itemQ)}${cats.map((c) => chip('cat', c.id, esc(DB.prefs.lang === 'ur' ? c.ur : c.name), U.cat === c.id && !U.itemQ)).join('')}</div>
+    <div class="cats" role="group" aria-label="${t('Category')}">${chip('cat', 'all', `${ic('grid', 16)}${t('All')}`, U.cat === 'all' && !U.itemQ)}${cats.map((c) => chip('cat', c.id, `${ic(catIcon(c), 16)}${esc(DB.prefs.lang === 'ur' ? c.ur : c.name)}`, U.cat === c.id && !U.itemQ).replace('<button ', `<button style="--hue:var(--hue-${catHue(c)})" `)).join('')}</div>
     ${lockedItems && o.state === 'open' ? `<div class="notice warn" style="margin:0 18px 10px">${!dayIsOpen ? t('This business day is closed. Start the next business day first.') : o.payments.length ? t('Payment has started, so the bill is locked. Start a new order for extra items.') : t('You can view this order but not change it.')}</div>` : ''}
     <div class="items">${itemsGrid(st, lockedItems)}</div></section>
     <aside class="ticket" aria-label="${esc(o.no)}"><div class="ticket-scroll">
@@ -14771,6 +15122,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
         'Text',
         'Status',
         'Order tags',
+        'Category colours',
         'Sidebar and dark surfaces',
         'Elevation and focus',
         'Type families',
@@ -14792,6 +15144,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
         if (/^--(ink|muted|faint)$/.test(k)) return 'Text';
         if (/^--(indigo|saffron|chili)/.test(k)) return 'Status';
         if (/^--tag-/.test(k)) return 'Order tags';
+        if (/^--hue-/.test(k)) return 'Category colours';
         if (/(shadow|lift|glow|ring)/.test(k)) return 'Elevation and focus';
         if (/^--(title|body|display|signage|urdu|mono)$/.test(k))
           return 'Type families';
@@ -15265,7 +15618,15 @@ ${dsDemo(t('Meters'), `<div class="meter [low|out]"><i style="width:60%"></i></d
 ${dsDemo(t('KPI cards'), `<div class="panel kpi [lead|dark]"><small>…</small><div class="v">…</div><div class="s">…</div></div>`, `<div class="panel kpi lead" style="width:100%"><small>${t('Total sales')}</small><div class="v">Rs. 32,144</div><div class="s">15 bills</div></div><div class="panel kpi" style="width:100%"><small>${t('Orders')}</small><div class="v">48</div><div class="s">12 ${t('today')}</div></div>`, true)}
 ${dsDemo(t('Stat tile'), `statTile(tone, screen, label, note, value, sub, icon, count, busy)`, statTile('saffron', '', t('Deliveries pending'), t('Delivery orders not delivered yet.'), '3', '2 out', 'bike', null, true), true)}
 ${dsDemo(t('Order token card'), `.ocard + k-ready | k-late | k-done  (scalloped thermal-paper edge)`, sampleTok)}
-${dsDemo(t('Dish card'), `<button class="item"><span><b>Name</b></span><span class="price">Rs. 450</span></button>`, `<div class="items" style="padding:0;width:100%;grid-template-columns:1fr 1fr"><button class="item"><span><b>Chicken Tikka</b></span><span><span class="price num">Rs. 450</span></span></button><button class="item off" disabled><span><b>Mint Margarita</b></span><span><span class="price">${t('Sold out')}</span></span></button></div>`, true)}
+${dsDemo(t('Dish card'), `itemCard(store, item, locked, qtyInOrder)
+.item.mcard · .mc-ic (food icon from catIcon(category)) · .mc-body · .price · .mc-add
+.has = already on the order (icon tile turns blue with the count) · .off = sold out`, `<div class="order-left" style="display:block;width:100%;box-shadow:none;border:0;background:none"><div class="items" style="padding:0 10px;grid-template-columns:1fr;overflow:visible">${(() => {
+          const st = store() || D.stores[0],
+            its = D.items.filter((i) => i.active !== false);
+          return its.length
+            ? itemCard(st, its[0], false, 2) + itemCard(st, its.find((i) => i.variants.length) || its[1], false, 0)
+            : '';
+        })()}</div></div>`, true)}
 ${dsDemo(t('Table'), `<table class="tbl"> · tr.click for rows that open something · td.r for numbers`, `<div class="panel" style="width:100%"><table class="tbl"><thead><tr><th>${t('Store')}</th><th class="r">${t('Sales')}</th></tr></thead><tbody><tr class="click"><td><b>Gulberg</b></td><td class="r">Rs. 14,761</td></tr><tr class="click"><td><b>DHA</b></td><td class="r">Rs. 11,603</td></tr></tbody></table></div>`, true)}
 ${dsDemo(t('Avatar and person'), `avatar(user, 'sm' | '' | 'lg')`, avatar({ name: 'Sana Javed', color: '#B7791F' }, 'sm') + avatar({ name: 'Ahmed Raza', color: '#0E7C66' }) + avatar({ name: 'Bilal Qureshi', color: '#7A4FB0' }, 'lg') + `<span class="who">${avatar({ name: 'Ahmed Raza', color: '#0E7C66' }, 'sm')}<span><b>Ahmed</b> <span class="muted">${t('Owner')}</span></span></span>`)}
 </div>
