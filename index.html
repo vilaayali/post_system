@@ -6,7 +6,7 @@
     <title>Dera POS · SaaS demo</title>
     <meta
       name="description"
-      content="Clickable SaaS restaurant POS demo for Pakistan: platform admin, business sign-up, plans and billing, branches, orders, kitchen, payments, udhaar, stock and day close. Fictional data."
+      content="Clickable SaaS restaurant POS demo for Pakistan: platform admin, business sign-up, plans and billing, branches, orders, kitchen, payments, stock and day close. Fictional data."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -4440,13 +4440,6 @@
         background: var(--chili-soft);
         color: var(--chili-ink);
       }
-      .dl-foot {
-        margin: 6px 0 0;
-        padding: 10px 8px 2px;
-        border-top: 1px dashed var(--line-strong);
-        color: var(--muted);
-        font-size: 13px;
-      }
       .dash-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -7268,8 +7261,8 @@
       .rep-list .sumrow.tot b {
         color: var(--heading);
       }
-      .dash-stats-4 {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+      .dash-stats-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .dash-grid.dash-grid-2 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -7331,14 +7324,15 @@
         background: var(--btn-soft);
         color: var(--green-ink);
       }
-      @media (max-width: 1100px) {
-        .dash-stats-4 {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
       @media (max-width: 760px) {
         .dash-grid.dash-grid-2 {
           grid-template-columns: minmax(0, 1fr);
+        }
+        .dash-stats-3 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .dash-stats-3 > :first-child {
+          grid-column: 1 / -1;
         }
       }
       @media (max-width: 760px) {
@@ -7936,8 +7930,8 @@
       created_at and archived_at are stored so invoices can be prorated.
    4. Suspended tenants get 402/403 on every write except billing and support.
    ============================================================= */
-      const VERSION = 5,
-        LS_KEY = 'dera-pos-saas-v5';
+      const VERSION = 6,
+        LS_KEY = 'dera-pos-saas-v6';
       const MIN = 60000,
         HOUR = 60 * MIN,
         DAYMS = 24 * HOUR;
@@ -8158,19 +8152,13 @@
           'splitpay',
           'MVP',
           'Split payments',
-          'One bill paid by cash, card machine, JazzCash, Easypaisa, Raast QR and udhaar together.',
+          'One bill paid by cash, card machine, JazzCash, Easypaisa and Raast QR together.',
         ],
         [
           'customers',
           'MVP',
           'Customers',
           'Shared across all branches and found by phone number. Spend, last visit and history.',
-        ],
-        [
-          'udhaar',
-          'MVP',
-          'Udhaar and payment collection',
-          'Credit sales add to the customer balance. Receive payment at any branch.',
         ],
         [
           'stock',
@@ -8421,7 +8409,6 @@
             'stock',
             'transfer',
             'customers',
-            'collect',
             'close',
             'reopen',
             'staff',
@@ -8457,7 +8444,6 @@
             'stock',
             'transfer',
             'customers',
-            'collect',
             'close',
             'settings',
             'audit',
@@ -8490,7 +8476,6 @@
             'stock',
             'transfer',
             'customers',
-            'collect',
             'close',
             'staffBranch',
             'settings',
@@ -8506,7 +8491,6 @@
             'discount',
             'void',
             'customers',
-            'collect',
             'close',
           ],
         },
@@ -8533,7 +8517,7 @@
         ['dashboard', 'Dashboard', 'Branch sales and alerts'],
         ['menu', 'Menu & recipes', 'Branch prices and availability'],
         ['stock', 'Stock', 'Stock levels, transfers and wastage'],
-        ['customers', 'Customers', 'Customer list and udhaar'],
+        ['customers', 'Customers', 'Customer list and order history'],
         ['close', 'Day close', 'Cash count and closing the day'],
         ['staff', 'Staff', 'Staff list'],
         ['settings', 'Settings', 'Branch settings'],
@@ -8561,11 +8545,6 @@
           'Send and receive stock between branches',
         ],
         ['customers', 'Add and edit customers', 'Customer details'],
-        [
-          'collect',
-          'Collect udhaar',
-          'Receive payments against customer credit',
-        ],
         ['close', 'Close the day', 'Count cash and lock the business day'],
         [
           'settings',
@@ -8614,7 +8593,6 @@
         ['allstores', 'All stores dashboard'],
         ['transfers', 'Stock transfers'],
         ['customers', 'Customers'],
-        ['udhaar', 'Udhaar (credit)'],
         ['audit', 'Audit log'],
         ['regions', 'Regions'],
       ];
@@ -8652,7 +8630,6 @@
             'allstores',
             'transfers',
             'customers',
-            'udhaar',
             'audit',
           ],
         },
@@ -8671,7 +8648,6 @@
             'allstores',
             'transfers',
             'customers',
-            'udhaar',
             'audit',
             'regions',
           ],
@@ -9445,7 +9421,6 @@
         ['jazzcash', 'JazzCash'],
         ['easypaisa', 'Easypaisa'],
         ['raast', 'Raast QR'],
-        ['udhaar', 'Udhaar'],
       ];
       const methodName = (k) => (METHODS.find((m) => m[0] === k) || [k, k])[1];
       const VOID_REASONS = [
@@ -9519,7 +9494,6 @@
         'Clear filters': 'فلٹر ہٹائیں',
         'Search ingredients': 'سامان تلاش کریں',
         'All customers': 'تمام گاہک',
-        'Owes udhaar': 'ادھار باقی',
         'No ingredients match': 'کوئی سامان نہیں ملا',
         'Try another name or filter.': 'کوئی اور نام یا فلٹر آزمائیں۔',
         'Search token, name or phone': 'ٹوکن، نام یا فون تلاش کریں',
@@ -9542,8 +9516,8 @@
           'آج کا کاروباری دن کھلا ہے یا بند۔ رات کو بند کریں تاکہ کیش گنا جائے اور دن لاک ہو جائے۔',
         'Where today’s money came from, what sold best, and what needs a look.':
           'آج پیسہ کہاں سے آیا، کیا سب سے زیادہ بکا، اور کس چیز پر توجہ چاہیے۔',
-        'Money received today, by how customers paid. Udhaar is food given on credit, not cash in hand.':
-          'آج وصول ہونے والی رقم، ادائیگی کے طریقے کے لحاظ سے۔ ادھار وہ کھانا ہے جو قرض پر دیا گیا، نقد نہیں۔',
+        'Money received today, by how customers paid.':
+          'آج وصول ہونے والی رقم، ادائیگی کے طریقے کے لحاظ سے۔',
         'The five dishes sold most today, by number of plates.':
           'آج سب سے زیادہ بکنے والی پانچ ڈشیں، پلیٹوں کی تعداد کے لحاظ سے۔',
         'Deliveries still out and ingredients running low. Tap a row to open it.':
@@ -9554,8 +9528,6 @@
           'تمام برانچوں کا فوری جائزہ۔',
         'Branches whose business day is still open. Each branch should close its day every night.':
           'وہ برانچیں جن کا کاروباری دن ابھی کھلا ہے۔ ہر برانچ کو ہر رات دن بند کرنا چاہیے۔',
-        'Food given on credit in this period. Customers owe it to you; it is not cash yet.':
-          'اس مدت میں ادھار پر دیا گیا کھانا۔ یہ رقم گاہکوں کے ذمے ہے، ابھی نقد نہیں۔',
         'Ingredients below their low-stock level, counted across all branches.':
           'کم اسٹاک کی حد سے نیچے سامان، تمام برانچوں کو ملا کر۔',
         'Every branch ranked by sales. Tap a branch to open its own dashboard, or tap a column name to sort.':
@@ -9574,7 +9546,6 @@
         '{n} more': '{n} مزید',
         'Nothing needs attention right now': 'ابھی کچھ بھی توجہ طلب نہیں',
         '{q} left, low at {x}': '{q} باقی، کم کی حد {x}',
-        'Udhaar collected today: {x}': 'آج وصول ادھار: {x}',
         'Take payment & print token': 'ادائیگی لیں اور ٹوکن پرنٹ کریں',
         New: 'نیا',
         Preparing: 'بن رہا ہے',
@@ -9601,7 +9572,6 @@
         JazzCash: 'جاز کیش',
         Easypaisa: 'ایزی پیسہ',
         'Raast QR': 'راست کیو آر',
-        Udhaar: 'اُدھار',
         Subtotal: 'ذیلی کل',
         Discount: 'رعایت',
         'Service charge': 'سروس چارج',
@@ -9695,12 +9665,8 @@
         'Cash difference': 'نقد کا فرق',
         'Close day': 'دن بند کریں',
         'Start next business day': 'اگلا کاروباری دن شروع کریں',
-        'Udhaar recorded': 'درج شدہ اُدھار',
-        'Udhaar collected': 'وصول شدہ اُدھار',
         'Awaiting close': 'بند ہونا باقی',
         'Consolidated close': 'مجموعی حساب',
-        'Receive payment': 'ادائیگی وصول کریں',
-        Outstanding: 'واجب الادا',
         'Total spend': 'کل خرچ',
         'Last visit': 'آخری آمد',
         'New customer': 'نیا گاہک',
@@ -9760,8 +9726,6 @@
           'درست فون نمبر درج کریں، جیسے 0300-1234567۔',
         'Enter the customer name.': 'گاہک کا نام درج کریں۔',
         'Enter the delivery address.': 'ڈیلیوری کا پتہ درج کریں۔',
-        'Udhaar needs a customer. Add one first.':
-          'اُدھار کے لیے گاہک ضروری ہے۔',
         'That PIN does not belong to a manager of this store.':
           'یہ پن اس برانچ کے مینیجر کا نہیں۔',
         'Not enough stock.': 'اسٹاک کافی نہیں۔',
@@ -9782,9 +9746,6 @@
         Entered: 'درج شدہ',
         'Change returned': 'واپس کی گئی رقم',
         'Payments recorded': 'درج شدہ ادائیگیاں',
-        'Add customer for udhaar': 'اُدھار کے لیے گاہک شامل کریں',
-        'Needs a customer': 'گاہک ضروری ہے',
-        owes: 'واجب الادا',
         Welcome: 'خوش آمدید',
         'Now working in': 'اب کام جاری ہے',
         started: 'شروع ہو گیا',
@@ -9824,12 +9785,7 @@
         'Recent closes': 'حالیہ حساب',
         Discounts: 'رعایتیں',
         'Deleted orders': 'حذف شدہ آرڈرز',
-        'not a sale': 'سیل نہیں',
         cash: 'نقد',
-        'Paid by': 'ادائیگی بذریعہ',
-        'Received by': 'وصولی بذریعہ',
-        'Credit history': 'اُدھار کی تاریخ',
-        'Udhaar on': 'اُدھار برائے',
         'Edit customer': 'گاہک میں ترمیم',
         'Search name or phone': 'نام یا فون تلاش کریں',
         'Add and use': 'شامل کر کے استعمال کریں',
@@ -10033,7 +9989,6 @@
         jazzcash: 'phone',
         easypaisa: 'phone',
         raast: 'qr',
-        udhaar: 'book',
       };
       const TYPE_IC = { dine: 'dine', take: 'bag', delivery: 'bike' };
       const TYPE_NAME = {
@@ -10395,11 +10350,6 @@
 
       const cust = (id) => D.customers.find((c) => c.id === id);
       const custByPhone = (p) => D.customers.find((c) => c.phone === p);
-      const custBalance = (id) =>
-        sum(
-          D.credit.filter((c) => c.customer === id),
-          (c) => (c.type === 'credit' ? c.amount : -c.amount),
-        );
       const custOrders = (id) =>
         D.orders.filter((o) => o.customerId === id && o.state !== 'void');
       const custSpend = (id) =>
@@ -10435,8 +10385,6 @@
         'void.approved': 'Delete approved',
         'payment.recorded': 'Payment recorded',
         'payment.refunded': 'Money given back',
-        'credit.created': 'Customer credit created',
-        'credit.payment': 'Customer payment received',
         'menu.price': 'Price override changed',
         'menu.availability': 'Menu availability changed',
         'menu.master': 'Master menu changed',
@@ -10539,15 +10487,11 @@
         );
         const pays = storePayments(st).filter((p) => days.has(p.day));
         const sales = sum(settled, (o) => o.bill.total);
-        const coll = D.credit.filter(
-          (c) => c.type === 'payment' && c.store === st && days.has(c.day),
-        );
         return {
           sales,
           orders: settled.length,
           avg: settled.length ? Math.round(sales / settled.length) : 0,
           byM: byMethod(pays),
-          collections: sum(coll, (c) => c.amount),
           settled,
         };
       }
@@ -10565,10 +10509,6 @@
       function dayFigures(st, date) {
         const pays = storePayments(st).filter((p) => p.day === date),
           byM = byMethod(pays);
-        const coll = D.credit.filter(
-            (c) => c.type === 'payment' && c.store === st && c.day === date,
-          ),
-          collBy = byMethod(coll);
         const settled = D.orders.filter(
           (o) => o.store === st && o.state !== 'void' && o.settledDay === date,
         );
@@ -10580,15 +10520,13 @@
         const voids = D.voids.filter((v) => v.store === st && v.day === date);
         return {
           byM,
-          collBy,
-          collections: sum(coll, (c) => c.amount),
           sales: sum(settled, (o) => o.bill.total),
           orders: settled.length,
           discounts: sum(settled, (o) => o.bill.discount),
           voids: voids.length,
           voidValue: sum(voids, (v) => v.amount),
           opening,
-          expected: opening + byM.cash + collBy.cash,
+          expected: opening + byM.cash,
         };
       }
       /* =============================================================
@@ -11027,7 +10965,7 @@
           }
           const amount = sum(liveLines(o), (l) => l.unit * l.qty);
           // Refund: each payment is reversed in the same method, on today's
-          // business day, so cash in the drawer and udhaar balances stay right.
+          // business day, so cash in the drawer stays right.
           if (paid) {
             const day = dayOf(o.store).date,
               at = now();
@@ -11041,19 +10979,6 @@
                 by: U.user,
                 refund: true,
               });
-              if (p.method === 'udhaar')
-                D.credit.push({
-                  id: uid('cr'),
-                  customer: o.customerId,
-                  type: 'credit',
-                  amount: -p.amount,
-                  store: o.store,
-                  day,
-                  order: o.id,
-                  orderNo: o.no,
-                  at,
-                  by: U.user,
-                });
             });
             audit(
               'payment.refunded',
@@ -11102,11 +11027,9 @@
             );
           return { ok: true };
         },
-        pay(o, alloc, customerId) {
+        pay(o, alloc) {
           guard('pay', o.store);
           R.lockCheck(o);
-          if (toInt(alloc.udhaar) > 0 && !planHas('udhaar'))
-            fail('Udhaar is not in your plan.');
           if (!liveLines(o).length) fail('Add at least one dish.');
           const due = dueOf(o);
           if (due <= 0) fail('This order is already paid.');
@@ -11123,13 +11046,6 @@
             }
           }
           if (!total) fail('Enter at least one amount.');
-          if (amts.udhaar) {
-            const cid = customerId || o.customerId;
-            if (!cid || !cust(cid))
-              fail('Udhaar needs a customer. Add one first.');
-            o.customerId = cid;
-            if (!o.cust.name) o.cust.name = cust(cid).name;
-          }
           let change = 0;
           if (total > due) {
             const extra = total - due;
@@ -11155,19 +11071,6 @@
               at,
               by,
             });
-            if (m === 'udhaar')
-              D.credit.push({
-                id: uid('cr'),
-                customer: o.customerId,
-                type: 'credit',
-                amount: a,
-                store: o.store,
-                day,
-                order: o.id,
-                orderNo: o.no,
-                at,
-                by,
-              });
           });
           if (change) o.change = (o.change || 0) + change;
           audit(
@@ -11178,13 +11081,6 @@
               .join(', ')}${change ? `, change ${rs(change)}` : ''}`,
             o.no,
           );
-          if (amts.udhaar)
-            audit(
-              'credit.created',
-              o.store,
-              `${cust(o.customerId).name}: ${rs(amts.udhaar)} on ${o.no}`,
-              o.customerId,
-            );
           const paid = payState(o) === 'paid';
           let sent = null;
           if (paid) {
@@ -11194,36 +11090,6 @@
           }
           R.refresh(o);
           return { change, paid, sent };
-        },
-        collect(cid, amount, st, method) {
-          guard('collect', st);
-          assertOpenDay(st);
-          const c = cust(cid);
-          if (!c) fail('Choose a customer.');
-          const bal = custBalance(cid),
-            a = toInt(amount);
-          if (isNaN(a) || a <= 0) fail('Enter an amount above 0.');
-          if (a > bal)
-            fail('That is more than the {x} outstanding.', { x: rs(bal) });
-          if (!METHODS.some((m) => m[0] === method) || method === 'udhaar')
-            fail('Choose how the money was received.');
-          D.credit.push({
-            id: uid('cr'),
-            customer: cid,
-            type: 'payment',
-            amount: a,
-            store: st,
-            day: dayOf(st).date,
-            method,
-            at: now(),
-            by: ACTOR || U.user,
-          });
-          audit(
-            'credit.payment',
-            st,
-            `${c.name}: ${rs(a)} by ${methodName(method)}. Balance now ${rs(bal - a)}.`,
-            cid,
-          );
         },
         stockMove(st, g, kind, qty, reason) {
           guard('stock', st);
@@ -12294,7 +12160,7 @@
           as(cashier, () => R.discount(o, s.disc[0], s.disc[1], s.disc[2]));
         if (s.prepay) {
           CLOCK = at + MIN;
-          as(cashier, () => R.pay(o, allocFor(o, s.prepay), null));
+          as(cashier, () => R.pay(o, allocFor(o, s.prepay)));
         } else if (s.send !== false) {
           CLOCK = at + 2 * MIN;
           as(cashier, () => R.send(o));
@@ -12318,7 +12184,7 @@
         }
         if (s.pay && !s.prepay) {
           CLOCK = at + (cookMin + 20) * MIN;
-          as(cashier, () => R.pay(o, allocFor(o, s.pay), null));
+          as(cashier, () => R.pay(o, allocFor(o, s.pay)));
         }
         if (s.done) {
           CLOCK = at + (cookMin + 22) * MIN;
@@ -12465,7 +12331,6 @@
           transfers: [],
           wastage: [],
           customers: [],
-          credit: [],
           orders: [],
           voids: [],
           days: {},
@@ -12577,7 +12442,6 @@
             phone,
             createdAt: Date.now() - 60 * DAYMS,
           })),
-          credit: [],
           orders: [],
           voids: [],
           days: {},
@@ -12770,16 +12634,11 @@
                 if (availableAt(st, it))
                   lines.push([it.id, 0, 1 + Math.floor(r() * 3)]);
               }
-              const m =
-                cid && ['c5', 'c7'].includes(cid) && r() < 0.5
-                  ? 'udhaar'
-                  : method(st);
+              const m = method(st);
               const pay =
-                m === 'udhaar'
-                  ? { cash: 500, udhaar: 'rest' }
-                  : r() < 0.15 && m !== 'cash'
-                    ? { cash: 1000, [m]: 'rest' }
-                    : { [m]: 'rest' };
+                r() < 0.15 && m !== 'cash'
+                  ? { cash: 1000, [m]: 'rest' }
+                  : { [m]: 'rest' };
               const disc = r() < 0.12 ? ['pct', 10] : null;
               seedFlow(st, atOf(date, Math.floor(mins / 60), mins % 60), {
                 type,
@@ -12794,21 +12653,6 @@
                 cookMin: 12 + Math.floor(r() * 10),
               });
             });
-            if (back === 10 && st === 'gul' && custBalance('c5') > 0) {
-              CLOCK = atOf(date, 21, 30);
-              as('u4', () =>
-                R.collect(
-                  'c5',
-                  Math.min(1500, custBalance('c5')),
-                  'gul',
-                  'cash',
-                ),
-              );
-            }
-            if (back === 4 && st === 'dha' && custBalance('c7') >= 500) {
-              CLOCK = atOf(date, 20, 10);
-              as('u7', () => R.collect('c7', 500, 'dha', 'jazzcash'));
-            }
             if (back === 2 && st === 'gul') {
               seedFlow(st, atOf(date, 20, 15), {
                 type: 'dine',
@@ -13088,7 +12932,7 @@
             ['pulao', 1, 1],
             ['salad', 0, 1],
           ],
-          pay: { cash: 1000, udhaar: 'rest' },
+          pay: { cash: 'rest' },
           done: true,
         });
         seedFlow('gul', M(105), {
@@ -13103,10 +12947,6 @@
           pay: { card: 'rest' },
           done: true,
         });
-        CLOCK = M(70);
-        as('u4', () =>
-          R.collect('c5', Math.min(1500, custBalance('c5')), 'gul', 'cash'),
-        );
         seedFlow('gul', M(22), {
           type: 'dine',
           label: '5',
@@ -14531,8 +14371,7 @@ ${list.map(orderCard).join('') || (U.filter === 'paid' || !canNew ? `<div class=
         const b = billOf(o),
           due = dueOf(o),
           ps = payState(o),
-          locked = o.payments.length > 0,
-          c = o.customerId ? cust(o.customerId) : null;
+          locked = o.payments.length > 0;
         const u = user(),
           limitNote =
             u.role === 'cashier'
@@ -14568,10 +14407,9 @@ ${payList}${fulfilButton(o)}<button class="btn btn-ghost btn-lg" data-act="go" d
                 ? `<button class="btn btn-ghost btn-sm" data-act="disc-open">${ic('plus', 16)} ${t('Add discount')}</button>`
                 : ''
           }</div>`;
-          const tiles = METHODS.map(([k, l]) =>
-            k === 'udhaar' && !planHas('udhaar')
-              ? `<button class="mtile off" data-act="upgrade" data-f="udhaar">${ic('lock', 24)}<b>${t(l)}</b><small>${t('Not in your plan')}</small></button>`
-              : `<button class="mtile ${amts[k] != null ? 'on' : ''}" data-act="pay-fill" data-v="${k}" aria-pressed="${amts[k] != null}">${ic(METHOD_IC[k], 24)}<b>${t(l)}</b>${k === 'udhaar' ? `<small>${c ? `${esc(c.name)}, ${t('owes')} ${rs(custBalance(c.id))}` : t('Needs a customer')}</small>` : ''}</button>`,
+          const tiles = METHODS.map(
+            ([k, l]) =>
+              `<button class="mtile ${amts[k] != null ? 'on' : ''}" data-act="pay-fill" data-v="${k}" aria-pressed="${amts[k] != null}">${ic(METHOD_IC[k], 24)}<b>${t(l)}</b></button>`,
           ).join('');
           const rows = picked
             .map(
@@ -14581,8 +14419,7 @@ ${payList}${fulfilButton(o)}<button class="btn btn-ghost btn-lg" data-act="go" d
             .join('');
           right = `<div class="balance"><span class="label">${t('Amount to pay')}</span><b>${rs(due)}</b></div>
 <div><span class="step-q">${t('How is the customer paying?')}</span><div class="mtiles">${tiles}</div>
-  <p class="hint" style="margin-top:8px">${t('Tap one to put the full amount on it. Tap a second one to split the bill.')}</p>
-  ${!c && planHas('udhaar') && amts.udhaar != null ? `<button class="btn btn-ghost btn-sm" style="margin-top:8px" data-act="order-customer">${ic('user', 16)} ${t('Add customer for udhaar')}</button>` : ''}</div>
+  <p class="hint" style="margin-top:8px">${t('Tap one to put the full amount on it. Tap a second one to split the bill.')}</p></div>
 ${rows ? `<div>${rows}</div><div class="panel panel-pad" style="padding:12px 14px" id="pay-summary">${paySummary(o)}</div>` : ''}
 <button class="btn btn-primary co-main" data-act="pay" ${picked.length && can('pay') && liveLines(o).length && dayOpen(o.store) ? '' : 'disabled'}>${ic('check', 22)} ${t('Record payment')}</button>
 ${disc}
@@ -14635,7 +14472,7 @@ ${disc}
           b = billOf(o),
           row = (a, v, cls = '') =>
             `<div class="rr ${cls}"><span>${a}</span><span>${v}</span></div>`;
-        // The bill ends at the total: no paid, due or udhaar lines.
+        // The bill ends at the total: no paid or due lines.
         return `<div class="receipt"><div class="rh">${D.business.logo ? `<img src="${esc(D.business.logo)}" alt="">` : ''}<b>${esc(s.receiptHeader)}</b>${esc(s.address)}<br>${esc(s.phone)}</div>
     ${o.token && o.type !== 'dine' ? `<div class="rtoken"><small>Your token number</small><b>${o.token}</b></div>` : ''}
     <div class="meta2"><span>Order ${esc(o.no)}</span><span>${TYPE_NAME[o.type]}${o.label ? `: ${esc(o.label)}` : ''}</span></div>
@@ -14829,9 +14666,8 @@ ${disc}
   <div class="hero-txt"><small>${t('Total sales')}${tip(t('Total of bills paid and closed at all your branches in the chosen period. The line shows how the total grew.'))}</small><div class="v" data-count="${tot.sales}" data-rs="1">${rs(tot.sales)}</div>${PER === 'today' ? vsYesterday(ids) : ''}<div class="s">${t('{n} bills, average {x}', { n: tot.orders, x: rs(tot.orders ? Math.round(tot.sales / tot.orders) : 0) })}</div>${typeSplit(allSettled)}</div>
   ${PER === 'today' ? salesCurve(allSettled) : dailyCurve(allSettled, dayList)}</div>
 ${dashSec(t('At a glance'), t('A quick health check across all branches.'))}
-<div class="dash-stats">
+<div class="dash-stats dash-stats-2">
 ${statTile('green', 'close', t('Branches open'), t('Branches whose business day is still open. Each branch should close its day every night.'), `${openNow}/${ids.length}`, t('{n} closed for the day', { n: ids.length - openNow }), 'branch')}
-${statTile('saffron', '', t('Udhaar'), t('Food given on credit in this period. Customers owe it to you; it is not cash yet.'), rs(byM.udhaar || 0), t('Credit sales, not yet cash'), 'book')}
 ${statTile('chili', '', t('Low stock alerts'), t('Ingredients below their low-stock level, counted across all branches.'), lows.length, t('Across {n} branches', { n: new Set(lows.map((l) => l.id)).size }), 'box', lows.length, lows.length > 0)}
 </div>
     ${dashSec(t('Branches'), t('Every branch ranked by sales. Tap a branch to open its own dashboard, or tap a column name to sort.'))}
@@ -15071,14 +14907,6 @@ ${dashSec(t('Across all branches'), t('Payments, best sellers and low stock, add
           wkPct = prevSales
             ? Math.round(((wk.sales - prevSales) / prevSales) * 100)
             : null;
-        const owed = sum(
-            D.credit.filter((c) => c.store === st),
-            (c) => (c.type === 'credit' ? c.amount : -c.amount),
-          ),
-          owers = new Set(
-            D.credit.filter((c) => c.store === st).map((c) => c.customer),
-          );
-        const debtors = [...owers].filter((id) => custBalance(id) > 0).length;
         const closes = D.closes
           .filter((c) => c.store === st && c.status === 'closed')
           .slice(-7);
@@ -15120,19 +14948,18 @@ ${dashSec(t('Across all branches'), t('Payments, best sellers and low stock, add
   <div class="hero-txt"><small>${t('Today’s sales')}${tip(t('Total of bills paid and closed today. Open orders are added once they are paid. The line shows how the total grew hour by hour.'))}</small><div class="v" data-count="${s.sales}" data-rs="1">${rs(s.sales)}</div>${vsYesterday([st])}<div class="s">${t('{n} bills, average {x}', { n: s.orders, x: rs(s.avg) })}</div>${typeSplit(s.settled)}</div>
   ${salesCurve(s.settled)}</div>
 ${dashSec(t('This week'), t('The last 7 business days for this branch. Tap a card to open the screen behind it.'))}
-<div class="dash-stats dash-stats-4">
+<div class="dash-stats dash-stats-3">
 ${stat('green', 'history', t('7-day sales'), t('Bills paid in the last 7 business days, compared with the 7 days before.'), rs(wk.sales), wkPct == null ? t('{n} bills', { n: wk.orders }) : t(wkPct >= 0 ? '{p}% up on the week before' : '{p}% down on the week before', { p: Math.abs(wkPct) }), 'chart')}
 ${stat('indigo', 'history', t('Average bill'), t('Average paid bill over the last 7 business days.'), rs(wk.avg), t('{n} bills this week', { n: wk.orders }), 'bill')}
-${stat('saffron', 'customers', t('Udhaar to collect'), t('Credit given at this branch that customers have not paid back yet.'), rs(Math.max(0, owed)), t('{n} customers owe money', { n: debtors }), 'users')}
 ${stat(lastClose && lastClose.diff ? 'chili' : 'green', 'dayreport', t('Last day close'), t('How the cash drawer balanced at the last close, and today’s day status.'), lastClose ? (lastClose.diff ? `${lastClose.diff > 0 ? '+' : '−'}${rs(Math.abs(lastClose.diff))}` : t('Balanced')) : '—', `${lastClose ? dayLabel(lastClose.date) : t('No close yet')} · ${t(dayOpen ? 'Today open' : 'Today closed')}`, 'cash')}
 </div>
 ${dashSec(t('Today in detail'), t('Where today’s money came from and what sold best.'))}
     <div class="dash-grid dash-grid-2">
-<div class="panel">${dashHead('card', 'indigo', t('Payment methods'), t('Money received today, by how customers paid. Udhaar is food given on credit, not cash in hand.'))}${
+<div class="panel">${dashHead('card', 'indigo', t('Payment methods'), t('Money received today, by how customers paid.'))}${
           Object.values(s.byM).some((v) => v)
             ? payList(s.byM)
             : emptyBox(t('No payments yet today'), '')
-        }${s.collections ? `<p class="dl-foot">${t('Udhaar collected today: {x}', { x: rs(s.collections) })}</p>` : ''}</div>
+        }</div>
 <div class="panel">${dashHead('board', 'saffron', t('Top items'), t('The five dishes sold most today, by number of plates.'))}${
           s.settled.length
             ? rankList(topItems(s.settled).map(([n, q]) => [esc(n), q]))
@@ -15398,20 +15225,14 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
           )
           .map((c) => ({
             c,
-            bal: custBalance(c.id),
             spend: custSpend(c.id),
             last: custLast(c.id),
           }))
-          .sort((a, b) => b.bal - a.bal || b.last - a.last);
-        const owed = sum(D.customers, (c) => custBalance(c.id));
-        // All customers, or only those who still owe udhaar.
-        const CF = U.custF || 'all',
-          owing = list.filter((r) => r.bal > 0),
-          pg = pageOf(CF === 'owes' ? owing : list, 'cust');
-        return `<div class="page">${pageHead(t('Customers'), t('{n} customers shared by every branch. {x} udhaar outstanding.', { n: D.customers.length, x: rs(owed) }), `<div style="width:270px">${searchInput('cust-q', U.custQ, t('Search name or phone'), 'cust-q')}</div>${can('customers') ? `<button class="btn btn-primary" data-act="cust-new">${ic('plus', 18)} ${t('New customer')}</button>` : ''}`, 'customers')}
-    <div class="obar"><div class="chips" role="group" aria-label="${t('Filter')}">${chip('cust-f', 'all', t('All customers'), CF === 'all', list.length)}${chip('cust-f', 'owes', t('Owes udhaar'), CF === 'owes', owing.length)}</div></div>
-    <div class="panel"><div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Customer')}</th><th>${t('Phone number')}</th><th class="r">${t('Total spend')}</th><th>${t('Last visit')}</th><th class="r">${t('Outstanding')}</th></tr></thead><tbody>
-    ${pg.rows.map(({ c, bal, spend, last }) => `<tr class="click" data-act="cust-open" data-id="${c.id}" tabindex="0"><td><b>${esc(c.name)}</b></td><td class="num">${esc(showPhone(c.phone))}</td><td class="r">${rs(spend)}</td><td>${last ? fmtDT(last) : '—'}</td><td class="r">${bal > 0 ? `<span class="badge b-saffron">${rs(bal)}</span>` : '<span class="hint">Rs. 0</span>'}</td></tr>`).join('') || `<tr><td colspan="5">${emptyBox(t('No customers match'), t('Check the spelling or the phone number.'), can('customers') ? `<button class="btn btn-primary" data-act="cust-new">${t('New customer')}</button>` : '')}</td></tr>`}
+          .sort((a, b) => b.last - a.last);
+        const pg = pageOf(list, 'cust');
+        return `<div class="page">${pageHead(t('Customers'), t('{n} customers shared by every branch.', { n: D.customers.length }), `<div style="width:270px">${searchInput('cust-q', U.custQ, t('Search name or phone'), 'cust-q')}</div>${can('customers') ? `<button class="btn btn-primary" data-act="cust-new">${ic('plus', 18)} ${t('New customer')}</button>` : ''}`, 'customers')}
+    <div class="panel"><div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Customer')}</th><th>${t('Phone number')}</th><th class="r">${t('Total spend')}</th><th>${t('Last visit')}</th></tr></thead><tbody>
+    ${pg.rows.map(({ c, spend, last }) => `<tr class="click" data-act="cust-open" data-id="${c.id}" tabindex="0"><td><b>${esc(c.name)}</b></td><td class="num">${esc(showPhone(c.phone))}</td><td class="r">${rs(spend)}</td><td>${last ? fmtDT(last) : '—'}</td></tr>`).join('') || `<tr><td colspan="4">${emptyBox(t('No customers match'), t('Check the spelling or the phone number.'), can('customers') ? `<button class="btn btn-primary" data-act="cust-new">${t('New customer')}</button>` : '')}</td></tr>`}
     </tbody></table></div>${pg.html}</div><div class="soon-list">${soon('loyalty')}</div></div>`;
       }
 
@@ -15467,8 +15288,6 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
               if (F.status === 'unpaid' && !(o.state === 'open' && ps !== 'paid'))
                 return false;
               if (F.status === 'void' && o.state !== 'void') return false;
-              if (F.status === 'udhaar' && !o.payments.some((p) => p.method === 'udhaar'))
-                return false;
               if (F.method !== 'all' && !o.payments.some((p) => p.method === F.method && p.amount > 0))
                 return false;
               if (F.staff !== 'all' && o.by !== F.staff) return false;
@@ -15543,7 +15362,7 @@ ${many ? `<td>${esc(t(store(o.store).name))}</td>` : ''}
   <div class="h-grid">
     ${mine.length > 1 ? `<div class="field"><label for="hf-store">${t('Branch')}</label>${selectBox('hf-store', [['all', t('All my branches')], ...mine.map((id) => [id, t(store(id).name)])], F.store, 'data-ch="hist-f" data-k="store"')}</div>` : ''}
     <div class="field"><label for="hf-type">${t('Order type')}</label>${selectBox('hf-type', [['all', t('All types')], ['dine', t('Dine-in')], ['take', t('Takeaway')], ['delivery', t('Delivery')]], F.type, 'data-ch="hist-f" data-k="type"')}</div>
-    <div class="field"><label for="hf-status">${t('Status')}</label>${selectBox('hf-status', [['all', t('All orders')], ['paid', t('Paid')], ['unpaid', t('Open and unpaid')], ['udhaar', t('On udhaar')], ['void', t('Deleted')]], F.status, 'data-ch="hist-f" data-k="status"')}</div>
+    <div class="field"><label for="hf-status">${t('Status')}</label>${selectBox('hf-status', [['all', t('All orders')], ['paid', t('Paid')], ['unpaid', t('Open and unpaid')], ['void', t('Deleted')]], F.status, 'data-ch="hist-f" data-k="status"')}</div>
     <div class="field"><label for="hf-method">${t('Payment')}</label>${selectBox('hf-method', [['all', t('Any payment')], ...METHODS.map(([k, l]) => [k, t(l)])], F.method, 'data-ch="hist-f" data-k="method"')}</div>
     <div class="field"><label for="hf-staff">${t('Taken by')}</label>${selectBox('hf-staff', [['all', t('Everyone')], ...staffIds.map((id) => [id, uname(id)])], F.staff, 'data-ch="hist-f" data-k="staff"')}</div>
     <div class="field h-search"><label for="hist-q">${t('Search')}</label>${searchInput('hist-q', F.q, t('Token, order no, customer, phone or dish'), 'hist-q')}</div>
@@ -15623,9 +15442,6 @@ ${pays.length ? pays.map((p) => `<div class="sumrow"><span>${t(methodName(p.meth
           .filter((o) => set.has(o.store))
           .flatMap((o) => o.payments)
           .filter((p) => p.day === date);
-        const coll = D.credit.filter(
-          (c) => c.type === 'payment' && set.has(c.store) && c.day === date,
-        );
         const voids = D.voids.filter((v) => set.has(v.store) && v.day === date);
         const bills = settled.map(billOf);
         const per = ids.map((id) => {
@@ -15675,8 +15491,6 @@ ${pays.length ? pays.map((p) => `<div class="sumrow"><span>${t(methodName(p.meth
           sales: sum(bills, (b) => b.total),
           byM: byMethod(pays),
           refunds: -sum(pays.filter((p) => p.amount < 0), (p) => p.amount),
-          collBy: byMethod(coll),
-          collections: sum(coll, (c) => c.amount),
           voids,
           voidValue: sum(voids, (v) => v.amount),
           deletedOrders: created.filter((o) => o.state === 'void').length,
@@ -15724,9 +15538,8 @@ ${r('Average bill', n0(R0.orders ? R0.sales / R0.orders : 0))}
 ${sec('PAYMENTS')}
 ${METHODS.filter(([k]) => R0.byM[k]).map(([k, l]) => r(l, n0(R0.byM[k]))).join('') || '<div class="rnote">No payments.</div>'}
 ${R0.refunds ? r('Given back', '−' + n0(R0.refunds)) : ''}
-${R0.collections ? r('Udhaar collected', n0(R0.collections)) : ''}
 ${sec('CASH DRAWER')}
-${r('Opening cash', n0(R0.opening))}${r('+ Cash sales', n0(R0.byM.cash))}${R0.collBy.cash ? r('+ Udhaar collected (cash)', n0(R0.collBy.cash)) : ''}
+${r('Opening cash', n0(R0.opening))}${r('+ Cash sales', n0(R0.byM.cash))}
 ${r('EXPECTED CASH', rs(R0.expected), 'rg')}
 ${r('Counted cash', R0.counted == null ? '—' : n0(R0.counted))}${r('Difference', R0.diff == null ? '—' : sign(R0.diff))}
 ${!one ? `${sec('BRANCHES')}${R0.per.map((p) => r(`${esc(store(p.id).name)}${p.rec ? '' : ' *'}`, n0(p.rec ? p.rec.sales : p.f.sales))).join('')}<div class="rnote">* not closed yet</div>` : ''}
@@ -15782,9 +15595,9 @@ ${R0.stillOpen.length ? `${sec(`STILL OPEN (${R0.stillOpen.length})`)}${R0.still
     <div class="panel panel-pad rep-list"><h3 class="rep-h">${ic('bill', 18)} ${t('Sales')}</h3>
       ${row(t('Gross (items)'), rs(Rp.gross))}${row(t('Discounts'), Rp.discounts ? `−${rs(Rp.discounts)}` : rs(0))}${Rp.service ? row(t('Service charge'), rs(Rp.service)) : ''}${Rp.tax ? row(t('Tax'), rs(Rp.tax)) : ''}${Rp.fees ? row(t('Delivery fees'), rs(Rp.fees)) : ''}${row(t('Net sales'), rs(Rp.sales), 'tot')}</div>
     <div class="panel panel-pad rep-list"><h3 class="rep-h">${ic('card', 18)} ${t('Payments received')}</h3>
-      ${METHODS.filter(([k]) => Rp.byM[k]).map(([k, l]) => row(t(l), rs(Rp.byM[k]))).join('') || `<p class="hint">${t('No payments.')}</p>`}${Rp.refunds ? row(t('Given back'), `−${rs(Rp.refunds)}`) : ''}${Rp.collections ? row(t('Udhaar collected'), rs(Rp.collections)) : ''}</div>
+      ${METHODS.filter(([k]) => Rp.byM[k]).map(([k, l]) => row(t(l), rs(Rp.byM[k]))).join('') || `<p class="hint">${t('No payments.')}</p>`}${Rp.refunds ? row(t('Given back'), `−${rs(Rp.refunds)}`) : ''}</div>
     <div class="panel panel-pad rep-list"><h3 class="rep-h">${ic('cash', 18)} ${t('Cash drawer')}</h3>
-      ${row(t('Opening cash'), rs(Rp.opening))}${row(`+ ${t('Cash sales')}`, rs(Rp.byM.cash))}${Rp.collBy.cash ? row(`+ ${t('Udhaar (cash)')}`, rs(Rp.collBy.cash)) : ''}${row(t('Expected cash'), rs(Rp.expected), 'tot')}${row(t('Counted cash'), Rp.counted == null ? '—' : rs(Rp.counted))}${row(t('Cash difference'), Rp.diff == null ? '—' : sign(Rp.diff))}</div>
+      ${row(t('Opening cash'), rs(Rp.opening))}${row(`+ ${t('Cash sales')}`, rs(Rp.byM.cash))}${row(t('Expected cash'), rs(Rp.expected), 'tot')}${row(t('Counted cash'), Rp.counted == null ? '—' : rs(Rp.counted))}${row(t('Cash difference'), Rp.diff == null ? '—' : sign(Rp.diff))}</div>
   </div>
   ${P.store === 'all' ? `<div class="panel"><div class="panel-head"><h3>${t('Branches')}</h3><span class="hint">${t('{a} of {b} closed', { a: Rp.per.filter((p) => p.rec).length, b: Rp.per.length })}</span></div><div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Branch')}</th><th>${t('Status')}</th><th class="r">${t('Orders')}</th><th class="r">${t('Sales')}</th><th class="r">${t('Expected')}</th><th class="r">${t('Counted')}</th><th class="r">${t('Difference')}</th></tr></thead><tbody>
   ${Rp.per.map((p) => `<tr class="click" data-act="rep-store" data-v="${p.id}" tabindex="0"><td><b>${esc(t(store(p.id).name))}</b></td><td>${p.rec ? `<span class="badge tag st-delivered">${ic('check')} ${t('Closed')}</span><div class="hint">${fmtTime(p.rec.at)}, ${esc(uname(p.rec.by))}</div>` : p.open ? `<span class="badge tag st-ready">${t('Day still open')}</span>` : `<span class="badge tag pay-part">${t('Not closed')}</span>`}</td><td class="r">${p.f.orders}</td><td class="r">${rs(p.f.sales)}</td><td class="r">${rs(p.rec ? p.rec.expected : p.f.expected)}</td><td class="r">${p.rec ? rs(p.rec.counted) : '—'}</td><td class="r" style="color:${p.rec && p.rec.diff ? 'var(--chili-ink)' : 'inherit'}">${p.rec ? sign(p.rec.diff) : '—'}</td></tr>`).join('')}</tbody></table></div></div>` : ''}
@@ -15808,11 +15621,6 @@ ${R0.stillOpen.length ? `${sec(`STILL OPEN (${R0.stillOpen.length})`)}${R0.still
           r(t('JazzCash'), rs(f.byM.jazzcash)) +
           r(t('Easypaisa'), rs(f.byM.easypaisa)) +
           r(t('Raast QR'), rs(f.byM.raast)) +
-          r(t('Udhaar recorded'), rs(f.byM.udhaar)) +
-          r(
-            `${t('Udhaar collected')} <span class="hint">(${t('not a sale')}, ${t('cash')} ${rs(f.collBy.cash)})</span>`,
-            rs(f.collections),
-          ) +
           r(t('Expected cash'), rs(f.expected), true) +
           r(t('Total sales'), rs(f.sales), true) +
           r(t('Orders'), f.orders) +
@@ -15852,7 +15660,7 @@ ${R0.stillOpen.length ? `${sec(`STILL OPEN (${R0.stillOpen.length})`)}${R0.still
             ? `<div class="panel panel-pad">${openUnpaid.length ? `<div class="notice warn" style="margin-bottom:12px">${t('{n} unpaid orders stay open and can be paid after you start the next business day.', { n: openUnpaid.length })}</div>` : ''}
   <div class="field"><label for="dc-count">${t('Counted cash')} (Rs.)</label><input class="input" id="dc-count" inputmode="numeric" placeholder="${t('Count the drawer')}" value="${esc(counted)}" data-in="dc-count" style="font-size:22px;font-weight:600;min-height:52px"></div>
   <div class="balance"><span class="label">${t('Cash difference')}</span><b id="dc-diff" style="color:${diff == null ? 'var(--muted)' : diff === 0 ? 'var(--green-ink)' : 'var(--chili-ink)'}">${diff == null ? '—' : `${diff > 0 ? '+' : diff < 0 ? '−' : ''}${rs(Math.abs(diff))}`}</b></div>
-  <p class="hint" id="dc-note" style="margin:8px 0 14px">${diff == null ? t('Counted cash − expected cash. Card, wallets and udhaar are not physical cash.') : diff === 0 ? t('The drawer matches.') : diff > 0 ? t('More cash than expected (overage).') : t('Cash is short. Recount before closing.')}</p>
+  <p class="hint" id="dc-note" style="margin:8px 0 14px">${diff == null ? t('Counted cash − expected cash. Card and wallets are not physical cash.') : diff === 0 ? t('The drawer matches.') : diff > 0 ? t('More cash than expected (overage).') : t('Cash is short. Recount before closing.')}</p>
   <button class="btn btn-primary btn-lg btn-block" data-act="close-day" ${can('close') ? '' : 'disabled'}>${ic('lock', 20)} ${t('Close day')}</button></div>`
             : `<div class="panel panel-pad"><div class="notice ok" style="margin-bottom:12px"><b>${t('Closed')}</b>: ${dayLabel(d.date)}${rec ? `, ${fmtTime(rec.at)} ${t('by')} ${esc(uname(rec.by))}` : ''}</div>
   ${rec ? `<div class="sumrow"><span>${t('Expected cash')}</span><b>${rs(rec.expected)}</b></div><div class="sumrow"><span>${t('Counted cash')}</span><b>${rs(rec.counted)}</b></div><div class="sumrow" style="margin-bottom:12px"><span>${t('Cash difference')}</span><b style="color:${rec.diff ? 'var(--chili-ink)' : 'var(--green-ink)'}">${rec.diff > 0 ? '+' : rec.diff < 0 ? '−' : ''}${rs(Math.abs(rec.diff))}</b></div>` : ''}
@@ -17803,7 +17611,7 @@ ${mFoot(`${t('Add to order')}, ${rs(unit * this.qty)}`, 'cfg-add')}`;
               .slice(0, 8);
             return `${mHead(t('Customer'), t('Customers are shared by every branch. Search by name or phone.'))}<div class="modal-body">
 <input class="input" id="cp-q" value="${esc(this.q)}" placeholder="${t('Search name or phone')}" data-in="cp-q" autofocus>
-<div style="margin:10px 0">${list.map((c) => `<button class="mrow" data-act="cp-pick" data-id="${c.id}"><span><b>${esc(c.name)}</b><small>${esc(showPhone(c.phone))}</small></span><span>${custBalance(c.id) ? `<span class="badge b-saffron">${t('owes')} ${rs(custBalance(c.id))}</span>` : ''}</span></button>`).join('') || `<p class="hint">${t('No match. Add them below.')}</p>`}</div>
+<div style="margin:10px 0">${list.map((c) => `<button class="mrow" data-act="cp-pick" data-id="${c.id}"><span><b>${esc(c.name)}</b><small>${esc(showPhone(c.phone))}</small></span></button>`).join('') || `<p class="hint">${t('No match. Add them below.')}</p>`}</div>
 <span class="label">${t('New customer')}</span><div class="grid g2" style="gap:0 10px;margin-top:6px">${field('cp-name', t('Customer name'), '', { attrs: 'maxlength="40"' })}${field('cp-phone', t('Phone number'), qp.length === 11 ? qp : '', { attrs: 'inputmode="tel" placeholder="0300-1234567"' })}</div>${mErr()}</div>
 ${mFoot(t('Add and use'), 'cp-create')}`;
           },
@@ -17918,36 +17726,11 @@ ${mFoot(t('Dispatch now'), 'tr-save', 'btn-primary', false, `<button class="btn 
             const c = cust(this.id);
             if (!c)
               return mHead(t('Customer')) + '<div class="modal-body"></div>';
-            const bal = custBalance(c.id),
-              orders = custOrders(c.id)
-                .filter((o) => hasStore(o.store))
-                .sort((a, b) => b.createdAt - a.createdAt);
-            const tx = D.credit
-              .filter((x) => x.customer === c.id)
-              .sort((a, b) => b.at - a.at);
-            const collectStores = myStores().filter((s) => can('collect', s));
+            const orders = custOrders(c.id)
+              .filter((o) => hasStore(o.store))
+              .sort((a, b) => b.createdAt - a.createdAt);
             return `${mHead(esc(c.name), `${esc(showPhone(c.phone))}. ${t('Total spend')} ${rs(custSpend(c.id))}. ${t('Last visit')} ${custLast(c.id) ? fmtDT(custLast(c.id)) : '—'}.`)}<div class="modal-body">
-<div class="grid g2" style="align-items:start"><div><div class="balance" style="margin-bottom:12px"><span class="label">${t('Outstanding')}</span><b style="color:${bal ? 'var(--saffron-ink)' : 'inherit'}">${rs(bal)}</b></div>
-  ${
-    bal > 0 && collectStores.length
-      ? `<span class="label">${t('Receive payment')}</span><div class="grid g2" style="gap:0 10px;margin-top:6px">${field('rp-amt', 'Rs.', '', { attrs: `inputmode="numeric" placeholder="${bal}"` })}<div class="field"><label for="rp-store">${t('Store')}</label>${selectBox(
-          'rp-store',
-          collectStores.map((s) => [s, t(store(s).name)]),
-          U.store !== 'all' && collectStores.includes(U.store)
-            ? U.store
-            : collectStores[0],
-        )}</div></div>
-    <div class="field"><label for="rp-method">${t('Received by')}</label>${selectBox(
-      'rp-method',
-      METHODS.filter((m) => m[0] !== 'udhaar').map(([k, l]) => [k, t(l)]),
-      'cash',
-    )}</div><button class="btn btn-primary" data-act="rp-save">${t('Receive payment')}</button>${mErr()}`
-      : bal > 0
-        ? `<p class="hint">${t('A cashier or manager can receive this payment.')}</p>`
-        : `<p class="hint">${t('Nothing outstanding.')}</p>`
-  }
-  ${can('customers') ? `<button class="btn btn-ghost btn-sm" style="margin-top:12px" data-act="cust-edit" data-id="${c.id}">${ic('note', 16)} ${t('Edit customer')}</button>` : ''}</div>
-<div><span class="label">${t('Credit history')}</span><div class="table-wrap"><table class="tbl"><tbody>${tx.map((x) => `<tr><td class="hint">${fmtDT(x.at)}</td><td>${x.type === 'credit' ? `${t('Udhaar on')} ${esc(x.orderNo)}` : `${t('Paid by')} ${t(methodName(x.method))}`}<div class="hint">${esc(t(store(x.store).name))}</div></td><td class="r" style="font-weight:600;color:${x.type === 'credit' ? 'var(--saffron-ink)' : 'var(--green-ink)'}">${x.type === 'credit' ? '+' : '−'}${rs(x.amount)}</td></tr>`).join('') || `<tr><td class="hint">${t('No credit history.')}</td></tr>`}</tbody></table></div></div></div>
+${can('customers') ? `<button class="btn btn-ghost btn-sm" data-act="cust-edit" data-id="${c.id}">${ic('note', 16)} ${t('Edit customer')}</button>` : ''}
 <span class="label" style="display:block;margin-top:14px">${t('Order history')}</span><div class="table-wrap"><table class="tbl"><tbody>${
               orders
                 .slice(0, 15)
@@ -18344,11 +18127,6 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
           U.pg[el.dataset.k] = (U.pg[el.dataset.k] || 0) + +el.dataset.v;
           render();
         },
-        'cust-f': (el) => {
-          U.custF = el.dataset.v;
-          resetPage('cust');
-          render();
-        },
         'stock-f': (el) => {
           U.stockF = el.dataset.v;
           render();
@@ -18704,7 +18482,7 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
           if (U.pay.busy) return;
           const o = curOrder();
           U.pay.busy = true;
-          const r = run(() => R.pay(o, U.pay.amounts, o.customerId));
+          const r = run(() => R.pay(o, U.pay.amounts));
           U.pay.busy = false;
           if (!r.ok) return;
           U.pay.amounts = {};
@@ -19090,22 +18868,6 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
             toast(`${r.v.name} ${t('saved')}`);
           }
         },
-        'rp-save': () => {
-          const id = M.id;
-          const r = run(() =>
-            R.collect(id, val('rp-amt'), val('rp-store'), val('rp-method')),
-          );
-          if (r.ok) {
-            M.err = '';
-            renderModal();
-            render();
-            toast(
-              t('Payment received. Balance now {x}.', {
-                x: rs(custBalance(id)),
-              }),
-            );
-          }
-        },
         'close-tab': (el) => {
           U.closeTab = el.dataset.v;
           render();
@@ -19472,7 +19234,7 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
             n.textContent =
               diff == null
                 ? t(
-                    'Counted cash − expected cash. Card, wallets and udhaar are not physical cash.',
+                    'Counted cash − expected cash. Card and wallets are not physical cash.',
                   )
                 : diff === 0
                   ? t('The drawer matches.')
