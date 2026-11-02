@@ -6759,19 +6759,14 @@
         font-weight: 600;
       }
       .ds-railmock span.on {
-        position: relative;
-        background: var(--rail-active);
-        color: #fff;
+        margin-inline-end: -12px;
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+        background: var(--bg);
+        color: var(--heading);
       }
-      .ds-railmock span.on::before {
-        content: '';
-        position: absolute;
-        inset-inline-start: -12px;
-        top: 9px;
-        bottom: 9px;
-        width: 4px;
-        border-radius: 0 4px 4px 0;
-        background: var(--ember);
+      .ds-railmock span.on svg {
+        color: var(--ember);
       }
       .ds-railmock em {
         padding: 12px 12px 4px;
@@ -6848,6 +6843,172 @@
         }
         .ds-usage {
           min-width: 140px;
+        }
+      }
+
+      /* =============================================================
+         Active sidebar tab: a piece of the page reaching into the sidebar.
+         The marker runs to the sidebar's edge in the page colour (--bg),
+         and two curved corners flow it into the main screen.
+         ============================================================= */
+      :root {
+        --tab-curve: 16px;
+      }
+      /* dark: the sidebar sits lighter than the page, so the tab reads */
+      :root[data-theme='dark'] .app:not(.admin) .rail,
+      :root[data-theme='dark'] .app.admin .rail {
+        background-color: var(--surface-2);
+      }
+      .app:not(.admin) .rail,
+      .app.admin .rail {
+        padding-inline-end: 0;
+        border-inline-end: 0;
+        overflow-x: hidden;
+      }
+      .rail .logo,
+      .rail-group,
+      .app.admin .rail-group {
+        margin-inline-end: 12px;
+      }
+      .rail-spacer {
+        margin-inline-end: 18px;
+      }
+      .rail .rail-btn,
+      .app.admin .rail .rail-btn {
+        padding-inline-end: 24px;
+        border-radius: 12px 0 0 12px;
+      }
+      [dir='rtl'] .rail .rail-btn,
+      [dir='rtl'] .app.admin .rail .rail-btn {
+        border-radius: 0 12px 12px 0;
+      }
+      .rail-ink {
+        border-radius: 12px 0 0 12px;
+        background: var(--bg);
+        box-shadow: none;
+      }
+      [dir='rtl'] .rail-ink {
+        border-radius: 0 12px 12px 0;
+      }
+      .rail-ink::before,
+      .rail-ink::after,
+      [dir='rtl'] .rail-ink::before {
+        content: '';
+        position: absolute;
+        inset-inline: auto 0;
+        width: var(--tab-curve);
+        height: var(--tab-curve);
+        border-radius: 0;
+      }
+      .rail-ink::before,
+      [dir='rtl'] .rail-ink::before {
+        top: calc(var(--tab-curve) * -1);
+        bottom: auto;
+        background: radial-gradient(
+          circle at 0 0,
+          transparent calc(var(--tab-curve) - 0.5px),
+          var(--bg) var(--tab-curve)
+        );
+      }
+      .rail-ink::after {
+        bottom: calc(var(--tab-curve) * -1);
+        background: radial-gradient(
+          circle at 0 100%,
+          transparent calc(var(--tab-curve) - 0.5px),
+          var(--bg) var(--tab-curve)
+        );
+      }
+      [dir='rtl'] .rail-ink::before {
+        background: radial-gradient(
+          circle at 100% 0,
+          transparent calc(var(--tab-curve) - 0.5px),
+          var(--bg) var(--tab-curve)
+        );
+      }
+      [dir='rtl'] .rail-ink::after {
+        background: radial-gradient(
+          circle at 100% 100%,
+          transparent calc(var(--tab-curve) - 0.5px),
+          var(--bg) var(--tab-curve)
+        );
+      }
+      .rail-ink.move,
+      .rail-ink.move::before {
+        animation: none;
+      }
+      /* what sits on the tab: navy words, an ember icon, no hover movement */
+      .rail .rail-btn.on,
+      .rail .rail-btn.on:hover,
+      .rail .rail-btn.on:active,
+      [dir='rtl'] .rail .rail-btn.on:hover,
+      .app.admin .rail .rail-btn.on,
+      .app.admin .rail .rail-btn.on:hover {
+        color: var(--heading);
+        font-weight: 700;
+        transform: none;
+      }
+      .rail .rail-btn.on svg,
+      .rail .rail-btn.on:hover svg {
+        color: var(--ember);
+        transform: none;
+      }
+      .rail .rail-btn.on::after {
+        display: none;
+      }
+      .rail .rail-btn.on:focus-visible {
+        box-shadow: inset 0 0 0 2px var(--btn);
+      }
+      .rail .rail-btn.on .rail-count,
+      .rail .rail-btn.on .rail-lock {
+        background: var(--btn);
+        color: var(--btn-ink);
+        animation: none;
+      }
+      /* phone: the bar is at the bottom, so the tab reaches up into the page */
+      @media (max-width: 760px) {
+        .app:not(.admin) .rail,
+        .app.admin .rail {
+          padding: 0 6px 6px;
+          overflow-x: auto;
+        }
+        .rail .rail-btn,
+        .app.admin .rail .rail-btn,
+        [dir='rtl'] .rail .rail-btn,
+        [dir='rtl'] .app.admin .rail .rail-btn {
+          padding: 8px 4px 6px;
+          border-radius: 0 0 12px 12px;
+        }
+        .rail-ink,
+        [dir='rtl'] .rail-ink {
+          border-radius: 0 0 12px 12px;
+        }
+        .rail-ink::before,
+        .rail-ink::after,
+        [dir='rtl'] .rail-ink::before,
+        [dir='rtl'] .rail-ink::after {
+          top: 0;
+          bottom: auto;
+          inset-inline: auto;
+          width: 12px;
+          height: 12px;
+        }
+        .rail-ink::before,
+        [dir='rtl'] .rail-ink::before {
+          left: -12px;
+          background: radial-gradient(
+            circle at 0 100%,
+            transparent 11.5px,
+            var(--bg) 12px
+          );
+        }
+        .rail-ink::after,
+        [dir='rtl'] .rail-ink::after {
+          right: -12px;
+          background: radial-gradient(
+            circle at 100% 100%,
+            transparent 11.5px,
+            var(--bg) 12px
+          );
         }
       }
     </style>
@@ -15029,7 +15190,7 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
           'sidebar',
           t('Sidebar'),
           '.rail',
-          t('Night background, items grouped under small capital labels. One solid blue marker (.rail-ink) slides to the active item with a spring; its ember edge stretches as it lands. On hover a flat wash sweeps in, the item nudges 3px and the icon tilts. Items unfold one by one once per sign-in. On phones it becomes a bottom tab bar and the ember edge moves to the top.'),
+          t('Night background, items grouped under small capital labels. The active item is a tab in the page colour (.rail-ink) that slides into place with a spring and joins the main screen through two curved corners. On hover a flat wash sweeps in, the item nudges 3px and the icon tilts. Items unfold one by one once per sign-in. On phones it becomes a bottom tab bar and the tab reaches up into the page.'),
           `<div class="ds-anat"><div class="ds-railmock"><div class="logo" style="font-family:var(--signage);font-size:28px;font-weight:900;color:#fff;padding:2px 10px 12px;display:flex;align-items:center;gap:10px"><i style="width:10px;height:10px;border-radius:50%;background:var(--ember)"></i>Dera</div><em>${t('Every day')}</em><span class="on">${ic('orders', 20)} ${t('Orders')}</span><span>${ic('board', 20)} ${t('Full menu')}</span><em>${t('Set up')}</em><span>${ic('box', 20)} ${t('Stock')}</span></div>
 <div class="panel"><div class="table-wrap"><table class="ds-tok"><tbody>${[
             ['Width', 'var(--side): 236px · 200px on tablets · full-width bar on phones'],
@@ -15037,8 +15198,8 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
             ['Logo', 'Big Shoulders 31px/900, ember dot, plan name in a cream pill'],
             ['Group label', '10.5px/700, uppercase, 0.14em tracking, hairline after it'],
             ['Item', '42px tall, 10px 12px padding, radius 12px, 14.5px/600, icon 20–22px'],
-            ['Item text', 'var(--night-ink); white on hover and when active'],
-            ['Active marker', '.rail-ink: var(--rail-active) fill, 4px ember edge, slides 0.55s var(--ease-spring)'],
+            ['Item text', 'var(--night-ink); white on hover, var(--heading) with an ember icon when active'],
+            ['Active tab', '.rail-ink: var(--bg) fill to the sidebar edge, 16px curved corners, slides 0.55s var(--ease-spring)'],
             ['Hover', 'Flat wash scales in 0.45s, item moves 3px, icon scales 1.14 and tilts −7°'],
             ['Counts', '.rail-count.warn: cream pill, pulses every 2.6s'],
             ['Locked item', '55% opacity with a lock badge; opens an upgrade prompt'],
