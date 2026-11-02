@@ -6762,6 +6762,600 @@
         color: #fff;
       }
 
+      /* ---------- Offline and sync ---------- */
+      .syncchip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 36px;
+        padding: 0 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 12.5px;
+        font-weight: 700;
+        white-space: nowrap;
+        transition:
+          border-color 0.2s,
+          background-color 0.2s;
+      }
+      .syncchip:hover {
+        border-color: var(--btn);
+      }
+      .syncchip.ok svg {
+        color: var(--tag-done);
+      }
+      .syncchip.off {
+        border-color: transparent;
+        background: var(--tag-take-bg);
+        color: var(--tag-take);
+      }
+      .syncchip.wait {
+        border-color: transparent;
+        background: var(--btn);
+        color: #fff;
+      }
+      .syncchip.busy {
+        border-color: transparent;
+        background: var(--btn-soft);
+        color: var(--green-ink);
+      }
+      .syncchip.busy svg {
+        animation: sync-spin 0.9s linear infinite;
+      }
+      @keyframes sync-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .banner.offline {
+        background: #f3c44f;
+        color: #3d2a00;
+      }
+      .banner.syncwait {
+        background: var(--btn);
+        color: #fff;
+      }
+      .sync-state {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+      }
+      .sync-state > svg {
+        flex: none;
+      }
+      .sync-state.ok > svg {
+        color: var(--tag-done);
+      }
+      .sync-state.wait > svg {
+        color: var(--btn);
+      }
+      .sync-state.off {
+        background: var(--tag-take-bg);
+        border-color: transparent;
+      }
+      .sync-state.off > svg {
+        color: var(--tag-take);
+      }
+      .sync-state > div {
+        flex: 1;
+        min-width: 0;
+      }
+      .sync-state b,
+      .sync-opt b {
+        display: block;
+        font-size: 15px;
+      }
+      .sync-state small,
+      .sync-opt small {
+        display: block;
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      .sync-n {
+        display: grid;
+        justify-items: center;
+        color: var(--heading);
+        font-size: 26px;
+        font-weight: 800;
+        line-height: 1;
+      }
+      .sync-n small {
+        margin-top: 3px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--faint);
+      }
+      .sync-opt {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 14px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+      .sync-opt > div {
+        flex: 1;
+      }
+      @media (max-width: 760px) {
+        .syncchip span {
+          display: none;
+        }
+        .syncchip {
+          padding: 0 10px;
+        }
+      }
+
+      /* ---------- Order history and day report ---------- */
+      .h-filters {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 16px;
+        padding: 16px 18px;
+      }
+      .h-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+      .h-dates {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .h-dates .input {
+        width: 160px;
+        min-height: 38px;
+      }
+      .h-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+        gap: 10px 12px;
+      }
+      .h-grid .field {
+        margin: 0;
+      }
+      .h-search {
+        grid-column: span 2;
+      }
+      .h-clear {
+        position: absolute;
+        top: 14px;
+        inset-inline-end: 14px;
+      }
+      .h-kpis {
+        margin-bottom: 16px;
+      }
+      .h-tbl td {
+        vertical-align: middle;
+      }
+      .h-tbl td .hint {
+        white-space: nowrap;
+      }
+      .h-tok {
+        color: var(--heading);
+        font-size: 16px;
+      }
+      .h-tags {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .h-m {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 6px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .h-void td {
+        opacity: 0.55;
+      }
+      .h-void td b {
+        text-decoration: line-through;
+      }
+      .h-bill {
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+      }
+      .h-total {
+        margin-top: 6px;
+        padding-top: 8px;
+        border-top: 1px dashed var(--line-strong);
+        font-size: 16px;
+      }
+      .h-total b {
+        color: var(--heading);
+      }
+      /* day report */
+      .rep-f {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+      }
+      .rep-f > .field:not(.rep-days) {
+        flex: none;
+        width: 220px;
+      }
+      .rep-f > .field:nth-child(2):not(.rep-days),
+      .rep-f > .field:first-child:has(.rep-date) {
+        width: 260px;
+      }
+      .rep-f > .rep-days {
+        flex: 1;
+        min-width: 0;
+      }
+      .rep-date {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .rep-date .input {
+        min-height: 42px;
+      }
+      .rep-date .icon-btn {
+        flex: none;
+        border: 1px solid var(--line);
+      }
+      .rep-days .chips {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+      }
+      .rep-days .chip {
+        flex: none;
+        min-height: 36px;
+        font-size: 13px;
+      }
+      .rep-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 16px;
+        align-items: start;
+      }
+      .rep-main {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-width: 0;
+      }
+      .rep-main > .grid {
+        gap: 16px;
+      }
+      .rep-h {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+        color: var(--heading);
+        font-family: var(--title);
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .rep-h svg {
+        color: var(--blue-500);
+      }
+      .r-strong {
+        color: var(--heading);
+        font-size: 16px;
+      }
+      .r-line {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+      }
+      .r-line:last-child {
+        border-bottom: 0;
+      }
+      .r-line > span:first-child {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
+      .r-line:not(:has(.r-bar)) {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+      .r-bar {
+        height: 8px;
+        border-radius: 999px;
+        background: var(--surface-2);
+        overflow: hidden;
+      }
+      .r-bar i {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--btn);
+      }
+      .r-rank {
+        display: inline-grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 7px;
+        background: var(--btn-soft);
+        color: var(--green-ink);
+        font-size: 12px;
+      }
+      .r-hours {
+        display: flex;
+        align-items: flex-end;
+        gap: 4px;
+        height: 110px;
+        padding-top: 6px;
+      }
+      .r-hours span {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 4px;
+        height: 100%;
+      }
+      .r-hours i {
+        width: 100%;
+        max-width: 26px;
+        border-radius: 6px 6px 2px 2px;
+        background: var(--blue-400);
+      }
+      .r-hours span:hover i {
+        background: var(--btn);
+      }
+      .r-hours small {
+        color: var(--faint);
+        font-size: 10.5px;
+      }
+      .rep-audit {
+        max-height: 320px;
+        overflow-y: auto;
+      }
+      .rep-slip {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--surface-2);
+      }
+      .rep-slip-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .rep-paper {
+        max-height: calc(100vh - 230px);
+        overflow-y: auto;
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: 0 10px 24px -16px rgba(0, 0, 0, 0.5);
+      }
+      .rep-paper .receipt {
+        margin: 0 auto;
+        max-width: none;
+        box-shadow: none;
+        border: 0;
+      }
+      .receipt.dayslip .rsec {
+        margin: 10px 0 4px;
+        padding-top: 6px;
+        border-top: 1px dashed #999;
+        font-size: 11.5px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+      .receipt.dayslip .rnote {
+        color: #555;
+        font-size: 11px;
+      }
+      .receipt.dayslip .rr small {
+        color: #555;
+        font-size: 10.5px;
+      }
+      @media (max-width: 1280px) {
+        .rep-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .rep-slip {
+          position: static;
+          max-width: 420px;
+        }
+      }
+      @media (max-width: 900px) {
+        .rep-f {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .h-search {
+          grid-column: auto;
+        }
+        .h-clear {
+          position: static;
+          align-self: flex-start;
+        }
+      }
+
+      /* ---------- Day report v2 and dashboard week list ---------- */
+      .rep-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+      }
+      .rep-bar .select {
+        width: 220px;
+        min-height: 42px;
+      }
+      .rep-bar .rep-date {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        border: 1px solid var(--line-strong);
+        border-radius: 12px;
+        background: var(--surface);
+        overflow: hidden;
+      }
+      .rep-bar .rep-date .icon-btn {
+        width: 42px;
+        height: 42px;
+        border: 0;
+        border-radius: 0;
+      }
+      .rep-bar .rep-date .input {
+        width: 170px;
+        min-height: 42px;
+        border: 0;
+        border-inline: 1px solid var(--line);
+        border-radius: 0;
+        box-shadow: none;
+        text-align: center;
+        font-weight: 600;
+      }
+      .rep-bar .rep-date .input:focus {
+        box-shadow: inset 0 0 0 2px var(--btn);
+      }
+      .rep-bar .rep-label {
+        margin-inline-start: auto;
+        padding-inline: 8px;
+        color: var(--heading);
+        font-family: var(--title);
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .rep-bar .rep-sep {
+        width: 1px;
+        height: 28px;
+        background: var(--line);
+      }
+      .rep-list .sumrow + .sumrow {
+        border-top: 1px solid var(--line);
+      }
+      .rep-list .sumrow {
+        padding: 8px 0;
+      }
+      .rep-list .sumrow.tot {
+        margin-top: 4px;
+        border-top: 1.5px solid var(--line-strong);
+        font-size: 16px;
+      }
+      .rep-list .sumrow.tot b {
+        color: var(--heading);
+      }
+      .dash-stats-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      .dash-grid.dash-grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .rep-list .sumrow b,
+      .rep .tbl td.r {
+        white-space: nowrap;
+      }
+      .rep-list .sumrow span {
+        min-width: 0;
+      }
+      .wk-list li {
+        grid-template-columns: 64px minmax(0, 1fr) auto 76px;
+      }
+      .wk-d b {
+        display: block;
+        font-size: 14px;
+      }
+      .wk-d small {
+        color: var(--faint);
+        font-size: 12px;
+      }
+      .wk-bar {
+        height: 8px;
+        border-radius: 999px;
+        background: var(--surface-2);
+        overflow: hidden;
+      }
+      .wk-bar i {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--btn);
+      }
+      .wk-c {
+        justify-self: end;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .wk-c.ok {
+        background: var(--tag-done-bg);
+        color: var(--tag-done);
+      }
+      .wk-c.bad {
+        background: var(--tag-late-bg);
+        color: var(--tag-late);
+      }
+      .wk-c.warn {
+        background: var(--tag-take-bg);
+        color: var(--tag-take);
+      }
+      .wk-c.open {
+        background: var(--btn-soft);
+        color: var(--green-ink);
+      }
+      @media (max-width: 1100px) {
+        .dash-stats-4 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 760px) {
+        .dash-grid.dash-grid-2 {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+      @media (max-width: 760px) {
+        .rep-bar .select,
+        .rep-bar .rep-date {
+          width: 100%;
+        }
+        .rep-bar .rep-date .input {
+          flex: 1;
+          width: auto;
+        }
+        .rep-bar .rep-label,
+        .rep-bar .rep-sep {
+          display: none;
+        }
+      }
+
       /* looping animations resume where they were after a repaint */
       .login-brand::before,
       .login-brand::after,
@@ -7798,6 +8392,8 @@
           label: 'Owner',
           screens: [
             'orders',
+            'history',
+            'dayreport',
             'fullmenu',
             'allstores',
             'dashboard',
@@ -7837,6 +8433,8 @@
           label: 'Area manager',
           screens: [
             'orders',
+            'history',
+            'dayreport',
             'fullmenu',
             'allstores',
             'dashboard',
@@ -7869,6 +8467,8 @@
           label: 'Branch manager',
           screens: [
             'orders',
+            'history',
+            'dayreport',
             'fullmenu',
             'dashboard',
             'menu',
@@ -7899,7 +8499,7 @@
         },
         cashier: {
           label: 'Cashier',
-          screens: ['orders', 'fullmenu', 'customers', 'close'],
+          screens: ['orders', 'history', 'fullmenu', 'customers', 'close', 'dayreport'],
           perms: [
             'order',
             'pay',
@@ -7926,6 +8526,8 @@
    reopening days, all-business staff) cannot be given away. */
       const ACCESS_SCREENS = [
         ['orders', 'Orders', 'Take and track orders'],
+        ['history', 'Order history', 'Past orders with filters, reprints and export'],
+        ['dayreport', 'Day report', 'Day-end summary and printable audit slip'],
         ['fullmenu', 'Full menu', 'Menu board with prices'],
         ['allstores', 'All stores', 'Sales across their branches'],
         ['dashboard', 'Dashboard', 'Branch sales and alerts'],
@@ -9490,8 +10092,23 @@
         audit: { store: 'all', user: 'all', action: 'all', from: '', to: '' },
         pay: { amounts: {}, busy: false },
       };
+      /* ---------- Offline mode and sync ----------
+         Everything is always saved on this device first. While the
+         connection is down (power cut, internet gone, or "Work offline"),
+         each change is counted as waiting to sync. When the connection is
+         back, staff are asked to sync. Sync state lives in DB.sync. */
+      const SYNC = () =>
+        (DB.sync = DB.sync || { pending: 0, lastAt: Date.now(), offline: false });
+      let syncBusy = false,
+        lastDataSig = null;
+      const isOnline = () => navigator.onLine !== false && !SYNC().offline;
       function save() {
         try {
+          const sy = SYNC();
+          const sig = JSON.stringify(DB.data);
+          if (lastDataSig !== null && sig !== lastDataSig && !isOnline())
+            sy.pending += 1;
+          lastDataSig = sig;
           localStorage.setItem(LS_KEY, JSON.stringify(DB));
         } catch (e) {
           /* demo storage unavailable */
@@ -13041,6 +13658,7 @@
       let inkPrev = null,
         railKey = null;
       function afterPaint(changed) {
+        if (lastDataSig === null && DB.data) lastDataSig = JSON.stringify(DB.data);
         const rail = $('.rail');
         if (rail && rail.offsetParent !== null) {
           const key = `${U.mode}|${U.user || U.admin}|${U.tenant || ''}`;
@@ -13313,9 +13931,11 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
         // Fourth field groups the sidebar so new staff can scan it.
         const list = [
           ['orders', 'Orders', 'orders', 'Every day'],
+          ['history', 'Order history', 'book', 'Every day'],
           ['fullmenu', 'Full menu', 'board', 'Every day'],
           ['customers', 'Customers', 'users', 'Every day'],
           ['close', 'Day close', 'cash', 'Every day'],
+          ['dayreport', 'Day report', 'print', 'Every day'],
           ['dashboard', 'Dashboard', 'chart', 'Every day'],
           ['menu', 'Menu & recipes', 'menu', 'Set up'],
           ['stock', 'Stock', 'box', 'Set up'],
@@ -13377,10 +13997,35 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
         const d = dayOf(U.store);
         return `<span class="daychip ${d.status}">${ic(d.status === 'open' ? 'check' : 'lock', 14)} ${dayLabel(d.date)}, ${t(d.status === 'open' ? 'Open' : 'Closed')}</span>`;
       }
-      // Status banners: impersonation, trial countdown, overdue invoice.
+      // Connection status in the top bar: synced, offline, waiting, syncing.
+      function syncChip() {
+        const sy = SYNC(),
+          on = isOnline();
+        const [cls, icon, label] = syncBusy
+          ? ['busy', 'repeat', t('Syncing…')]
+          : !on
+            ? ['off', 'pause', sy.pending ? t('Offline · {n} saved', { n: sy.pending }) : t('Offline')]
+            : sy.pending
+              ? ['wait', 'repeat', t('{n} to sync', { n: sy.pending })]
+              : ['ok', 'check', t('Synced')];
+        return `<button class="syncchip ${cls}" data-act="sync-open" title="${esc(t('Connection and sync'))}">${ic(icon, 15)}<span>${label}</span></button>`;
+      }
+      // Status banners: offline, impersonation, trial countdown, overdue invoice.
       function bannersHTML() {
         const tn = tenant(),
           out = [];
+        if (!isOnline()) {
+          const n = SYNC().pending;
+          out.push(
+            `<div class="banner offline">${ic('pause', 18)} ${t('You are offline. Keep taking orders: everything is saved on this device.')}${n ? ` <b>${t('{n} changes waiting to sync.', { n })}</b>` : ''}<span class="spacer"></span><button class="btn btn-sm" style="background:#fff;color:#7a4b00" data-act="sync-open">${t('Sync options')}</button></div>`,
+          );
+        } else if (SYNC().pending && !syncBusy) {
+          const n = SYNC().pending;
+          out.push(
+            `<div class="banner syncwait">${ic('repeat', 18)} ${t('Back online. {n} changes made offline are waiting to sync.', { n })}<span class="spacer"></span><button class="btn btn-sm" style="background:#fff;color:var(--btn)" data-act="sync-now">${ic('repeat', 16)} ${t('Sync now')}</button></div>`,
+          );
+        }
+
         if (U.impersonating)
           out.push(
             `<div class="banner imp">${ic('eye', 18)} ${t('Viewing as {b}. Changes you make are real and logged.', { b: esc(tn.name) })}<span class="spacer"></span><button class="btn btn-sm" style="background:#fff;color:#1B2230" data-act="admin-back">${ic('back', 16)} ${t('Back to admin')}</button></div>`,
@@ -13424,7 +14069,7 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
       .join('')}
 <div class="rail-spacer"></div><button class="rail-btn" data-act="lock">${ic(U.impersonating ? 'back' : 'lock', 22)}<span>${t(U.impersonating ? 'Admin' : 'Lock')}</span></button></nav>
     <header class="top">${logo ? `<img class="bizlogo" src="${esc(logo)}" alt="">` : ''}<div class="bizname"><b title="${esc(tn.name)}">${esc(D.business.name)}</b><small>${esc(planOf(tn).name)} · ${t(TENANT_STATUS[tn.status][1])}</small></div>${switcherHTML()}${dayChip()}
-<div class="top-right">${langBtn()}<button class="icon-btn" data-act="theme" aria-label="${DB.prefs.theme === 'dark' ? 'Use light theme' : 'Use dark theme'}">${ic(DB.prefs.theme === 'dark' ? 'sun' : 'moon')}</button><span class="clock" id="clock">${fmtTime(Date.now())}</span>
+<div class="top-right">${syncChip()}${langBtn()}<button class="icon-btn" data-act="theme" aria-label="${DB.prefs.theme === 'dark' ? 'Use light theme' : 'Use dark theme'}">${ic(DB.prefs.theme === 'dark' ? 'sun' : 'moon')}</button><span class="clock" id="clock">${fmtTime(Date.now())}</span>
 <span class="who">${avatar(u, 'sm')}<span class="nm"><b>${esc(u.name.split(' ')[0])}</b> <span class="muted">${roleName(u.role)}</span></span></span></div></header>
     <main class="main" id="main">${screenView()}</main></div>`;
       }
@@ -13479,6 +14124,10 @@ ${U.pinErr ? `<p class="err" style="text-align:center">${t(U.pinErr)}</p>` : ''}
             return customersView();
           case 'close':
             return closeView();
+          case 'history':
+            return historyView();
+          case 'dayreport':
+            return dayReportView();
           case 'staff':
             return staffView();
           case 'settings':
@@ -14401,26 +15050,63 @@ ${dashSec(t('Across all branches'), t('Payments, best sellers and low stock, add
         const st = U.store,
           s = storeStats(st, 'today'),
           d = dayOf(st);
-        const open = D.orders.filter(
-          (o) => o.store === st && o.state === 'open',
-        );
-        const tickets = open.flatMap((o) =>
-          o.tickets.filter((k) => !k.voided && !o.fulfil),
-        );
-        const deliveries = open.filter(
-          (o) => o.type === 'delivery' && o.fulfil !== 'delivered',
-        );
         const low = lowList(st);
-        // Numbers count up when the dashboard opens (see playIntro).
-        const kitchen = open.filter((o) => o.tickets.length && !o.fulfil).length,
-          dayOpen = d.status === 'open';
+        const dayOpen = d.status === 'open';
         const stat = statTile;
-        // Deliveries still on the road and stock running low, in one list.
+        // Week-level numbers: steadier than live counts and easier to act on.
+        const wk = storeStats(st, '7'),
+          prevDays = new Set(
+            Array.from({ length: 7 }, (_, i) => addDays(d.date, -7 - i)),
+          ),
+          prevSales = sum(
+            D.orders.filter(
+              (o) =>
+                o.store === st &&
+                o.state !== 'void' &&
+                o.settledDay &&
+                prevDays.has(o.settledDay),
+            ),
+            (o) => o.bill.total,
+          ),
+          wkPct = prevSales
+            ? Math.round(((wk.sales - prevSales) / prevSales) * 100)
+            : null;
+        const owed = sum(
+            D.credit.filter((c) => c.store === st),
+            (c) => (c.type === 'credit' ? c.amount : -c.amount),
+          ),
+          owers = new Set(
+            D.credit.filter((c) => c.store === st).map((c) => c.customer),
+          );
+        const debtors = [...owers].filter((id) => custBalance(id) > 0).length;
+        const closes = D.closes
+          .filter((c) => c.store === st && c.status === 'closed')
+          .slice(-7);
+        const lastClose = closes[closes.length - 1];
+        const unpaidOld = D.orders.filter(
+          (o) =>
+            o.store === st &&
+            o.state === 'open' &&
+            payState(o) !== 'paid' &&
+            o.day < d.date,
+        );
+        // Last 7 business days: sales and how each close balanced.
+        const week = Array.from({ length: 7 }, (_, i) => addDays(d.date, -6 + i)).map(
+          (date) => {
+            const f = dayFigures(st, date),
+              rec = D.closes
+                .filter((c) => c.store === st && c.date === date)
+                .pop();
+            return { date, sales: f.sales, orders: f.orders, rec };
+          },
+        );
+        const maxDay = Math.max(1, ...week.map((w) => w.sales));
+        // Stock running low and orders left unpaid from earlier days.
         const stockOn = feature(st, 'stock'),
           attn = [
-            ...deliveries.map(
+            ...unpaidOld.map(
               (o) =>
-                `<li class="click" data-act="open-order" data-id="${o.id}" tabindex="0"><span class="dl-ic tone-indigo">${ic('bike', 18)}</span><span class="dl-nm">${o.token ? `${t('Token')} ${o.token}` : esc(o.no)}<small>${esc(o.cust.name)}, ${esc(o.cust.address)}</small></span><span class="dl-tag${o.fulfil === 'out' ? ' go' : ''}">${t(o.fulfil === 'out' ? 'Out for delivery' : 'In kitchen')}</span></li>`,
+                `<li class="click" data-act="open-order" data-id="${o.id}" tabindex="0"><span class="dl-ic tone-indigo">${ic('bill', 18)}</span><span class="dl-nm">${o.token ? `${t('Token')} ${o.token}` : esc(o.no)}<small>${dayLabel(o.day)}${o.cust.name ? `, ${esc(o.cust.name)}` : ''}</small></span><span class="dl-tag low">${t('Unpaid')} ${rs(billOf(o).total)}</span></li>`,
             ),
             ...(stockOn ? low : []).map(
               (g) =>
@@ -14433,14 +15119,15 @@ ${dashSec(t('Across all branches'), t('Payments, best sellers and low stock, add
 <div class="panel kpi lead dash-hero"><div class="hero-aura" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="hero-txt"><small>${t('Today’s sales')}${tip(t('Total of bills paid and closed today. Open orders are added once they are paid. The line shows how the total grew hour by hour.'))}</small><div class="v" data-count="${s.sales}" data-rs="1">${rs(s.sales)}</div>${vsYesterday([st])}<div class="s">${t('{n} bills, average {x}', { n: s.orders, x: rs(s.avg) })}</div>${typeSplit(s.settled)}</div>
   ${salesCurve(s.settled)}</div>
-${dashSec(t('Right now'), t('Live counts for this branch. Tap a card to open the screen where you handle it.'))}
-<div class="dash-stats">
-${stat('green', 'orders', t('In the kitchen'), t('Orders whose token has gone to the kitchen but are not served or sent out yet.'), kitchen, t('Tokens printed, not served or sent out yet'), 'ticket', kitchen, kitchen > 0)}
-${stat('indigo', 'orders', t('Deliveries pending'), t('Delivery orders not delivered yet. Some are still cooking, others are on the way.'), deliveries.length, t('{a} out for delivery', { a: deliveries.filter((o) => o.fulfil === 'out').length }), 'bike', deliveries.length, deliveries.length > 0)}
-${stat('saffron', 'close', t('Day close'), t('Whether today’s business day is still open. Close it at night to count the cash drawer and lock the day.'), t(dayOpen ? 'Open' : 'Closed'), dayOpen ? `${t('Opening cash')} ${rs(d.opening)}` : t('Closed at {x}', { x: fmtTime(d.closedAt) }), 'cash')}
+${dashSec(t('This week'), t('The last 7 business days for this branch. Tap a card to open the screen behind it.'))}
+<div class="dash-stats dash-stats-4">
+${stat('green', 'history', t('7-day sales'), t('Bills paid in the last 7 business days, compared with the 7 days before.'), rs(wk.sales), wkPct == null ? t('{n} bills', { n: wk.orders }) : t(wkPct >= 0 ? '{p}% up on the week before' : '{p}% down on the week before', { p: Math.abs(wkPct) }), 'chart')}
+${stat('indigo', 'history', t('Average bill'), t('Average paid bill over the last 7 business days.'), rs(wk.avg), t('{n} bills this week', { n: wk.orders }), 'bill')}
+${stat('saffron', 'customers', t('Udhaar to collect'), t('Credit given at this branch that customers have not paid back yet.'), rs(Math.max(0, owed)), t('{n} customers owe money', { n: debtors }), 'users')}
+${stat(lastClose && lastClose.diff ? 'chili' : 'green', 'dayreport', t('Last day close'), t('How the cash drawer balanced at the last close, and today’s day status.'), lastClose ? (lastClose.diff ? `${lastClose.diff > 0 ? '+' : '−'}${rs(Math.abs(lastClose.diff))}` : t('Balanced')) : '—', `${lastClose ? dayLabel(lastClose.date) : t('No close yet')} · ${t(dayOpen ? 'Today open' : 'Today closed')}`, 'cash')}
 </div>
-${dashSec(t('Today in detail'), t('Where today’s money came from, what sold best, and what needs a look.'))}
-    <div class="dash-grid">
+${dashSec(t('Today in detail'), t('Where today’s money came from and what sold best.'))}
+    <div class="dash-grid dash-grid-2">
 <div class="panel">${dashHead('card', 'indigo', t('Payment methods'), t('Money received today, by how customers paid. Udhaar is food given on credit, not cash in hand.'))}${
           Object.values(s.byM).some((v) => v)
             ? payList(s.byM)
@@ -14451,13 +15138,22 @@ ${dashSec(t('Today in detail'), t('Where today’s money came from, what sold be
             ? rankList(topItems(s.settled).map(([n, q]) => [esc(n), q]))
             : emptyBox(t('No sales yet today'), '')
         }</div>
-<div class="panel">${dashHead('eye', 'chili', t('Needs attention'), t('Deliveries still out and ingredients running low. Tap a row to open it.'))}${
+    </div>
+${dashSec(t('Day by day'), t('How each of the last 7 business days went, and what is left to follow up.'))}
+    <div class="dash-grid dash-grid-2">
+<div class="panel">${dashHead('cash', 'green', t('Last 7 days'), t('Sales for each business day and whether the cash drawer balanced at close. Tap a day for its full report.'))}<ul class="dl-list wk-list">${week
+          .map(
+            (w) =>
+              `<li class="click" data-act="dash-day" data-v="${w.date}" tabindex="0"><span class="wk-d"><b>${dayLabel(w.date).split(',')[0]}</b><small>${dayLabel(w.date).split(', ')[1] || ''}</small></span><span class="wk-bar"><i style="width:${Math.max(2, (w.sales / maxDay) * 100)}%"></i></span><b class="num">${rs(w.sales)}</b><span class="wk-c ${w.rec ? (w.rec.status !== 'closed' ? 'warn' : w.rec.diff ? 'bad' : 'ok') : w.date === d.date ? 'open' : 'warn'}">${w.rec ? (w.rec.status !== 'closed' ? t('Reopened') : w.rec.diff ? `${w.rec.diff > 0 ? '+' : '−'}${n0(Math.abs(w.rec.diff))}` : ic('check', 14)) : w.date === d.date ? t('Open') : t('Not closed')}</span></li>`,
+          )
+          .join('')}</ul></div>
+<div class="panel">${dashHead('eye', 'chili', t('Needs attention'), t('Orders left unpaid from earlier days and ingredients running low. Tap a row to open it.'))}${
           attn.length
             ? `<ul class="dl-list attn">${attn.join('')}</ul>`
             : emptyBox(t('Nothing needs attention right now'), '')
         }</div>
     </div>
-    <div class="soon-list">${soon('heatmap')}${soon('tips')}${soon('export')}</div></div>`;
+    <div class="soon-list">${soon('tips')}${soon('export')}</div></div>`;
       }
       /* =============================================================
    Menu & recipes: master menu (owner) and branch overrides
@@ -14722,6 +15418,386 @@ ${field('w-notes', t('Notes'), '', { optional: true, attrs: 'maxlength="80"' })}
       /* =============================================================
    Day close and consolidated close
    ============================================================= */
+      /* =============================================================
+   Order history and day-end reports
+   Order history: every order in the branches this person can see,
+   filtered by branch, dates, type, status, payment, staff and search.
+   Day report: the full-day audit slip for one branch (or all of them)
+   on one business day, ready to print on the receipt printer.
+   ============================================================= */
+      const HIST_DEFAULT = () => ({
+        store: U.store && U.store !== 'all' ? U.store : 'all',
+        preset: '7',
+        from: '',
+        to: '',
+        type: 'all',
+        status: 'all',
+        method: 'all',
+        staff: 'all',
+        q: '',
+      });
+      // The latest business date across the given branches.
+      const latestDay = (ids) =>
+        ids.map((id) => dayOf(id).date).sort().pop() || ymd(Date.now());
+      function histRange(F, ids) {
+        const end = latestDay(ids);
+        if (F.preset === 'today') return [end, end];
+        if (F.preset === 'yday') return [addDays(end, -1), addDays(end, -1)];
+        if (F.preset === '7') return [addDays(end, -6), end];
+        if (F.preset === '30') return [addDays(end, -29), end];
+        return [F.from || '0000-00-00', F.to || '9999-99-99'];
+      }
+      function histOrders(F) {
+        const mine = myStores(),
+          ids = F.store === 'all' ? mine : mine.includes(F.store) ? [F.store] : [];
+        const set = new Set(ids),
+          [a, b] = histRange(F, ids),
+          q = F.q.trim().toLowerCase();
+        return {
+          ids,
+          range: [a, b],
+          list: D.orders
+            .filter((o) => {
+              if (!set.has(o.store)) return false;
+              const day = o.settledDay || o.day;
+              if (day < a || day > b) return false;
+              if (F.type !== 'all' && o.type !== F.type) return false;
+              const ps = payState(o);
+              if (F.status === 'paid' && ps !== 'paid') return false;
+              if (F.status === 'unpaid' && !(o.state === 'open' && ps !== 'paid'))
+                return false;
+              if (F.status === 'void' && o.state !== 'void') return false;
+              if (F.status === 'udhaar' && !o.payments.some((p) => p.method === 'udhaar'))
+                return false;
+              if (F.method !== 'all' && !o.payments.some((p) => p.method === F.method && p.amount > 0))
+                return false;
+              if (F.staff !== 'all' && o.by !== F.staff) return false;
+              if (q) {
+                const hay = `${o.no} ${o.token || ''} ${o.label || ''} ${o.cust.name || ''} ${o.cust.phone || ''} ${liveLines(o)
+                  .map((l) => l.name)
+                  .join(' ')}`.toLowerCase();
+                if (!hay.includes(q)) return false;
+              }
+              return true;
+            })
+            .sort((x, y) => y.createdAt - x.createdAt),
+        };
+      }
+      const methodsOf = (o) =>
+        [...new Set(o.payments.filter((p) => p.amount > 0).map((p) => p.method))];
+      function historyView() {
+        U.hist = U.hist || HIST_DEFAULT();
+        const F = U.hist,
+          mine = myStores();
+        if (F.store !== 'all' && !mine.includes(F.store)) F.store = 'all';
+        const { ids, range, list } = histOrders(F);
+        const live = list.filter((o) => o.state !== 'void'),
+          paid = live.filter((o) => payState(o) === 'paid'),
+          sales = sum(paid, (o) => billOf(o).total),
+          voided = list.filter((o) => o.state === 'void');
+        const pg = pageOf(list, 'hist', 25);
+        const many = ids.length > 1;
+        const staffIds = [...new Set(D.orders.filter((o) => mine.includes(o.store)).map((o) => o.by))];
+        const filtered =
+          F.type !== 'all' || F.status !== 'all' || F.method !== 'all' || F.staff !== 'all' || F.q || F.preset !== '7';
+        const presets = [
+          ['today', t('Today')],
+          ['yday', t('Yesterday')],
+          ['7', t('Last 7 days')],
+          ['30', t('Last 30 days')],
+          ['custom', t('Custom dates')],
+        ];
+        const rangeText =
+          range[0] === range[1]
+            ? dayLabel(range[0])
+            : F.preset === 'custom' && !F.from && !F.to
+              ? t('All dates')
+              : `${F.from || F.preset !== 'custom' ? dayLabel(range[0]) : t('Start')} – ${F.to || F.preset !== 'custom' ? dayLabel(range[1]) : t('Today')}`;
+        const rows = pg.rows
+          .map((o) => {
+            const b = billOf(o),
+              ms = methodsOf(o);
+            return `<tr class="click ${o.state === 'void' ? 'h-void' : ''}" data-act="hist-view" data-id="${o.id}" tabindex="0">
+<td><b class="h-tok">${o.token ? `#${o.token}` : '—'}</b><div class="hint">${esc(o.no)}</div></td>
+<td style="white-space:nowrap">${dayLabel(o.settledDay || o.day)}<div class="hint">${fmtTime(o.createdAt)}</div></td>
+${many ? `<td>${esc(t(store(o.store).name))}</td>` : ''}
+<td><span class="badge tag ty-${o.type}">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}</span>${o.label ? `<div class="hint">${esc(o.label)}</div>` : ''}</td>
+<td>${o.cust.name ? `<b>${esc(o.cust.name)}</b>${o.cust.phone ? `<div class="hint">${esc(showPhone(o.cust.phone))}</div>` : ''}` : '<span class="hint">—</span>'}</td>
+<td class="r">${sum(liveLines(o), (l) => l.qty)}</td>
+<td>${esc(uname(o.by).split(' ')[0])}</td>
+<td>${ms.length ? ms.map((m) => `<span class="h-m">${t(methodName(m))}</span>`).join(' ') : '<span class="hint">—</span>'}</td>
+<td><span class="h-tags">${statusBadges(o)}</span></td>
+<td class="r"><b class="num">${rs(b.total)}</b></td></tr>`;
+          })
+          .join('');
+        return `<div class="page hist">${pageHead(
+          t('Order history'),
+          `${esc(rangeText)} · ${F.store === 'all' ? t('{n} branches', { n: ids.length }) : esc(t(store(F.store).name))}`,
+          `<button class="btn btn-ghost" data-act="hist-csv" ${list.length ? '' : 'disabled'}>${ic('arrows', 18)} ${t('Export CSV')}</button><button class="btn btn-primary" data-act="go" data-s="dayreport">${ic('print', 18)} ${t('Day report')}</button>`,
+        )}
+<div class="panel h-filters">
+  <div class="h-row">
+    <div class="chips" role="group" aria-label="${t('Dates')}">${presets.map(([k, l]) => chip('hist-preset', k, l, F.preset === k)).join('')}</div>
+    ${F.preset === 'custom' ? `<div class="h-dates"><input class="input" type="date" id="hf-from" value="${F.from}" data-ch="hist-f" data-k="from" aria-label="${t('From')}"><span>–</span><input class="input" type="date" id="hf-to" value="${F.to}" data-ch="hist-f" data-k="to" aria-label="${t('To')}"></div>` : ''}
+  </div>
+  <div class="h-grid">
+    ${mine.length > 1 ? `<div class="field"><label for="hf-store">${t('Branch')}</label>${selectBox('hf-store', [['all', t('All my branches')], ...mine.map((id) => [id, t(store(id).name)])], F.store, 'data-ch="hist-f" data-k="store"')}</div>` : ''}
+    <div class="field"><label for="hf-type">${t('Order type')}</label>${selectBox('hf-type', [['all', t('All types')], ['dine', t('Dine-in')], ['take', t('Takeaway')], ['delivery', t('Delivery')]], F.type, 'data-ch="hist-f" data-k="type"')}</div>
+    <div class="field"><label for="hf-status">${t('Status')}</label>${selectBox('hf-status', [['all', t('All orders')], ['paid', t('Paid')], ['unpaid', t('Open and unpaid')], ['udhaar', t('On udhaar')], ['void', t('Deleted')]], F.status, 'data-ch="hist-f" data-k="status"')}</div>
+    <div class="field"><label for="hf-method">${t('Payment')}</label>${selectBox('hf-method', [['all', t('Any payment')], ...METHODS.map(([k, l]) => [k, t(l)])], F.method, 'data-ch="hist-f" data-k="method"')}</div>
+    <div class="field"><label for="hf-staff">${t('Taken by')}</label>${selectBox('hf-staff', [['all', t('Everyone')], ...staffIds.map((id) => [id, uname(id)])], F.staff, 'data-ch="hist-f" data-k="staff"')}</div>
+    <div class="field h-search"><label for="hist-q">${t('Search')}</label>${searchInput('hist-q', F.q, t('Token, order no, customer, phone or dish'), 'hist-q')}</div>
+  </div>
+  ${filtered ? `<button class="btn btn-quiet btn-sm h-clear" data-act="hist-clear">${ic('x', 16)} ${t('Clear filters')}</button>` : ''}
+</div>
+<div class="grid g4 h-kpis">
+  <div class="panel kpi lead"><small>${t('Sales')}</small><div class="v">${rs(sales)}</div><div class="s">${t('{n} paid orders', { n: paid.length })}</div></div>
+  <div class="panel kpi"><small>${t('Orders')}</small><div class="v">${list.length}</div><div class="s">${t('{n} still open', { n: live.length - paid.length })}</div></div>
+  <div class="panel kpi"><small>${t('Average bill')}</small><div class="v">${rs(paid.length ? sales / paid.length : 0)}</div><div class="s">${t('Paid orders only')}</div></div>
+  <div class="panel kpi"><small>${t('Deleted')}</small><div class="v">${voided.length}</div><div class="s">${rs(sum(voided, (o) => billOf(o).total))}</div></div>
+</div>
+<div class="panel"><div class="table-wrap"><table class="tbl h-tbl"><thead><tr><th>${t('Token')}</th><th>${t('Date')}</th>${many ? `<th>${t('Branch')}</th>` : ''}<th>${t('Type')}</th><th>${t('Customer')}</th><th class="r">${t('Items')}</th><th>${t('Staff')}</th><th>${t('Payment')}</th><th>${t('Status')}</th><th class="r">${t('Total')}</th></tr></thead><tbody>
+${rows || `<tr><td colspan="${many ? 10 : 9}">${emptyBox(t('No orders match these filters'), t('Try a wider date range or clear the filters.'))}</td></tr>`}
+</tbody></table></div>${pg.html}</div></div>`;
+      }
+      // Read-only view of one past order, with reprint buttons.
+      function openHistOrder(id) {
+        const o = D.orders.find((x) => x.id === id);
+        if (!o) return;
+        openModal({
+          wide: true,
+          render() {
+            const b = billOf(o),
+              pays = o.payments;
+            return `${mHead(`${o.token ? `${t('Token')} ${o.token}` : esc(o.no)} · ${esc(t(store(o.store).name))}`, `${esc(o.no)} · ${fmtDT(o.createdAt)} · ${t('by')} ${esc(uname(o.by))}`)}<div class="modal-body">
+<div class="h-tags" style="margin-bottom:12px"><span class="badge tag ty-${o.type}">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}${o.label ? `: ${esc(o.label)}` : ''}</span>${statusBadges(o)}</div>
+${o.cust.name || o.cust.phone ? `<p class="hint" style="margin-bottom:10px">${ic('user', 14)} ${esc(o.cust.name)}${o.cust.phone ? `, ${esc(showPhone(o.cust.phone))}` : ''}${o.cust.address ? `, ${esc(o.cust.address)}` : ''}</p>` : ''}
+<div class="grid g2" style="align-items:start;gap:16px">
+<div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Item')}</th><th class="r">${t('Qty')}</th><th class="r">${t('Amount')}</th></tr></thead><tbody>
+${o.lines.map((l) => `<tr ${l.voided ? 'class="h-void"' : ''}><td><b>${esc(l.name)}</b>${lineDetail(l) ? `<div class="hint">${esc(lineDetail(l))}</div>` : ''}${l.voided ? `<div class="hint" style="color:var(--chili-ink)">${t('Deleted')}</div>` : ''}</td><td class="r">${l.qty}</td><td class="r">${n0(l.unit * l.qty)}</td></tr>`).join('')}
+</tbody></table></div>
+<div><div class="h-bill">
+<div class="sumrow"><span>${t('Subtotal')}</span><b>${rs(b.subtotal)}</b></div>
+${b.discount ? `<div class="sumrow"><span>${t('Discount')}</span><b>−${rs(b.discount)}</b></div>` : ''}
+${b.service ? `<div class="sumrow"><span>${t('Service charge')} ${b.servicePct}%</span><b>${rs(b.service)}</b></div>` : ''}
+${b.tax ? `<div class="sumrow"><span>${t('Tax')} ${b.taxPct}%</span><b>${rs(b.tax)}</b></div>` : ''}
+${b.deliveryFee ? `<div class="sumrow"><span>${t('Delivery fee')}</span><b>${rs(b.deliveryFee)}</b></div>` : ''}
+<div class="sumrow h-total"><span>${t('Total')}</span><b>${rs(b.total)}</b></div></div>
+<span class="label" style="display:block;margin:14px 0 6px">${t('Payments')}</span>
+${pays.length ? pays.map((p) => `<div class="sumrow"><span>${t(methodName(p.method))}${p.refund ? ` (${t('given back')})` : ''}<small class="hint" style="display:block">${fmtDT(p.at)}, ${esc(uname(p.by))}</small></span><b>${p.amount < 0 ? '−' : ''}${rs(Math.abs(p.amount))}</b></div>`).join('') : `<p class="hint">${t('No payment yet.')}</p>`}
+</div></div></div>
+<div class="modal-foot"><button class="btn btn-ghost" data-act="hist-print-kot" data-id="${o.id}" ${o.tickets.length ? '' : 'disabled'}>${ic('ticket', 18)} ${t('Kitchen token')}</button><button class="btn btn-ghost" data-act="hist-print-bill" data-id="${o.id}">${ic('print', 18)} ${t('Print bill')}</button>${o.state === 'open' && hasStore(o.store) ? `<button class="btn btn-primary" data-act="hist-open" data-id="${o.id}">${t('Open order')}</button>` : `<button class="btn btn-primary" data-act="close-modal">${t('Done')}</button>`}</div>`;
+          },
+        });
+      }
+      function histCSV() {
+        const { list } = histOrders(U.hist);
+        const q = (v) => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`;
+        const head = ['Order no', 'Token', 'Business day', 'Time', 'Branch', 'Type', 'Table', 'Customer', 'Phone', 'Items', 'Staff', 'Payment', 'Status', 'Subtotal', 'Discount', 'Service', 'Tax', 'Delivery fee', 'Total'];
+        const rows = list.map((o) => {
+          const b = billOf(o);
+          return [o.no, o.token || '', o.settledDay || o.day, fmtTime(o.createdAt), store(o.store).name, TYPE_NAME[o.type], o.label || '', o.cust.name || '', o.cust.phone || '', liveLines(o).map((l) => `${l.qty}x ${l.name}`).join('; '), uname(o.by), methodsOf(o).map(methodName).join(' + '), o.state === 'void' ? 'Deleted' : payState(o) === 'paid' ? 'Paid' : payState(o) === 'part' ? 'Part paid' : 'Unpaid', b.subtotal, b.discount, b.service, b.tax, b.deliveryFee, b.total];
+        });
+        const csv = [head, ...rows].map((r) => r.map(q).join(',')).join('\r\n');
+        try {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' }));
+          a.download = `orders-${histRange(U.hist, myStores()).join('-to-')}.csv`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          toast(t('{n} orders exported.', { n: list.length }), '', t('CSV ready'));
+        } catch (e) {
+          toast(t('Download is blocked in this preview.'), 'bad');
+        }
+      }
+
+      /* ---------- Day report: the full-day audit slip ---------- */
+      function dayReport(ids, date) {
+        const set = new Set(ids);
+        const settled = D.orders.filter(
+          (o) => set.has(o.store) && o.state !== 'void' && o.settledDay === date,
+        );
+        const created = D.orders.filter((o) => set.has(o.store) && o.day === date);
+        const pays = D.orders
+          .filter((o) => set.has(o.store))
+          .flatMap((o) => o.payments)
+          .filter((p) => p.day === date);
+        const coll = D.credit.filter(
+          (c) => c.type === 'payment' && set.has(c.store) && c.day === date,
+        );
+        const voids = D.voids.filter((v) => set.has(v.store) && v.day === date);
+        const bills = settled.map(billOf);
+        const per = ids.map((id) => {
+          const rec = D.closes
+            .filter((c) => c.store === id && c.date === date)
+            .pop();
+          const f = dayFigures(id, date);
+          const isToday = dayOf(id).date === date;
+          return {
+            id,
+            f,
+            rec: rec && rec.status === 'closed' ? rec : null,
+            reopened: rec && rec.status === 'reopened',
+            open: isToday && dayOf(id).status === 'open',
+            future: date > dayOf(id).date,
+          };
+        });
+        const byType = {},
+          byStaff = {},
+          byHour = {};
+        settled.forEach((o) => {
+          const b = billOf(o);
+          byType[o.type] = byType[o.type] || { n: 0, v: 0 };
+          byType[o.type].n++;
+          byType[o.type].v += b.total;
+          byStaff[o.by] = byStaff[o.by] || { n: 0, v: 0 };
+          byStaff[o.by].n++;
+          byStaff[o.by].v += b.total;
+          const h = new Date(o.createdAt).getHours();
+          byHour[h] = (byHour[h] || 0) + b.total;
+        });
+        const dayAudit = D.audit.filter(
+          (a) => set.has(a.store) && ymd(a.at) === date,
+        );
+        const times = created.map((o) => o.createdAt).sort((a, b) => a - b);
+        return {
+          ids,
+          date,
+          per,
+          settled,
+          orders: settled.length,
+          gross: sum(bills, (b) => b.subtotal),
+          discounts: sum(bills, (b) => b.discount),
+          service: sum(bills, (b) => b.service),
+          tax: sum(bills, (b) => b.tax),
+          fees: sum(bills, (b) => b.deliveryFee),
+          sales: sum(bills, (b) => b.total),
+          byM: byMethod(pays),
+          refunds: -sum(pays.filter((p) => p.amount < 0), (p) => p.amount),
+          collBy: byMethod(coll),
+          collections: sum(coll, (c) => c.amount),
+          voids,
+          voidValue: sum(voids, (v) => v.amount),
+          deletedOrders: created.filter((o) => o.state === 'void').length,
+          stillOpen: created.filter((o) => o.state === 'open' && payState(o) !== 'paid'),
+          byType,
+          byStaff,
+          byHour,
+          top: topItems(settled, 8),
+          opening: sum(per, (p) => (p.rec ? p.rec.opening : p.f.opening) || 0),
+          expected: sum(per, (p) => (p.rec ? p.rec.expected : p.f.expected) || 0),
+          counted: per.every((p) => p.rec) ? sum(per, (p) => p.rec.counted) : null,
+          diff: per.every((p) => p.rec) ? sum(per, (p) => p.rec.diff) : null,
+          audit: dayAudit,
+          first: times[0],
+          last: times[times.length - 1],
+        };
+      }
+      // 80mm printable slip. English only, like the bills.
+      function daySlipHTML(R0) {
+        const r = (a, v, cls = '') =>
+          `<div class="rr ${cls}"><span>${a}</span><span>${v}</span></div>`;
+        const sec = (h) => `<div class="rsec">${h}</div>`;
+        const one = R0.ids.length === 1,
+          st0 = store(R0.ids[0]),
+          s = D.settings[R0.ids[0]];
+        const nClosed = R0.per.filter((p) => p.rec).length;
+        const status = one
+          ? R0.per[0].rec
+            ? `CLOSED ${fmtTime(R0.per[0].rec.at)} by ${uname(R0.per[0].rec.by).split(' ')[0]}`
+            : R0.per[0].open
+              ? 'DAY STILL OPEN'
+              : R0.per[0].reopened
+                ? 'REOPENED'
+                : 'NOT CLOSED'
+          : `${nClosed} of ${R0.per.length} CLOSED`;
+        const sign = (v) => (v > 0 ? '+' : v < 0 ? '−' : '') + n0(Math.abs(v));
+        return `<div class="receipt dayslip"><div class="rh"><b>${one ? esc(s.receiptHeader) : esc(D.business.name)}</b>${one ? `${esc(s.address)}<br>` : ''}DAY END REPORT</div>
+<div class="rtoken"><small>Business day</small><b style="font-size:22px">${dayLabel(R0.date)}</b></div>
+<div class="meta2"><span>${one ? esc(st0.name) : `${R0.ids.length} branches`}</span><span>${esc(status)}</span></div>
+<div style="border-bottom:1px dashed #999;margin-bottom:6px"></div>
+${sec('SALES')}
+${r('Paid orders', R0.orders)}${r('Gross (items)', n0(R0.gross))}${r('Discounts', R0.discounts ? '−' + n0(R0.discounts) : '0')}${r('Service charge', n0(R0.service))}${r('Tax', n0(R0.tax))}${r('Delivery fees', n0(R0.fees))}
+${r('NET SALES', rs(R0.sales), 'rg')}
+${r('Average bill', n0(R0.orders ? R0.sales / R0.orders : 0))}
+${sec('PAYMENTS')}
+${METHODS.filter(([k]) => R0.byM[k]).map(([k, l]) => r(l, n0(R0.byM[k]))).join('') || '<div class="rnote">No payments.</div>'}
+${R0.refunds ? r('Given back', '−' + n0(R0.refunds)) : ''}
+${R0.collections ? r('Udhaar collected', n0(R0.collections)) : ''}
+${sec('CASH DRAWER')}
+${r('Opening cash', n0(R0.opening))}${r('+ Cash sales', n0(R0.byM.cash))}${R0.collBy.cash ? r('+ Udhaar collected (cash)', n0(R0.collBy.cash)) : ''}
+${r('EXPECTED CASH', rs(R0.expected), 'rg')}
+${r('Counted cash', R0.counted == null ? '—' : n0(R0.counted))}${r('Difference', R0.diff == null ? '—' : sign(R0.diff))}
+${!one ? `${sec('BRANCHES')}${R0.per.map((p) => r(`${esc(store(p.id).name)}${p.rec ? '' : ' *'}`, n0(p.rec ? p.rec.sales : p.f.sales))).join('')}<div class="rnote">* not closed yet</div>` : ''}
+${sec(`DELETED (${R0.voids.length})`)}
+${R0.voids.map((v) => r(`${esc(v.orderNo)} ${esc(v.item)}<br><small>${esc(v.reason)}, ${esc(uname(v.by).split(' ')[0])}</small>`, '−' + n0(v.amount))).join('') || '<div class="rnote">Nothing deleted.</div>'}
+${R0.voids.length ? r('Deleted value', '−' + n0(R0.voidValue)) : ''}
+${R0.stillOpen.length ? `${sec(`STILL OPEN (${R0.stillOpen.length})`)}${R0.stillOpen.map((o) => r(`${esc(o.no)}${o.token ? ` #${o.token}` : ''}`, n0(billOf(o).total))).join('')}` : ''}
+<div class="rf">Printed ${fmtDT(Date.now())} by ${esc(uname(U.user))}<br>Signature: ____________________<br>Demo report, fictional data.</div></div>`;
+      }
+      function dayReportView() {
+        const mine = myStores();
+        U.rep = U.rep || { store: U.store && U.store !== 'all' ? U.store : mine.length > 1 ? 'all' : mine[0], date: '' };
+        const P = U.rep;
+        if (P.store !== 'all' && !mine.includes(P.store)) P.store = mine[0];
+        const ids = P.store === 'all' ? mine : [P.store];
+        if (!ids.length)
+          return `<div class="page">${emptyBox(t('No branch to report on'), '')}</div>`;
+        const today = latestDay(ids);
+        if (!P.date || P.date > today) P.date = today;
+        const Rp = dayReport(ids, P.date);
+        const allClosed = Rp.per.every((p) => p.rec),
+          anyOpen = Rp.per.some((p) => p.open);
+        const statusTag = allClosed
+          ? `<span class="badge tag st-delivered">${ic('check')} ${t('Closed')}</span>`
+          : anyOpen
+            ? `<span class="badge tag st-ready">${t('Day still open')}</span>`
+            : `<span class="badge tag pay-part">${t('Not fully closed')}</span>`;
+        const row = (a, v, cls = '') =>
+          `<div class="sumrow ${cls}"><span>${a}</span><b>${v}</b></div>`;
+        const sign = (v) => (v > 0 ? '+' : v < 0 ? '−' : '') + rs(Math.abs(v));
+        const isToday = P.date === today;
+        const where = P.store === 'all' ? t('All my branches') : t(store(P.store).name);
+        return `<div class="page rep">${pageHead(
+          t('Day report'),
+          `${esc(where)} · ${dayLabel(P.date)}`,
+          `${canScreen('audit') ? `<button class="btn btn-ghost" data-act="rep-audit">${ic('audit', 18)} ${t('Audit log')}</button>` : ''}<button class="btn btn-primary" data-act="rep-print">${ic('print', 18)} ${t('Print day slip')}</button>`,
+        )}
+<div class="rep-bar">
+  ${mine.length > 1 ? `${selectBox('rp-store', [['all', t('All my branches')], ...mine.map((id) => [id, t(store(id).name)])], P.store, `data-ch="rep-f" data-k="store" aria-label="${t('Branch')}"`)}<span class="rep-sep"></span>` : ''}
+  <div class="rep-date"><button class="icon-btn" data-act="rep-step" data-v="-1" aria-label="${t('Previous day')}">${ic('back', 18)}</button><input class="input" type="date" id="rp-date" value="${P.date}" max="${today}" data-ch="rep-f" data-k="date" aria-label="${t('Business day')}"><button class="icon-btn" data-act="rep-step" data-v="1" aria-label="${t('Next day')}" ${isToday ? 'disabled' : ''} style="transform:scaleX(-1)">${ic('back', 18)}</button></div>
+  ${isToday ? '' : `<button class="btn btn-ghost btn-sm" data-act="rep-today">${t('Today')}</button>`}
+  <span class="rep-label">${statusTag}</span>
+</div>
+<div class="rep-grid">
+<div class="rep-main">
+  <div class="grid g4">
+    <div class="panel kpi lead"><small>${t('Net sales')}</small><div class="v">${rs(Rp.sales)}</div><div class="s">${t('{n} paid orders', { n: Rp.orders })}</div></div>
+    <div class="panel kpi"><small>${t('Average bill')}</small><div class="v">${rs(Rp.orders ? Rp.sales / Rp.orders : 0)}</div><div class="s">${t('Discounts')} ${rs(Rp.discounts)}</div></div>
+    <div class="panel kpi"><small>${t('Expected cash')}</small><div class="v">${rs(Rp.expected)}</div><div class="s">${Rp.counted == null ? t('Not counted yet') : `${t('Counted')} ${rs(Rp.counted)}`}</div></div>
+    <div class="panel kpi"><small>${t('Cash difference')}</small><div class="v" style="color:${Rp.diff ? 'var(--chili-ink)' : 'inherit'}">${Rp.diff == null ? '—' : Rp.diff ? sign(Rp.diff) : t('Balanced')}</div><div class="s">${allClosed ? t('Counted at close') : t('Shows once the day is closed')}</div></div>
+  </div>
+  <div class="grid g3" style="align-items:start">
+    <div class="panel panel-pad rep-list"><h3 class="rep-h">${ic('bill', 18)} ${t('Sales')}</h3>
+      ${row(t('Gross (items)'), rs(Rp.gross))}${row(t('Discounts'), Rp.discounts ? `−${rs(Rp.discounts)}` : rs(0))}${Rp.service ? row(t('Service charge'), rs(Rp.service)) : ''}${Rp.tax ? row(t('Tax'), rs(Rp.tax)) : ''}${Rp.fees ? row(t('Delivery fees'), rs(Rp.fees)) : ''}${row(t('Net sales'), rs(Rp.sales), 'tot')}</div>
+    <div class="panel panel-pad rep-list"><h3 class="rep-h">${ic('card', 18)} ${t('Payments received')}</h3>
+      ${METHODS.filter(([k]) => Rp.byM[k]).map(([k, l]) => row(t(l), rs(Rp.byM[k]))).join('') || `<p class="hint">${t('No payments.')}</p>`}${Rp.refunds ? row(t('Given back'), `−${rs(Rp.refunds)}`) : ''}${Rp.collections ? row(t('Udhaar collected'), rs(Rp.collections)) : ''}</div>
+    <div class="panel panel-pad rep-list"><h3 class="rep-h">${ic('cash', 18)} ${t('Cash drawer')}</h3>
+      ${row(t('Opening cash'), rs(Rp.opening))}${row(`+ ${t('Cash sales')}`, rs(Rp.byM.cash))}${Rp.collBy.cash ? row(`+ ${t('Udhaar (cash)')}`, rs(Rp.collBy.cash)) : ''}${row(t('Expected cash'), rs(Rp.expected), 'tot')}${row(t('Counted cash'), Rp.counted == null ? '—' : rs(Rp.counted))}${row(t('Cash difference'), Rp.diff == null ? '—' : sign(Rp.diff))}</div>
+  </div>
+  ${P.store === 'all' ? `<div class="panel"><div class="panel-head"><h3>${t('Branches')}</h3><span class="hint">${t('{a} of {b} closed', { a: Rp.per.filter((p) => p.rec).length, b: Rp.per.length })}</span></div><div class="table-wrap"><table class="tbl"><thead><tr><th>${t('Branch')}</th><th>${t('Status')}</th><th class="r">${t('Orders')}</th><th class="r">${t('Sales')}</th><th class="r">${t('Expected')}</th><th class="r">${t('Counted')}</th><th class="r">${t('Difference')}</th></tr></thead><tbody>
+  ${Rp.per.map((p) => `<tr class="click" data-act="rep-store" data-v="${p.id}" tabindex="0"><td><b>${esc(t(store(p.id).name))}</b></td><td>${p.rec ? `<span class="badge tag st-delivered">${ic('check')} ${t('Closed')}</span><div class="hint">${fmtTime(p.rec.at)}, ${esc(uname(p.rec.by))}</div>` : p.open ? `<span class="badge tag st-ready">${t('Day still open')}</span>` : `<span class="badge tag pay-part">${t('Not closed')}</span>`}</td><td class="r">${p.f.orders}</td><td class="r">${rs(p.f.sales)}</td><td class="r">${rs(p.rec ? p.rec.expected : p.f.expected)}</td><td class="r">${p.rec ? rs(p.rec.counted) : '—'}</td><td class="r" style="color:${p.rec && p.rec.diff ? 'var(--chili-ink)' : 'inherit'}">${p.rec ? sign(p.rec.diff) : '—'}</td></tr>`).join('')}</tbody></table></div></div>` : ''}
+  <div class="grid g2" style="align-items:start">
+    <div class="panel"><div class="panel-head"><h3>${t('Deleted items')} · ${Rp.voids.length}</h3><span class="hint">${rs(Rp.voidValue)}</span></div><div class="table-wrap"><table class="tbl"><tbody>
+    ${Rp.voids.map((v) => `<tr><td><b>${esc(v.item)}</b><div class="hint">${esc(v.orderNo)} · ${esc(v.reason)}</div></td><td class="hint">${esc(uname(v.by))}${v.approvedBy && v.approvedBy !== v.by ? `<br>${t('Approved by')} ${esc(uname(v.approvedBy))}` : ''}</td><td class="r">−${rs(v.amount)}</td></tr>`).join('') || `<tr><td class="hint">${t('Nothing was deleted this day.')}</td></tr>`}</tbody></table></div></div>
+    <div class="panel"><div class="panel-head"><h3>${t('Still unpaid')} · ${Rp.stillOpen.length}</h3><span class="hint">${rs(sum(Rp.stillOpen, (o) => billOf(o).total))}</span></div><div class="table-wrap"><table class="tbl"><tbody>
+    ${Rp.stillOpen.map((o) => `<tr class="click" data-act="hist-view" data-id="${o.id}" tabindex="0"><td><b>${o.token ? `${t('Token')} ${o.token}` : esc(o.no)}</b><div class="hint">${esc(o.no)}${o.cust.name ? ` · ${esc(o.cust.name)}` : ''}</div></td><td><span class="badge tag ty-${o.type}">${ic(TYPE_IC[o.type])} ${t(TYPE_NAME[o.type])}</span></td><td class="r">${rs(billOf(o).total)}</td></tr>`).join('') || `<tr><td class="hint">${t('Every order from this day is paid.')}</td></tr>`}</tbody></table></div></div>
+  </div>
+</div>
+<aside class="rep-slip"><div class="rep-slip-head"><b>${t('Day slip preview')}</b><span class="hint">80mm</span></div><div class="rep-paper">${daySlipHTML(Rp)}</div><button class="btn btn-primary btn-block" data-act="rep-print">${ic('print', 18)} ${t('Print day slip')}</button></aside>
+</div></div>`;
+      }
       function closeRows(f) {
         const r = (k, v, b) =>
           `<tr><td>${k}</td><td class="r">${b ? `<b>${v}</b>` : v}</td></tr>`;
@@ -15612,6 +16688,9 @@ ${dsDemo(t('Order tags'), `<span class="badge tag ty-dine|ty-take|ty-delivery"> 
 ${dsDemo(t('Badges'), `<span class="badge b-green">…</span>  b-green b-saffron b-indigo b-chili b-grey b-solid b-dark`, ['b-green', 'b-saffron', 'b-indigo', 'b-chili', 'b-grey', 'b-solid', 'b-dark'].map((c) => `<span class="badge ${c}">${c.slice(2)}</span>`).join(''))}
 ${dsDemo(t('Notices'), `<div class="notice ok|info|warn|bad">…</div>`, ['ok', 'info', 'warn', 'bad'].map((c) => `<div class="notice ${c}">${t({ ok: 'Saved for Gulberg only.', info: 'Your trial ends in 5 days.', warn: 'Payment has started, so the bill is locked.', bad: 'This business day is closed.' }[c])}</div>`).join(''), true)}
 ${dsDemo(t('Day chips and counts'), `<span class="daychip open|closed|paused">…</span>\n<span class="rail-count warn">3</span>`, `<span class="daychip open">${ic('check', 14)} Mon, 2 Nov, ${t('Open')}</span><span class="daychip closed">${ic('lock', 14)} ${t('Closed')}</span><span class="daychip paused">${ic('pause', 14)} ${t('Paused')}</span><span class="rail-count warn" style="position:static">3</span>`)}
+${dsDemo(t('Sync status'), `syncChip()  → .syncchip ok | off | wait | busy
+.banner.offline (amber) · .banner.syncwait (button blue)
+openSyncModal(prompt) · syncNow() · DB.sync = { pending, lastAt, offline }`, `<span class="syncchip ok">${ic('check', 15)}<span>${t('Synced')}</span></span><span class="syncchip off">${ic('pause', 15)}<span>${t('Offline · {n} saved', { n: 4 })}</span></span><span class="syncchip wait">${ic('repeat', 15)}<span>${t('{n} to sync', { n: 4 })}</span></span><span class="syncchip busy">${ic('repeat', 15)}<span>${t('Syncing…')}</span></span>`)}
 ${dsDemo(t('Meters'), `<div class="meter [low|out]"><i style="width:60%"></i></div>`, `<div class="meter lg"><i style="width:72%"></i></div><div class="meter lg low"><i style="width:34%"></i></div><div class="meter lg out"><i style="width:8%"></i></div>`, true)}
 </div>
 <div class="ds-sub">${t('Data display')}</div><div class="ds-grid">
@@ -19043,6 +20122,170 @@ ${access}${u && u.id !== U.user ? `<div class="toggle-row"><div><b>${t('Active')
             render();
             toast(t('{p} saved.', { p: planById(id).name }));
           }
+        },
+      });
+      // Sync: send the changes saved on this device (demo: marks them sent).
+      function syncNow() {
+        const sy = SYNC();
+        if (syncBusy) return;
+        if (!isOnline()) {
+          toast(
+            t('Connect to the internet first. Your changes stay safe on this device.'),
+            'bad',
+            t('Still offline'),
+          );
+          return;
+        }
+        const n = sy.pending;
+        syncBusy = true;
+        if (M && M.sync) closeModal();
+        render();
+        setTimeout(() => {
+          syncBusy = false;
+          sy.pending = 0;
+          sy.lastAt = Date.now();
+          if (n && D)
+            audit('Synced offline changes', U.store === 'all' ? null : U.store, t('{n} changes sent', { n }));
+          save();
+          render();
+          toast(
+            n
+              ? t('{n} changes from this device are now saved online.', { n })
+              : t('Everything is already up to date.'),
+            '',
+            t('Synced'),
+          );
+        }, 1200);
+      }
+      function openSyncModal(prompt) {
+        openModal({
+          sync: true,
+          render() {
+            const sy = SYNC(),
+              on = isOnline(),
+              n = sy.pending;
+            const state = on
+              ? n
+                ? ['wait', t('Online, {n} changes waiting', { n })]
+                : ['ok', t('Online and synced')]
+              : ['off', t('Offline')];
+            const last = new Date(sy.lastAt);
+            return `${mHead(prompt ? t('Back online') : t('Connection and sync'), prompt ? t('Changes were saved on this device while the connection was down.') : t('Orders always save on this device first, then sync online.'))}<div class="modal-body">
+<div class="sync-state ${state[0]}">${ic(on ? (n ? 'repeat' : 'check') : 'pause', 22)}<div><b>${state[1]}</b><small>${t('Last synced')}: ${fmtTime(sy.lastAt)}, ${last.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</small></div><span class="sync-n">${n}<small>${t('waiting')}</small></span></div>
+<div class="sync-opt"><div><b>${t('Work offline')}</b><small>${t('Use during a power cut or when the internet is down. Changes are kept here and counted until you sync.')}</small></div>${sw(sy.offline, 'sync-offline', '', t('Work offline'))}</div>
+${!on ? `<p class="hint" style="margin-top:12px">${t('Sync will be ready as soon as the connection is back.')}</p>` : ''}</div>${mFoot(`${ic('repeat', 18)} ${n ? t('Sync {n} changes', { n }) : t('Sync now')}`, 'sync-now', 'btn-primary', !on)}`;
+          },
+        });
+      }
+      function goneOnline() {
+        render();
+        if (SYNC().pending && user()) openSyncModal(true);
+        else toast(t('Connection is back.'), '', t('Online'));
+      }
+      function goneOffline() {
+        render();
+        toast(
+          t('Keep working. Orders are saved on this device and will sync later.'),
+          'bad',
+          t('You are offline'),
+        );
+      }
+      window.addEventListener('online', () => {
+        if (!SYNC().offline) goneOnline();
+      });
+      window.addEventListener('offline', goneOffline);
+      Object.assign(A, {
+        'hist-preset': (el) => {
+          U.hist.preset = el.dataset.v;
+          resetPage('hist');
+          render();
+        },
+        'hist-clear': () => {
+          const keep = U.hist.store;
+          U.hist = Object.assign(HIST_DEFAULT(), { store: keep });
+          resetPage('hist');
+          render();
+        },
+        'hist-view': (el) => openHistOrder(el.dataset.id),
+        'hist-csv': histCSV,
+        'hist-print-bill': (el) => {
+          const o = orderById(el.dataset.id);
+          if (o) doPrint(customerBillHTML(o));
+        },
+        'hist-print-kot': (el) => {
+          const o = orderById(el.dataset.id);
+          if (o) doPrint(kitchenTokenHTML(o, null, true));
+        },
+        'hist-open': (el) => {
+          closeModal();
+          A['open-order'](el);
+        },
+        'rep-step': (el) => {
+          U.rep.date = addDays(U.rep.date, +el.dataset.v);
+          render();
+        },
+        'rep-today': () => {
+          U.rep.date = '';
+          render();
+        },
+        'dash-day': (el) => {
+          U.rep = { store: U.store, date: el.dataset.v };
+          if (!canScreen('dayreport'))
+            return toast(t('You do not have access to this.'), 'bad');
+          U.screen = 'dayreport';
+          render();
+        },
+        'rep-store': (el) => {
+          U.rep.store = el.dataset.v;
+          render();
+        },
+        'rep-print': () => {
+          const ids = U.rep.store === 'all' ? myStores() : [U.rep.store];
+          doPrint(daySlipHTML(dayReport(ids, U.rep.date)));
+        },
+        'rep-audit': () => {
+          if (!canScreen('audit'))
+            return toast(t('You do not have access to this.'), 'bad');
+          U.audit = Object.assign({}, U.audit, {
+            store: U.rep.store === 'all' ? 'all' : U.rep.store,
+            from: U.rep.date,
+            to: U.rep.date,
+          });
+          resetPage('audit');
+          U.screen = 'audit';
+          render();
+        },
+      });
+      Object.assign(CH, {
+        'hist-f': (el) => {
+          U.hist[el.dataset.k] = el.value;
+          resetPage('hist');
+          render();
+        },
+        'rep-f': (el) => {
+          if (el.dataset.k === 'date' && !el.value) return;
+          U.rep[el.dataset.k] = el.value;
+          render();
+        },
+      });
+      Object.assign(IN, {
+        'hist-q': (el) => {
+          U.hist.q = el.value;
+          resetPage('hist');
+          render();
+        },
+      });
+      Object.assign(A, {
+        'sync-open': () => openSyncModal(false),
+        'sync-now': syncNow,
+        'sync-offline': () => {
+          const sy = SYNC();
+          sy.offline = !sy.offline;
+          save();
+          closeModal();
+          if (sy.offline) goneOffline();
+          else if (navigator.onLine !== false) goneOnline();
+          else render();
         },
       });
       Object.assign(A, {
